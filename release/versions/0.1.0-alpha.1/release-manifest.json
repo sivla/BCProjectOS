@@ -12,7 +12,7 @@
     "blueprint_version":  "0.1.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "491e5bf6b4e9e148383ede24085449f61d626992a23f96ccf601e0b94bf3d17b",
+                    "bundle_digest":  "bc842ae6144c79ba66b934c9b4285f7a0d7c5da503e87e8bc3e7d626ab3adbd5",
                     "file_count":  52,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
@@ -43,8 +43,8 @@
                                   },
                                   {
                                       "path":  "automation/Promote-ReleaseCandidate.ps1",
-                                      "sha256":  "f33766511004c0d4ab464f6ff22faa95743390fd825ad3e389faddeacb821db8",
-                                      "size_bytes":  3401
+                                      "sha256":  "066eb4b58b4ceaedfa3e1ac48ce2e02de1eb91b10348ca061a0c1c6fc14457a3",
+                                      "size_bytes":  3409
                                   },
                                   {
                                       "path":  "automation/Release.Common.ps1",
