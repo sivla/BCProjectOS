@@ -1,0 +1,9 @@
+- [x] 1.1 Generate both supported synthetic profiles.
+- [x] 1.2 Validate canonical project/ticket/risk/decision records.
+- [x] 1.3 Validate phases, work packages, dates, roles, risks and decisions.
+- [x] 1.4 Validate reference graph uniqueness, dangling references and cycles.
+- [x] 1.5 Add portable read-only Consumer-Binding validation.
+- [x] 1.6 Add negative profile and record-boundary fixtures.
+- [x] 1.7 Produce gap evidence for the next release decision.
+- [x] 1.8 Review anonymized cross-project findings through this WIP-1 change and record adoption/rejection decisions.
+- [x] 1.9 Record release delta and SemVer rationale: published `0.1.0-beta.1` -> proposed `0.2.0-alpha.1`; no tag/release.
