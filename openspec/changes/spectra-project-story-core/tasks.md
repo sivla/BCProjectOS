@@ -1,0 +1,6 @@
+- [x] 1.1 Define synthetic offer/package, page, ticket and timeline schemas.
+- [x] 1.2 Generate a time-consistent implementation project story.
+- [x] 1.3 Validate ticket close gates, page parents, chronology and references.
+- [x] 1.4 Add negative fixtures for missing comment/evidence, invalid parent, time travel and broken references.
+- [x] 1.5 Produce gap/readiness evidence without claiming a new version.
+- [x] 1.6 Record proposed `0.3.0-alpha.1` delta and known limits.

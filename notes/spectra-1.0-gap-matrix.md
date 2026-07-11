@@ -24,6 +24,17 @@ Bewertung aus dem tatsächlichen Branch `codex/spectra-bc-basic-simulation` und 
 
 Der größte zusammenhängende P1/P2-Abstand ist ein **vollständiger Workspace-Betriebs- und Kontrollkern**: beide Profile, kanonische Projekt-/Ticket-/Risiko-/Entscheidungs-/Work-Package-Datensätze, Referenzgraphvalidierung, einheitliche JSON-Diagnosen und ein synthetischer Implementation-vs-Support-only-End-to-End-Lauf. Eine Folgesemver wird erst nach diesem Delta und seiner Evidence festgelegt.
 
+## Neue 1.0-Projektstory-/Twin-Gaps nach 0.2.0-alpha.1
+
+- Angebot/Leistungspaket mit Annahmen, Deliverables, Kosten und Ist-Abgleich: fehlend.
+- Datei-basiertes Confluence-kompatibles Seitenmodell: fehlend.
+- Jira-kompatibles Ticketmodell mit Statushistorie, Worklogs, Akzeptanzkriterien und Abschlusskommentar: fehlend.
+- Zeitstrahl/Projektstory und Hypercare-Tage: fehlend.
+- Bidirektionaler Angebot-Seite-Ticket-Use-Case-BC-Test-Evidence-Graph: teilweise.
+- Vollständiger synthetischer Generator und Mapping-Export: fehlend.
+
+Diese Befunde sind generisch, synthetisch und ohne Live-Confluence/Jira/BC-Zugriff. Der nächste Block ist daher ein dateibasierter Projektstory-/Ticket-/Timeline-Kern; Hypercare- und vollständige Twin-Visualisierung bleiben nachgelagerte Blöcke.
+
 ## Übertragene, anonymisierte Lernbefunde
 
 | Finding-ID | Herkunft / Commit | Klassifikation | Evidence / Anonymisierung | Zielentscheidung | Status |
