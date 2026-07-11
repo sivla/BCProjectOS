@@ -7,7 +7,7 @@ param(
     [ValidateSet('implementation','support-only','mixed')]
     [string]$Profile,
 
-    [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+$')]
+    [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$')]
     [string]$ExpectedBlueprintVersion,
 
     [switch]$SyntheticFixture

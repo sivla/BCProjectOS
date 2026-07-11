@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
-    [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+$')]
-    [string]$Version = '0.0.1',
+    [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$')]
+    [string]$Version = '0.1.0-alpha.1',
 
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')]
     [string]$ReleaseDate = '2026-07-11',
@@ -37,14 +37,14 @@ $manifest = [ordered]@{
     schema_version = 1
     product_id = 'spectra'
     release_version = $Version
-    release_kind = 'product_contract'
+    release_kind = 'installable_blueprint'
     manifest_state = $manifestState
     release_date = $ReleaseDate
     expected_tag = "spectra-v$Version"
     source_commit = $resolvedSourceCommit
-    consumer_mode = 'CONTRACT_REFERENCE_ONLY'
-    installable_blueprint = $false
-    blueprint_version = $null
+    consumer_mode = 'INSTALLABLE_BLUEPRINT'
+    installable_blueprint = $true
+    blueprint_version = $Version
     payload = [ordered]@{
         digest_algorithm = 'SHA-256'
         bundle_digest = $bundleDigest

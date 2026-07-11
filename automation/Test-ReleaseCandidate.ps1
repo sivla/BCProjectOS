@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
-    [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+$')]
-    [string]$Version = '0.0.1',
+    [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$')]
+    [string]$Version = '0.1.0-alpha.1',
 
     [switch]$RequirePublished
 )
@@ -50,8 +50,8 @@ if ($null -ne $manifest) {
     if ([string]$manifest.release_version -ne $Version -or [string]$manifest.expected_tag -ne "spectra-v$Version") {
         Add-Finding 'RELEASE_VERSION_INVALID' 'Release version and expected tag do not match the requested version.'
     }
-    if ([string]$manifest.release_kind -ne 'product_contract' -or [string]$manifest.consumer_mode -ne 'CONTRACT_REFERENCE_ONLY' -or $manifest.installable_blueprint -ne $false) {
-        Add-Finding 'RELEASE_SCOPE_CLAIM_INVALID' 'Release must remain a non-installable product-contract reference.'
+    if ([string]$manifest.release_kind -ne 'installable_blueprint' -or [string]$manifest.consumer_mode -ne 'INSTALLABLE_BLUEPRINT' -or $manifest.installable_blueprint -ne $true -or [string]$manifest.blueprint_version -ne $Version) {
+        Add-Finding 'RELEASE_SCOPE_CLAIM_INVALID' 'Release candidate must describe the installable Spectra blueprint.'
     }
 }
 

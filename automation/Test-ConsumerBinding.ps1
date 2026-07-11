@@ -73,9 +73,9 @@ if ($null -ne $binding) {
         }
     }
     elseif ([string]$binding.binding_status -eq 'BOUND') {
-        if ([string]$binding.release_version -notmatch '^[0-9]+\.[0-9]+\.[0-9]+$' -or [string]$binding.release_tag -ne "spectra-v$($binding.release_version)" -or
+        if ([string]$binding.release_version -notmatch '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$' -or [string]$binding.release_tag -ne "spectra-v$($binding.release_version)" -or
             [string]$binding.tag_commit -notmatch '^[0-9a-f]{40}$' -or [string]$binding.manifest_source_commit -notmatch '^[0-9a-f]{40}$' -or
-            [string]$binding.manifest_path -notmatch '^release/versions/[0-9]+\.[0-9]+\.[0-9]+/release-manifest\.json$' -or
+            [string]$binding.manifest_path -notmatch '^release/versions/[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?/release-manifest\.json$' -or
             [string]$binding.digest_algorithm -ne 'SHA-256' -or [string]$binding.payload_bundle_digest -notmatch '^[0-9a-f]{64}$') {
             Add-Finding 'BOUND_SHAPE_INVALID' 'Bound binding has an invalid version, tag, commit, manifest path, or SHA-256 digest.'
         }
