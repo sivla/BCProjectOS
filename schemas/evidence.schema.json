@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://local.bcprojectos.invalid/schemas/evidence.schema.json",
+  "allOf":[
+    {"$ref":"entity.schema.json"},
+    {"type":"object","required":["evidence_type"],"properties":{"entity_type":{"const":"evidence"},"evidence_type":{"enum":["approval","automated_test","uat","documentation","training","release","integrity","meeting_confirmation"]}}}
+  ]
+}

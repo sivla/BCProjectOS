@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.bcprojectos.invalid/schemas/workspace.schema.json",
+  "title": "BCProjectOS Customer Workspace",
+  "type": "object",
+  "required": ["schema_version","id","customer_id","entity_type","title","lifecycle_status","created_at","relations","blueprint_id","blueprint_version","created_with_version","openspec_roots"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"type":"string","pattern":"^CUS-[0-9A-HJKMNP-TV-Z]{26}$"},
+    "customer_id": {"type":"string","pattern":"^CUS-[0-9A-HJKMNP-TV-Z]{26}$"},
+    "entity_type": {"const":"customer"},
+    "title": {"type":"string","minLength":1},
+    "lifecycle_status": {"enum":["draft","active","inactive","archived","deleted"]},
+    "created_at": {"type":"string","format":"date-time"},
+    "relations": {"type":"array","maxItems":0},
+    "blueprint_id": {"const":"bcprojectos"},
+    "blueprint_version": {"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "created_with_version": {"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "last_migrated_at": {"type":["string","null"]},
+    "openspec_roots": {"const":["openspec"]}
+  },
+  "additionalProperties": false
+}

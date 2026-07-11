@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "run_id": "POV-001-INTAKE-001",
+  "mode": "synthetic_manual_assisted",
+  "automatic_approval": false,
+  "files": [
+    {"file_id":"FILE-01J00000000000000000000104","classification_status":"accepted_for_pilot","confidence":0.98,"route":"originals","archive_outcome":"registered_content_addressed","steps":["received","sha256_calculated","metadata_recorded","classified","routed"],"context_ids":["PRJ-01J00000000000000000000101","SUP-01J00000000000000000000102"],"review_required":false},
+    {"file_id":"FILE-01J00000000000000000000105","classification_status":"accepted_for_pilot","confidence":0.97,"route":"originals","archive_outcome":"registered_content_addressed","steps":["received","sha256_calculated","metadata_recorded","classified","routed"],"context_ids":["SUP-01J00000000000000000000102"],"review_required":false},
+    {"file_id":"FILE-01J00000000000000000000106","classification_status":"accepted_for_pilot","confidence":0.99,"route":"originals","archive_outcome":"registered_content_addressed","steps":["received","sha256_calculated","metadata_recorded","classified","routed"],"context_ids":["PRJ-01J00000000000000000000101","CHG-01J0000000000000000000010C"],"review_required":false},
+    {"file_id":"FILE-01J00000000000000000000107","classification_status":"accepted_for_pilot","confidence":0.99,"route":"originals","archive_outcome":"registered_content_addressed","steps":["received","sha256_calculated","metadata_recorded","classified","routed"],"context_ids":["MTG-01J00000000000000000000103","SUP-01J00000000000000000000102"],"review_required":false},
+    {"file_id":"FILE-01J00000000000000000000108","classification_status":"unreviewed","confidence":0.20,"route":"review","archive_outcome":"held_for_review","steps":["received","sha256_calculated","metadata_recorded","classified_unknown","routed_fail_closed"],"context_ids":["MTG-01J00000000000000000000103"],"review_required":true,"effective_sensitivity":"restricted"}
+  ]
+}

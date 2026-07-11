@@ -1,0 +1,50 @@
+{
+  "$schema": "../../../automation/delivery-plan.schema.json",
+  "schemaVersion": 1,
+  "changeId": "control-partial-delivery-shipping-costs",
+  "projectId": "PRJ-001",
+  "businessDomain": "SALES",
+  "externalPublishingEnabled": false,
+  "ticketing": {
+    "required": true,
+    "epic": {
+      "mode": "existing",
+      "sourceId": "EPIC-SALES",
+      "title": "Sales"
+    },
+    "storiesFrom": "requirements",
+    "tasksFrom": "tasks"
+  },
+  "uat": {
+    "required": true
+  },
+  "documentation": {
+    "required": true,
+    "confluenceStylePages": true,
+    "spaceAlias": "bc-enterprise"
+  },
+  "training": {
+    "required": true,
+    "purpose": "Betroffene Rollen wenden die freigegebene Versandkostenregel bei Teil- und Nachlieferungen sicher an.",
+    "audiences": [
+      {
+        "id": "AUD-SALES-USER",
+        "role": "Auftragsbearbeitung",
+        "type": "application-training"
+      },
+      {
+        "id": "AUD-SALES-KEYUSER",
+        "role": "Key User Verkauf",
+        "type": "key-user-training"
+      },
+      {
+        "id": "AUD-BC-ADMIN",
+        "role": "BC-Administration",
+        "type": "admin-training"
+      }
+    ]
+  },
+  "release": {
+    "required": true
+  }
+}

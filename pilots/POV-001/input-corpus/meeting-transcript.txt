@@ -1,0 +1,9 @@
+SYNTHETIC TRANSCRIPT - NOT REVIEWED
+
+Facilitator: We need to clarify how shipping costs should behave for partial deliveries.
+Support: The current request cannot be resolved as a simple usage question because a Business Central behavior or configuration decision may be required.
+Sales role: The desired calculation rule is not approved.
+Project role: Record a change candidate, but do not claim implementation, UAT, training, or release.
+Open question: Which approved business rule and accounting treatment should apply?
+Risk: Inventing a rule could produce incorrect charges.
+Action candidate: Route the support case to a governed change for planning only.

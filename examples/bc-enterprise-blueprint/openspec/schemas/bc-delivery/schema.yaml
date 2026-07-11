@@ -1,0 +1,59 @@
+name: bc-delivery
+version: 4
+description: Lean Business Central change workflow with a structured local delivery plan
+artifacts:
+  - id: proposal
+    generates: proposal.md
+    description: Business and project proposal for the change
+    template: proposal.md
+    instruction: Create a concise proposal linking the change to company goals, project scope, processes, capabilities, and non-goals.
+    requires: []
+  - id: business-context
+    generates: business-context.md
+    description: Traceable enterprise context and explicit knowledge gaps
+    template: business-context.md
+    instruction: Reference relevant company knowledge, capabilities, processes, business cases, rules, roles, data, systems, and unresolved gaps without duplicating the source documents.
+    requires:
+      - proposal
+  - id: specs
+    generates: specs/**/*.md
+    description: Testable behavioral delta specifications with stable requirement IDs
+    template: spec.md
+    instruction: Create OpenSpec-compatible delta specs. Every requirement must have a stable REQ ID and WHEN/THEN scenarios.
+    requires:
+      - proposal
+      - business-context
+  - id: design
+    generates: design.md
+    description: Functional and technical Business Central solution design
+    template: design.md
+    instruction: Describe process impact, BC objects, data, permissions, integrations, upgrade, deployment, rollback, risks, decisions, and evidence needs.
+    requires:
+      - specs
+  - id: delivery-plan
+    generates: delivery-plan.json
+    description: Machine-readable selection and routing of local delivery outputs
+    template: delivery-plan.json
+    instruction: Select only required local deliverables, reference an existing or explicitly new Epic, list training audiences, and keep external publishing disabled.
+    requires:
+      - proposal
+      - specs
+      - design
+  - id: tasks
+    generates: tasks.md
+    description: Verifiable implementation checklist mapped to requirement stories
+    template: tasks.md
+    instruction: Create dependency-ordered checkbox tasks with stable TASK IDs and an explicit STORY requirement parent.
+    requires:
+      - design
+      - delivery-plan
+apply:
+  requires:
+    - tasks
+  tracks: tasks.md
+  instruction: |
+    Read all referenced enterprise context and core change artifacts.
+    Generate local delivery drafts from delivery-plan.json before implementation.
+    Work through pending tasks in dependency order and mark only verified work complete.
+    Stop on missing authority, contradictory rules, missing data, or unavailable environments.
+    Never claim UAT, training, release, or approval without recorded evidence.

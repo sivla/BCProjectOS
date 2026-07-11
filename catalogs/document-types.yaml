@@ -1,0 +1,21 @@
+{
+  "catalog": "document_types",
+  "schema_version": 1,
+  "values": [
+    "company-profile",
+    "process",
+    "business-rule",
+    "bc-solution-note",
+    "project-record",
+    "support-record",
+    "meeting-record",
+    "transcript",
+    "requirement",
+    "decision",
+    "documentation",
+    "evidence",
+    "test-file",
+    "generated-deliverable",
+    "unknown"
+  ]
+}

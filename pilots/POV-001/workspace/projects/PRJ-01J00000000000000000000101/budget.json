@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "project_id": "PRJ-01J00000000000000000000101",
+  "unit": "synthetic_hours",
+  "accounting_source_of_truth": false,
+  "work_packages": [
+    {"id":"WP-SETUP","planned":2.0,"actual":2.0,"remaining":0.0,"forecast":2.0},
+    {"id":"WP-MEETING-PREP","planned":0.5,"actual":0.5,"remaining":0.0,"forecast":0.5},
+    {"id":"WP-MEETING","planned":1.0,"actual":1.0,"remaining":0.0,"forecast":1.0},
+    {"id":"WP-MEETING-FOLLOWUP","planned":1.0,"actual":1.0,"remaining":0.0,"forecast":1.0},
+    {"id":"WP-SUPPORT-PROMOTION","planned":1.5,"actual":1.5,"remaining":0.0,"forecast":1.5},
+    {"id":"WP-VALIDATION","planned":2.0,"actual":2.0,"remaining":0.0,"forecast":2.0}
+  ],
+  "totals": {"planned":8.0,"actual":8.0,"remaining":0.0,"forecast":8.0},
+  "measurement_note": "Synthetic planning scenario only; no manual baseline or time-saving claim."
+}

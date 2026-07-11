@@ -1,0 +1,31 @@
+{
+  "fixture_type": "synthetic_contract",
+  "workspace": {
+    "schema_version": 1,
+    "id": "CUS-01J00000000000000000000000",
+    "customer_id": "CUS-01J00000000000000000000000",
+    "entity_type": "customer",
+    "title": "Synthetischer Kundenalias",
+    "lifecycle_status": "draft",
+    "created_at": "2026-01-01T00:00:00Z",
+    "relations": [],
+    "blueprint_id": "bcprojectos",
+    "blueprint_version": "0.1.0",
+    "created_with_version": "0.1.0",
+    "last_migrated_at": null,
+    "openspec_roots": ["openspec"]
+  },
+  "entities": [
+    {"schema_version":1,"id":"PRJ-01J00000000000000000000001","customer_id":"CUS-01J00000000000000000000000","entity_type":"project","title":"Synthetisches Projekt","lifecycle_status":"draft","created_at":"2026-01-01T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000000"}]},
+    {"schema_version":1,"id":"SUP-01J00000000000000000000002","customer_id":"CUS-01J00000000000000000000000","entity_type":"support_case","title":"Synthetischer Supportfall","lifecycle_status":"active","created_at":"2026-01-01T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000000"},{"type":"part_of_project","target_id":"PRJ-01J00000000000000000000001"}]},
+    {"schema_version":1,"id":"MTG-01J00000000000000000000003","customer_id":"CUS-01J00000000000000000000000","entity_type":"meeting","title":"Synthetisches Meeting","lifecycle_status":"draft","created_at":"2026-01-01T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000000"},{"type":"concerns_case","target_id":"SUP-01J00000000000000000000002"}]},
+    {"schema_version":1,"id":"FILE-01J00000000000000000000004","customer_id":"CUS-01J00000000000000000000000","entity_type":"external_file","title":"Synthetische Quelldatei","lifecycle_status":"active","created_at":"2026-01-01T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000000"}],"document_type":"unknown","tags":{"sensitivity":"unknown"},"sha256":"0000000000000000000000000000000000000000000000000000000000000000","size_bytes":0,"media_type":"application/octet-stream","original_name":"synthetic-placeholder.bin","blob_path":"external-files/originals/sha256/00/0000000000000000000000000000000000000000000000000000000000000000"},
+    {"schema_version":1,"id":"KNO-01J00000000000000000000005","customer_id":"CUS-01J00000000000000000000000","entity_type":"knowledge_item","title":"Synthetisches Wissenselement","lifecycle_status":"draft","created_at":"2026-01-01T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000000"},{"type":"source_file","target_id":"FILE-01J00000000000000000000004"}],"document_type":"documentation","tags":{"knowledge_role":"context","sensitivity":"internal"}},
+    {"schema_version":1,"id":"PROC-01J00000000000000000000006","customer_id":"CUS-01J00000000000000000000000","entity_type":"business_process","title":"Synthetischer Prozess","lifecycle_status":"draft","created_at":"2026-01-01T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000000"}],"document_type":"process","tags":{"bc_area":"sales","knowledge_role":"procedure"}},
+    {"schema_version":1,"id":"BR-01J00000000000000000000007","customer_id":"CUS-01J00000000000000000000000","entity_type":"business_rule","title":"Synthetische Regel","lifecycle_status":"draft","created_at":"2026-01-01T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000000"},{"type":"governs","target_id":"PROC-01J00000000000000000000006"}],"document_type":"business-rule","approval_status":"draft","evidence_refs":[]},
+    {"schema_version":1,"id":"TKT-01J00000000000000000000008","customer_id":"CUS-01J00000000000000000000000","entity_type":"ticket","title":"Synthetisches Ticket","lifecycle_status":"active","created_at":"2026-01-01T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000000"},{"type":"tracks","target_id":"SUP-01J00000000000000000000002"}],"external_refs":[]},
+    {"schema_version":1,"id":"CHG-01J00000000000000000000009","customer_id":"CUS-01J00000000000000000000000","entity_type":"openspec_change","title":"Synthetischer Change","lifecycle_status":"draft","created_at":"2026-01-01T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000000"},{"type":"derived_from","target_id":"SUP-01J00000000000000000000002"},{"type":"contains_requirement","target_id":"REQ-01J0000000000000000000000A"}]},
+    {"schema_version":1,"id":"REQ-01J0000000000000000000000A","customer_id":"CUS-01J00000000000000000000000","entity_type":"requirement","title":"Synthetisches Requirement","lifecycle_status":"draft","created_at":"2026-01-01T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000000"},{"type":"implements","target_id":"BR-01J00000000000000000000007"}]},
+    {"schema_version":1,"id":"EVD-01J0000000000000000000000B","customer_id":"CUS-01J00000000000000000000000","entity_type":"evidence","title":"Synthetischer Integritaetsnachweis","lifecycle_status":"active","created_at":"2026-01-01T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000000"},{"type":"evidences","target_id":"CHG-01J00000000000000000000009"},{"type":"source_file","target_id":"FILE-01J00000000000000000000004"}],"evidence_type":"integrity"}
+  ]
+}

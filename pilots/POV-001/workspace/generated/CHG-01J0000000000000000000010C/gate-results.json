@@ -1,0 +1,145 @@
+{
+    "schema_version":  1,
+    "pilot_id":  "POV-001",
+    "canonical_change_id":  "CHG-01J0000000000000000000010C",
+    "engine_change_id":  "control-partial-delivery-shipping-costs",
+    "open_spec_validation":  {
+                                 "passed":  true,
+                                 "exit_code":  0,
+                                 "output":  "Change \u0027control-partial-delivery-shipping-costs\u0027 is valid"
+                             },
+    "gates":  [
+                  {
+                      "gate":  "Planning",
+                      "passed":  true,
+                      "exit_code":  0,
+                      "findings":  [
+
+                                   ]
+                  },
+                  {
+                      "gate":  "BuildReady",
+                      "passed":  false,
+                      "exit_code":  1,
+                      "findings":  [
+                                       {
+                                           "code":  "EXPLICIT_BLOCKER",
+                                           "message":  "business-context.md contains an explicit BLOCKER marker."
+                                       },
+                                       {
+                                           "code":  "UNRESOLVED_TBD",
+                                           "message":  "design.md contains unresolved TBD markers."
+                                       },
+                                       {
+                                           "code":  "BUSINESS_RULE_NOT_APPROVED",
+                                           "message":  "Business rule \u0027BR-SALES-001\u0027 is not approved: Status: Draft - nicht fachlich freigegeben"
+                                       }
+                                   ]
+                  },
+                  {
+                      "gate":  "ReleaseReady",
+                      "passed":  false,
+                      "exit_code":  1,
+                      "findings":  [
+                                       {
+                                           "code":  "EXPLICIT_BLOCKER",
+                                           "message":  "business-context.md contains an explicit BLOCKER marker."
+                                       },
+                                       {
+                                           "code":  "UNRESOLVED_TBD",
+                                           "message":  "design.md contains unresolved TBD markers."
+                                       },
+                                       {
+                                           "code":  "BUSINESS_RULE_NOT_APPROVED",
+                                           "message":  "Business rule \u0027BR-SALES-001\u0027 is not approved: Status: Draft - nicht fachlich freigegeben"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-001"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-002"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-003"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-004"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-005"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-006"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-007"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-008"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-009"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-010"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-011"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-012"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-013"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-014"
+                                       },
+                                       {
+                                           "code":  "TASK_INCOMPLETE",
+                                           "message":  "Task is incomplete: TASK-SALES-015"
+                                       },
+                                       {
+                                           "code":  "EVIDENCE_STATUS_BLOCKED",
+                                           "message":  "Evidence \u0027automatedTests\u0027 must be \u0027passed\u0027 but is \u0027not_run\u0027."
+                                       },
+                                       {
+                                           "code":  "EVIDENCE_STATUS_BLOCKED",
+                                           "message":  "Evidence \u0027uat\u0027 must be \u0027passed\u0027 but is \u0027not_run\u0027."
+                                       },
+                                       {
+                                           "code":  "EVIDENCE_STATUS_BLOCKED",
+                                           "message":  "Evidence \u0027documentation\u0027 must be \u0027approved\u0027 but is \u0027draft\u0027."
+                                       },
+                                       {
+                                           "code":  "EVIDENCE_STATUS_BLOCKED",
+                                           "message":  "Evidence \u0027training\u0027 must be \u0027delivered\u0027 but is \u0027not_delivered\u0027."
+                                       },
+                                       {
+                                           "code":  "EVIDENCE_STATUS_BLOCKED",
+                                           "message":  "Evidence \u0027releaseApproval\u0027 must be \u0027approved\u0027 but is \u0027not_approved\u0027."
+                                       }
+                                   ]
+                  }
+              ],
+    "expected":  {
+                     "Planning":  "pass",
+                     "BuildReady":  "blocked",
+                     "ReleaseReady":  "blocked"
+                 },
+    "external_writes":  false
+}

@@ -1,0 +1,3 @@
+case_id,scenario,expected_status
+SYN-CASE-001,partial delivery with unresolved shipping cost rule,not_run
+SYN-CASE-002,unauthorized override attempt,not_run

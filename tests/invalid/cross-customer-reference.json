@@ -1,0 +1,1 @@
+{"case":"cross_customer_reference","expected_code":"CUSTOMER_BOUNDARY_VIOLATION","mutation":{"entity_index":1,"property":"customer_id","value":"CUS-01J99999999999999999999999"}}

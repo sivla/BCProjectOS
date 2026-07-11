@@ -1,0 +1,13 @@
+{
+  "catalog": "statuses",
+  "schema_version": 1,
+  "axes": {
+    "lifecycle": ["draft", "active", "inactive", "archived", "deleted"],
+    "review": ["unreviewed", "in_review", "accepted", "rejected", "needs_clarification"],
+    "approval": ["draft", "proposed", "approved", "rejected", "superseded"],
+    "work": ["new", "triage", "planned", "in_progress", "waiting", "blocked", "validation", "done"],
+    "intake": ["received", "review", "quarantine", "accepted", "duplicate", "rejected"],
+    "change": ["draft", "planning", "build_ready", "in_progress", "validation", "release_ready", "released", "archived"]
+  },
+  "evidence_required_for": ["approved", "released", "passed", "delivered"]
+}

@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://local.bcprojectos.invalid/schemas/external-file.schema.json",
+  "allOf":[
+    {"$ref":"entity.schema.json"},
+    {"type":"object","required":["sha256","size_bytes","media_type","original_name","blob_path"],"properties":{"entity_type":{"const":"external_file"},"sha256":{"pattern":"^[a-f0-9]{64}$"},"blob_path":{"pattern":"^external-files/originals/sha256/[a-f0-9]{2}/[a-f0-9]{64}$"}}}
+  ]
+}

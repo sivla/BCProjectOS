@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://local.bcprojectos.invalid/schemas/catalogs.schema.json",
+  "type":"object",
+  "required":["catalog","schema_version"],
+  "properties":{"catalog":{"type":"string","minLength":1},"schema_version":{"const":1}},
+  "additionalProperties":true
+}

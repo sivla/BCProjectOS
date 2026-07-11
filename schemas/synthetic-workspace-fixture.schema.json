@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.bcprojectos.invalid/schemas/synthetic-workspace-fixture.schema.json",
+  "title": "BCProjectOS Synthetic Workspace Fixture",
+  "type": "object",
+  "required": ["schema_version","artifact_type","fixture_id","product_id","synthetic","installable","release_status","profile","created_at","openspec_roots"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "artifact_type": {"const": "bcprojectos_synthetic_workspace_fixture"},
+    "fixture_id": {"type": "string", "pattern": "^TFX-[0-9A-HJKMNP-TV-Z]{26}$"},
+    "product_id": {"const": "bcprojectos"},
+    "synthetic": {"const": true},
+    "installable": {"const": false},
+    "release_status": {"const": "PENDING_BCPROJECTOS_RELEASE"},
+    "profile": {"enum": ["implementation", "support-only", "mixed"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "openspec_roots": {"const": ["openspec"]}
+  },
+  "additionalProperties": false
+}

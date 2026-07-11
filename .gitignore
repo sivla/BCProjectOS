@@ -1,0 +1,44 @@
+# Geheimnisse und lokale Konfiguration
+.env
+.env.*
+!.env.example
+*.local.json
+*.secrets.json
+*.secret.json
+
+# Abhaengigkeiten und Caches
+node_modules/
+.venv/
+__pycache__/
+.pytest_cache/
+.cache/
+*.py[cod]
+
+# Lokale Lauf- und Testausgaben
+.tmp/
+tmp/
+output/
+coverage/
+*.log
+*.tmp
+
+# Business-Central- und AL-Buildartefakte
+.alpackages/
+*.app
+*.runtimepackage
+
+# Reale oder lokale Kundenarbeitsraeume
+workspaces/
+customer-workspaces/
+**/external-files/originals/**
+!/pilots/POV-001/workspace/external-files/originals/
+!/pilots/POV-001/workspace/external-files/originals/**
+**/external-files/derived/**
+**/backup/**
+
+# Betriebssystem und Editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*~

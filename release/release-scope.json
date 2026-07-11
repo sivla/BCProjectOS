@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "product_id": "bcprojectos",
+  "payload_files": [
+    "AGENTS.md",
+    "README.md",
+    "release/release-scope.json"
+  ],
+  "payload_roots": [
+    "automation",
+    "catalogs",
+    "contract",
+    "examples/minimal-contract",
+    "schemas",
+    "tests/invalid"
+  ],
+  "excluded_roots": [
+    "pilots",
+    "release/versions"
+  ]
+}

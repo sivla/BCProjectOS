@@ -1,0 +1,235 @@
+{
+    "schemaVersion":  1,
+    "changeId":  "control-partial-delivery-shipping-costs",
+    "generatedAt":  "2026-07-11T15:37:31.7575193Z",
+    "generator":  "automation/Generate-Deliverables.ps1",
+    "generatorSources":  [
+                             {
+                                 "path":  "automation/Generate-Deliverables.ps1",
+                                 "sha256":  "d250e5e1469d48f52f884003c3af1ea23aa0b9d85393f7404d6fb00feda88887"
+                             },
+                             {
+                                 "path":  "automation/Delivery.Common.ps1",
+                                 "sha256":  "305ba7d97ce23d11d85f2d16762a3e2c039f09e01fae42078e2312ac63ddc2d8"
+                             }
+                         ],
+    "externalPublishingEnabled":  false,
+    "sources":  [
+                    {
+                        "path":  "openspec/changes/control-partial-delivery-shipping-costs/proposal.md",
+                        "sha256":  "f09aafa544ef6114e2b23c07137b8d3de42992ef3bddfd591f1d9a49ac0489d3"
+                    },
+                    {
+                        "path":  "openspec/changes/control-partial-delivery-shipping-costs/business-context.md",
+                        "sha256":  "17b15df133659afa30d96455d81fd5ecea5c2cd837f994939a87daba06e0cf1d"
+                    },
+                    {
+                        "path":  "openspec/changes/control-partial-delivery-shipping-costs/design.md",
+                        "sha256":  "85b87933f83793b09a1775a5f1cd2672e941fc2eee132d403ac7a7dd3852549f"
+                    },
+                    {
+                        "path":  "openspec/changes/control-partial-delivery-shipping-costs/delivery-plan.json",
+                        "sha256":  "8aa2edf2bbf9a86c42c5916241cb3c74cc28eec8040c600ca2c35f1731e7a923"
+                    },
+                    {
+                        "path":  "openspec/changes/control-partial-delivery-shipping-costs/tasks.md",
+                        "sha256":  "c8086e83b8b635f65442a7850dc2932ecec4777a3cbc2c46895c4b0299f72b1a"
+                    },
+                    {
+                        "path":  "openspec/changes/control-partial-delivery-shipping-costs/specs/partial-delivery-shipping-cost-control/spec.md",
+                        "sha256":  "d1fe0a3737d8b30af1716ec0dc4fa587181c8c1e74010c0b72428dc501b105f2"
+                    },
+                    {
+                        "path":  "company/company-profile.md",
+                        "sha256":  "fbf092020efdf5b8f8ca8f57c3df16091fb39e6f6022ea56f27836d252bee226"
+                    },
+                    {
+                        "path":  "business/capability-map.md",
+                        "sha256":  "034abbfc2376353505910ae46348e3b27e09e521988d2832b0b8266a84113c71"
+                    },
+                    {
+                        "path":  "business/processes/process-catalog.md",
+                        "sha256":  "72d16ed2e86e7fffe1a81cc11c5e7a4a22bd6dbc32ca3f186459a742c214fd07"
+                    },
+                    {
+                        "path":  "application-landscape/business-central/solution-overview.md",
+                        "sha256":  "2ee6e8f44562f5b5e3c067a0e88e42a0346b814abb7fc5f08007fbf267170533"
+                    },
+                    {
+                        "path":  "projects/project-charter.md",
+                        "sha256":  "e3a0955ddaca1548f8f5c7e8fb64d005989ac7a240f92922f5757f3bf2b28c96"
+                    },
+                    {
+                        "path":  "business/processes/order-to-cash.md",
+                        "sha256":  "b4190cf4ad641d467fca5b266f57eddf6a8157769a0f8ae386dc5af50d1e880a"
+                    },
+                    {
+                        "path":  "business/business-cases/CASE-O2C-001-partial-delivery.md",
+                        "sha256":  "38aad3157512489d8052234722d2930700484fc150e2c3ef03bee58ee89f3f2c"
+                    },
+                    {
+                        "path":  "business/business-rules/BR-SALES-001-partial-delivery.md",
+                        "sha256":  "71446dac94a5e367ab9830499bfe0594cc3807e2a4056bc8831284c066798578"
+                    }
+                ],
+    "generatedFiles":  [
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/00-start/index.md",
+                               "sha256":  "31488d044807c1951bfa9473cdab74855988d3716b543b8b3a73161f769a5f26"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/10-unternehmen/unternehmensprofil.md",
+                               "sha256":  "8bcb1fd00b1556c9fabaa68b3128773d6f922c15c8df545c119e81ab0ca7e335"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/20-geschaeftsarchitektur/capability-map.md",
+                               "sha256":  "1f5e5e1c643be1fff1131d9f2d0397ea8a589d201bdbd67ed64a7102bfc973f4"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/20-geschaeftsarchitektur/process-catalog.md",
+                               "sha256":  "640e5a8dabb15081a1a6aa573377fc6b0b701e1385cef168e78f82c5f1f03306"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/30-anwendungslandschaft/business-central.md",
+                               "sha256":  "7c81f5570ed490339c4db97b4aea0f2c786d32efce90c2f513f11fe9ef0cb393"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/40-projekte/PRJ-001/project-charter.md",
+                               "sha256":  "e3466beaaeffb8acf5286fd8a6368a1caac818ca1291126e6f6e47806ae3a713"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/50-changes-und-releases/control-partial-delivery-shipping-costs/design.md",
+                               "sha256":  "99ab34a0747b1dab3c2c4f5d54f8c55f9a5329d85bfdc50fa78819dbb14c373b"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/50-changes-und-releases/control-partial-delivery-shipping-costs/index.md",
+                               "sha256":  "fdec7acbeb6b4d5b5bdf226c4b4902470d3621a01bc9cd9b757aaf7ab51297f1"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/50-changes-und-releases/control-partial-delivery-shipping-costs/requirements.md",
+                               "sha256":  "a1d09f1711800d03f4786700f260dc379e2dcf9ff0e8d79c3af461d2e7ab552e"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/50-changes-und-releases/control-partial-delivery-shipping-costs/uat.md",
+                               "sha256":  "17a2a2c72c3131338dad0989d6296647edb6deee296f0a46d6e09dc0c37d6f11"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/60-betrieb-und-support/index.md",
+                               "sha256":  "39092c8c94dbdaa2cf7b91b645439499f3a90dd318d28f7b8e386edec11da70f"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/confluence/70-schulung/control-partial-delivery-shipping-costs/index.md",
+                               "sha256":  "11c5414ea5ed0c96b9e34041fbf0305cf9bd2f51ddfbef9dfda5b973be3976cb"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/documentation/index.md",
+                               "sha256":  "43baae25de3e6b81eac3c824e2e926c7c32ff8091bc66160323b4e2ebf08d17a"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/release/release.md",
+                               "sha256":  "82e66af7d39896d404fbcc81a6b507f081b50c2dcdf2e0ff22ebe226dcb5b2ff"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/epic.md",
+                               "sha256":  "b85b093994be38e5f0533fb298c543c056693f9be329719ecfd52e71cde5251e"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/stories/REQ-SALES-001.md",
+                               "sha256":  "80f7fac0f641a45caee9ce078bb9754173bfa385fecda61220587dc0c67572e5"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/stories/REQ-SALES-002.md",
+                               "sha256":  "8b329a323449ccc72b0a8f0941edc2422c407b52520fb101044ce4797b18765e"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-001.md",
+                               "sha256":  "ccc8d1f87b4608603c3cd2770db38edb0acd5323fe8d2feb50c246fc9db81f84"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-002.md",
+                               "sha256":  "42b0bb870069711fcd61f671507544dab23cf6e78410ffbb942cf6f07532d2b3"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-003.md",
+                               "sha256":  "102727730253a1b15625e590233e9e22a9e5c0db7903e1e5ca06f4fe5868584c"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-004.md",
+                               "sha256":  "931853823de732919818845d3c504c7d722fd1d5998645e994226f8f0662ae7b"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-005.md",
+                               "sha256":  "28709f5a6fa02b949a522ca437f58d5ee20b46c02c0ed7c4f4066fd6c61641a4"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-006.md",
+                               "sha256":  "d9d6998056ec8cfb9ae104f94b523783b168e6ba98810d6ad73ed2d3f7f9de8c"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-007.md",
+                               "sha256":  "eb523fdf9cc8eb78482a1f634399721365a5ce667349852be84a97c75f5ab180"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-008.md",
+                               "sha256":  "21ab1e5bce12458f19939ece0a3b8de31fa782092cdd98f85b576c7a48b54831"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-009.md",
+                               "sha256":  "3c779dc0fde0e0cfe81bfeea048ac86ed14a772d8ecbb63c11998b9ed27c2458"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-010.md",
+                               "sha256":  "acc3bc2ac234133cd93170bef7d4cc523347873fdff79ccc5f6411c16982c3fe"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-011.md",
+                               "sha256":  "3c7234064e4defa1970d4db78e6d3fe3e8c2d6c7f88401400204ab51fa1393cd"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-012.md",
+                               "sha256":  "412682ec069f0fd8eecbe4a52a73b92448f082c0c5f0c6455fd02828eab405e7"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-013.md",
+                               "sha256":  "eefd6bf58047864da816ef3f590efa75855f966ccf22bbfe935db893560a5bd9"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-014.md",
+                               "sha256":  "4f134358e25ce7764655d93e733c0fd39a44b328ee606b175cd6f71634ab3d7f"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/tasks/TASK-SALES-015.md",
+                               "sha256":  "ce2b9fecc5c3cba54db4af6a52f0ebd432227d3bcb304b3d6b562b8a4c738114"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/tickets/ticket-manifest.json",
+                               "sha256":  "f2f1b9d0a5058ea024aa420883eeaa7429c18eec8a43dd349a841ba708f1bee9"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/training/exercises.md",
+                               "sha256":  "c8e5b3c0e56796b52e6006d2fb6602dd94bdd9ca08961c0c9a427631cd883400"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/training/knowledge-check.md",
+                               "sha256":  "6f84cdcd415f9c4bda91d721f686208d0b6252a4e4f77feac99afd92845f7165"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/training/participant-guide.md",
+                               "sha256":  "e27121d49e7b5b985ea6b5a3512b8981c7b6c66749ca828c6357a355f112ff8a"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/training/trainer-guide.md",
+                               "sha256":  "9bfe42bb5bf903540a1d8ad3d9415daa556ef3d8cf1507516ca0b03f57be0ed9"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/training/training-brief.md",
+                               "sha256":  "11c5414ea5ed0c96b9e34041fbf0305cf9bd2f51ddfbef9dfda5b973be3976cb"
+                           },
+                           {
+                               "path":  "deliverables/control-partial-delivery-shipping-costs/uat/uat-plan.md",
+                               "sha256":  "17a2a2c72c3131338dad0989d6296647edb6deee296f0a46d6e09dc0c37d6f11"
+                           }
+                       ],
+    "evidencePath":  "deliverables/control-partial-delivery-shipping-costs/evidence.json",
+    "evidenceSha256":  "785067d38f6f7d447c2c35b4a5f2f48c7d76f95cc425c50490a94e34f0337fa6"
+}

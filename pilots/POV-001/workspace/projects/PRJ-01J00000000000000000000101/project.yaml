@@ -1,0 +1,1 @@
+{"schema_version":1,"id":"PRJ-01J00000000000000000000101","customer_id":"CUS-01J00000000000000000000100","entity_type":"project","title":"Synthetischer Sales-Pilot","lifecycle_status":"active","created_at":"2026-07-11T00:00:00Z","relations":[{"type":"belongs_to","target_id":"CUS-01J00000000000000000000100"}]}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "change_id": "CHG-01J0000000000000000000010C",
+  "canonical_change_path": "openspec/changes/clarify-partial-delivery-shipping-costs",
+  "engine": "examples/bc-enterprise-blueprint/automation",
+  "engine_change_id": "control-partial-delivery-shipping-costs",
+  "epic": {"mode":"existing","source_id":"EPIC-SALES"},
+  "external_publishing_enabled": false,
+  "selected_pilot_outputs": [
+    "tickets/ticket-manifest.json",
+    "uat/uat-plan.md",
+    "documentation/index.md",
+    "release/release.md",
+    "manifest.json",
+    "evidence.json"
+  ],
+  "excluded_from_pilot_copy": ["confluence","training"],
+  "reason": "POV-001 needs traceable ticket, test-plan, documentation, release-draft, manifest, and evidence state only. The existing engine remains unchanged."
+}

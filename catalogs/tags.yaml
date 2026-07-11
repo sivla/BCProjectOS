@@ -1,0 +1,15 @@
+{
+  "catalog": "tag_dimensions",
+  "schema_version": 1,
+  "dimensions": {
+    "bc_area": ["sales", "purchasing", "inventory", "finance", "cross-area", "not-applicable", "unknown"],
+    "knowledge_role": ["source", "context", "decision", "rule", "procedure", "evidence", "output", "unknown"],
+    "work_context": ["project", "support", "meeting", "change", "operations", "unknown"],
+    "sensitivity": ["public", "internal", "confidential", "restricted", "unknown"]
+  },
+  "rules": {
+    "unknown_sensitivity_effective_as": "restricted",
+    "status_as_tag_forbidden": true,
+    "id_as_tag_forbidden": true
+  }
+}

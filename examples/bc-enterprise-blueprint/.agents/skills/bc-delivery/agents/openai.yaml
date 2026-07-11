@@ -1,0 +1,4 @@
+interface:
+  display_name: "BC Delivery"
+  short_description: "Generate and gate local BC delivery packages"
+  default_prompt: "Use $bc-delivery to generate and validate the local delivery package for this OpenSpec change."

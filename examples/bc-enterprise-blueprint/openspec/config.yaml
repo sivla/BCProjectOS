@@ -1,0 +1,28 @@
+schema: bc-delivery
+
+context: |
+  Dieses Repository modelliert Unternehmenswissen, Geschaeftsprozesse,
+  die Anwendungslandschaft und Business-Central-Projekte.
+  Vor dem Erstellen von Artefakten sind die relevanten Dateien unter
+  company/, business/, application-landscape/ und projects/ zu lesen.
+  Ist-Zustand, freigegebener Soll-Zustand und Annahmen muessen getrennt sein.
+  Keine Secrets, Tenant-IDs, personenbezogenen Daten oder erfundenen Freigaben.
+  Alle Tickets, Confluence-Seiten und Publikationsmanifeste bleiben lokal.
+  Externe Systeme duerfen nur nach einer spaeteren ausdruecklichen Freigabe beschrieben werden.
+
+rules:
+  proposal:
+    - Referenziere Projekt, Prozess, Geschaeftsfall und betroffene Unternehmensziele mit stabilen IDs.
+    - Benenne Nicht-Ziele und bekannte Annahmen.
+  business-context:
+    - Verlinke nur vorhandenes Unternehmenswissen und markiere Wissensluecken.
+  specs:
+    - Formuliere pruefbares Verhalten mit SHALL oder MUST und WHEN/THEN-Szenarien.
+  design:
+    - Dokumentiere betroffene BC-Objekte, Berechtigungen, Daten, Integrationen, Upgrade und Rollback.
+  delivery-plan:
+    - Waehle nur benoetigte Lieferobjekte und referenziere bevorzugt ein bestehendes Epic.
+    - Halte externe Veroeffentlichung immer deaktiviert.
+  tasks:
+    - Verwende stabile TASK-IDs und ordne jeden Task mit STORY einer Requirement-ID zu.
+    - Erfinde keine Testausfuehrung, Abnahme, Schulung oder Freigabe.

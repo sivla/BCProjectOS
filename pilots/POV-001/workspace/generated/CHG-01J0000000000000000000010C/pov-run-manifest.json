@@ -1,0 +1,42 @@
+{
+    "schema_version":  1,
+    "pilot_id":  "POV-001",
+    "canonical_change_id":  "CHG-01J0000000000000000000010C",
+    "engine":  "examples/bc-enterprise-blueprint/automation",
+    "selected_outputs":  [
+                             {
+                                 "path":  "generated/CHG-01J0000000000000000000010C/documentation/index.md",
+                                 "sha256":  "43baae25de3e6b81eac3c824e2e926c7c32ff8091bc66160323b4e2ebf08d17a"
+                             },
+                             {
+                                 "path":  "generated/CHG-01J0000000000000000000010C/evidence.json",
+                                 "sha256":  "785067d38f6f7d447c2c35b4a5f2f48c7d76f95cc425c50490a94e34f0337fa6"
+                             },
+                             {
+                                 "path":  "generated/CHG-01J0000000000000000000010C/gate-results.json",
+                                 "sha256":  "bc9d3afcfba9d2855c711a07cef3a643be83b04c430450bd11a4e45a6981c33b"
+                             },
+                             {
+                                 "path":  "generated/CHG-01J0000000000000000000010C/manifest.json",
+                                 "sha256":  "9827a4e5bb31caa5f978d33e2240f0bd8fc5a75138447e9c97ba40e3b66ea80e"
+                             },
+                             {
+                                 "path":  "generated/CHG-01J0000000000000000000010C/pov-run-manifest.json",
+                                 "sha256":  "c4546b7f52e5ccb7f2b919d5f07d9163d600d8fbe3758be5099dd664402fd4a1"
+                             },
+                             {
+                                 "path":  "generated/CHG-01J0000000000000000000010C/release/release.md",
+                                 "sha256":  "82e66af7d39896d404fbcc81a6b507f081b50c2dcdf2e0ff22ebe226dcb5b2ff"
+                             },
+                             {
+                                 "path":  "generated/CHG-01J0000000000000000000010C/tickets/ticket-manifest.json",
+                                 "sha256":  "f2f1b9d0a5058ea024aa420883eeaa7429c18eec8a43dd349a841ba708f1bee9"
+                             },
+                             {
+                                 "path":  "generated/CHG-01J0000000000000000000010C/uat/uat-plan.md",
+                                 "sha256":  "17a2a2c72c3131338dad0989d6296647edb6deee296f0a46d6e09dc0c37d6f11"
+                             }
+                         ],
+    "original_count":  5,
+    "originals_modified":  false
+}

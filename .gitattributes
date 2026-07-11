@@ -1,0 +1,24 @@
+* text=auto
+
+*.ps1  text eol=crlf
+*.psm1 text eol=crlf
+*.md   text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.toml text eol=lf
+*.txt  text eol=lf
+*.csv  text eol=lf
+
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webm binary
+*.pdf  binary
+*.app  binary
+*.dat  binary
+
+# Bytegenaue synthetische POV-Eingaben und Originale niemals normalisieren.
+/pilots/POV-001/input-corpus/** binary
+/pilots/POV-001/workspace/external-files/originals/** binary

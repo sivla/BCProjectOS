@@ -1,0 +1,114 @@
+{
+    "schemaVersion":  1,
+    "changeId":  "control-partial-delivery-shipping-costs",
+    "epic":  {
+                 "sourceId":  "EPIC-SALES",
+                 "mode":  "existing",
+                 "externalKey":  null
+             },
+    "stories":  [
+                    {
+                        "sourceId":  "REQ-SALES-001",
+                        "parentEpic":  "EPIC-SALES",
+                        "path":  "tickets/stories/REQ-SALES-001.md"
+                    },
+                    {
+                        "sourceId":  "REQ-SALES-002",
+                        "parentEpic":  "EPIC-SALES",
+                        "path":  "tickets/stories/REQ-SALES-002.md"
+                    }
+                ],
+    "tasks":  [
+                  {
+                      "sourceId":  "TASK-SALES-001",
+                      "parentStory":  "REQ-SALES-001",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-001.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-002",
+                      "parentStory":  "REQ-SALES-001",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-002.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-003",
+                      "parentStory":  "REQ-SALES-002",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-003.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-004",
+                      "parentStory":  "REQ-SALES-001",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-004.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-005",
+                      "parentStory":  "REQ-SALES-001",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-005.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-006",
+                      "parentStory":  "REQ-SALES-002",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-006.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-007",
+                      "parentStory":  "REQ-SALES-001",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-007.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-008",
+                      "parentStory":  "REQ-SALES-001",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-008.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-009",
+                      "parentStory":  "REQ-SALES-002",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-009.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-010",
+                      "parentStory":  "REQ-SALES-002",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-010.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-011",
+                      "parentStory":  "REQ-SALES-001",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-011.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-012",
+                      "parentStory":  "REQ-SALES-001",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-012.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-013",
+                      "parentStory":  "REQ-SALES-001",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-013.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-014",
+                      "parentStory":  "REQ-SALES-002",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-014.md"
+                  },
+                  {
+                      "sourceId":  "TASK-SALES-015",
+                      "parentStory":  "REQ-SALES-001",
+                      "complete":  false,
+                      "path":  "tickets/tasks/TASK-SALES-015.md"
+                  }
+              ],
+    "externalPublishingEnabled":  false
+}

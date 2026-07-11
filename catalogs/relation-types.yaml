@@ -1,0 +1,19 @@
+{
+  "catalog": "relation_types",
+  "schema_version": 1,
+  "relations": [
+    {"type":"belongs_to","sources":["project","support_case","meeting","external_file","knowledge_item","business_process","business_rule","ticket","requirement","openspec_change","evidence"],"targets":["customer"]},
+    {"type":"part_of_project","sources":["support_case","meeting","ticket","openspec_change","evidence"],"targets":["project"]},
+    {"type":"concerns_case","sources":["meeting","ticket","openspec_change","evidence"],"targets":["support_case"]},
+    {"type":"source_file","sources":["meeting","knowledge_item","business_process","business_rule","evidence"],"targets":["external_file"]},
+    {"type":"derived_from","sources":["knowledge_item","business_process","business_rule","ticket","requirement","openspec_change","evidence"],"targets":["support_case","meeting","external_file","knowledge_item","business_process","business_rule","ticket","requirement","openspec_change"]},
+    {"type":"documents","sources":["knowledge_item","evidence"],"targets":["project","support_case","meeting","business_process","business_rule","ticket","requirement","openspec_change"]},
+    {"type":"governs","sources":["business_rule"],"targets":["business_process","requirement"]},
+    {"type":"implements","sources":["requirement"],"targets":["business_process","business_rule"]},
+    {"type":"promoted_to","sources":["support_case","meeting","ticket"],"targets":["openspec_change"]},
+    {"type":"contains_requirement","sources":["openspec_change"],"targets":["requirement"]},
+    {"type":"tracks","sources":["ticket"],"targets":["project","support_case","requirement","openspec_change"]},
+    {"type":"evidences","sources":["evidence"],"targets":["meeting","ticket","requirement","openspec_change"]},
+    {"type":"supersedes","sources":["knowledge_item","business_process","business_rule","requirement"],"targets":["knowledge_item","business_process","business_rule","requirement"],"same_entity_type":true}
+  ]
+}

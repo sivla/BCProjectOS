@@ -1,0 +1,34 @@
+{
+    "schemaVersion":  1,
+    "changeId":  "control-partial-delivery-shipping-costs",
+    "automatedTests":  {
+                           "status":  "not_run",
+                           "evidence":  [
+
+                                        ]
+                       },
+    "uat":  {
+                "status":  "not_run",
+                "evidence":  [
+
+                             ]
+            },
+    "documentation":  {
+                          "status":  "draft",
+                          "evidence":  [
+
+                                       ]
+                      },
+    "training":  {
+                     "status":  "not_delivered",
+                     "evidence":  [
+
+                                  ]
+                 },
+    "releaseApproval":  {
+                            "status":  "not_approved",
+                            "evidence":  [
+
+                                         ]
+                        }
+}

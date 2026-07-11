@@ -1,0 +1,6 @@
+{
+  "case": "unknown_file_must_fail_closed",
+  "file_id": "FILE-01J00000000000000000000108",
+  "invalid_route": "originals",
+  "expected_code": "UNKNOWN_FILE_NOT_FAIL_CLOSED"
+}

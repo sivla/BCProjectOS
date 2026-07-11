@@ -1,0 +1,14 @@
+{
+  "name": "bc-enterprise-blueprint",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local enterprise knowledge and OpenSpec delivery blueprint for Business Central",
+  "scripts": {
+    "test": "powershell -NoProfile -ExecutionPolicy Bypass -File automation/Test-Blueprint.ps1",
+    "generate:example": "powershell -NoProfile -ExecutionPolicy Bypass -File automation/Generate-Deliverables.ps1 -ChangeId control-partial-delivery-shipping-costs -Force",
+    "gate:planning": "powershell -NoProfile -ExecutionPolicy Bypass -File automation/Test-DeliveryGate.ps1 -ChangeId control-partial-delivery-shipping-costs -Gate Planning"
+  },
+  "devDependencies": {
+    "@fission-ai/openspec": "1.6.0"
+  }
+}

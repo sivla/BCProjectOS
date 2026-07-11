@@ -1,0 +1,47 @@
+# Project-scoped Codex MCP configuration for BCProjectOS.
+# Keep secrets in environment variables, not in this file.
+
+[mcp_servers.microsoft_docs_mcp]
+url = "https://learn.microsoft.com/api/mcp"
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+
+[mcp_servers.al_symbols_mcp]
+command = "npx"
+args = ["-y", "al-mcp-server"]
+startup_timeout_sec = 30
+tool_timeout_sec = 60
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest"]
+startup_timeout_sec = 30
+tool_timeout_sec = 60
+
+[mcp_servers.business_central_sandbox]
+url = "https://mcp.businesscentral.dynamics.com"
+enabled = false
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+env_http_headers = { TenantId = "BC_TENANT_ID", EnvironmentName = "BC_ENVIRONMENT_NAME", Company = "BC_COMPANY", ConfigurationName = "BC_MCP_CONFIGURATION_NAME" }
+
+[mcp_servers.altool]
+command = "altool"
+args = ["launchmcpserver", "--transport", "stdio"]
+enabled = false
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.azure_devops]
+command = "npx"
+args = ["-y", "@azure-devops/mcp", "YOUR_AZURE_DEVOPS_ORG"]
+enabled = false
+startup_timeout_sec = 30
+tool_timeout_sec = 60
+
+[mcp_servers.markitdown]
+command = "uvx"
+args = ["markitdown-mcp"]
+enabled = false
+startup_timeout_sec = 30
+tool_timeout_sec = 60
