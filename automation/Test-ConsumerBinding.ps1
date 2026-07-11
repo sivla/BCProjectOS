@@ -18,31 +18,6 @@ function Add-Finding([string]$Code, [string]$Message) {
     [void]$script:findings.Add("[$Code] $Message")
 }
 
-function Get-GitBlobRecord([string]$Root, [string]$Revision, [string]$RelativePath) {
-    $startInfo = New-Object System.Diagnostics.ProcessStartInfo
-    $startInfo.FileName = 'git'
-    $startInfo.Arguments = "-C `"$Root`" cat-file blob `"$Revision`:$RelativePath`""
-    $startInfo.UseShellExecute = $false
-    $startInfo.RedirectStandardOutput = $true
-    $startInfo.RedirectStandardError = $true
-    $process = New-Object System.Diagnostics.Process
-    $process.StartInfo = $startInfo
-    [void]$process.Start()
-    $bytes = New-Object System.IO.MemoryStream
-    try {
-        $process.StandardOutput.BaseStream.CopyTo($bytes)
-        $stderr = $process.StandardError.ReadToEnd()
-        $process.WaitForExit()
-        if ($process.ExitCode -ne 0) { throw "git cat-file failed: $stderr" }
-        $sha256 = [System.Security.Cryptography.SHA256]::Create()
-        try {
-            [pscustomobject]@{ size_bytes = $bytes.Length; sha256 = ([System.BitConverter]::ToString($sha256.ComputeHash($bytes.ToArray()))).Replace('-', '').ToLowerInvariant() }
-        }
-        finally { $sha256.Dispose() }
-    }
-    finally { $bytes.Dispose(); $process.Dispose() }
-}
-
 function Get-TextSha256([string]$Text) {
     $encoding = New-Object System.Text.UTF8Encoding($false)
     $sha256 = [System.Security.Cryptography.SHA256]::Create()
@@ -59,6 +34,7 @@ else {
 }
 
 if ($null -ne $binding) {
+    . (Join-Path $PSScriptRoot 'Release.Common.ps1')
     $actualProperties = @($binding.PSObject.Properties.Name | Sort-Object)
     if (($actualProperties -join '|') -ne (($requiredProperties | Sort-Object) -join '|')) {
         Add-Finding 'BINDING_PROPERTIES_INVALID' 'Binding has missing or additional properties.'
@@ -120,7 +96,7 @@ if ($null -ne $binding) {
                             continue
                         }
                         try {
-                            $actual = Get-GitBlobRecord -Root $RepositoryRoot -Revision $binding.tag_commit -RelativePath ([string]$record.path)
+                            $actual = Get-BCProjectOSGitBlobRecord -Root $RepositoryRoot -Revision $binding.tag_commit -RelativePath ([string]$record.path)
                             if ([int64]$actual.size_bytes -ne [int64]$record.size_bytes -or [string]$actual.sha256 -ne [string]$record.sha256) { Add-Finding 'BOUND_PAYLOAD_FILE_MISMATCH' "Manifest payload record differs from tagged content: $($record.path)" }
                             [void]$actualRecords.Add([pscustomobject]@{ path = [string]$record.path; sha256 = [string]$actual.sha256 })
                         }

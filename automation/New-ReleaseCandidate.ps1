@@ -33,6 +33,10 @@ if (-not [string]::IsNullOrWhiteSpace($SourceCommit)) {
     $manifestState = 'final'
 }
 
+$records = if ($null -ne $resolvedSourceCommit) { @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision $resolvedSourceCommit -Scope $scope) } else { @(Get-BCProjectOSPayloadRecords -Files $files) }
+$checksumsText = Get-BCProjectOSChecksumsText -Records $records
+$bundleDigest = Get-BCProjectOSTextSha256 -Text $checksumsText
+
 $manifest = [ordered]@{
     schema_version = 1
     product_id = 'spectra'

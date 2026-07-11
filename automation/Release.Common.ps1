@@ -87,6 +87,46 @@ function Get-BCProjectOSPayloadRecords {
     }
 }
 
+function Get-BCProjectOSGitBlobRecord {
+    param(
+        [Parameter(Mandatory = $true)][string]$Root,
+        [Parameter(Mandatory = $true)][string]$Revision,
+        [Parameter(Mandatory = $true)][string]$RelativePath
+    )
+    $startInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $startInfo.FileName = 'git'
+    $startInfo.Arguments = "-C `"$Root`" cat-file blob `"$Revision`:$RelativePath`""
+    $startInfo.UseShellExecute = $false
+    $startInfo.RedirectStandardOutput = $true
+    $startInfo.RedirectStandardError = $true
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $startInfo
+    [void]$process.Start()
+    $bytes = New-Object System.IO.MemoryStream
+    try {
+        $process.StandardOutput.BaseStream.CopyTo($bytes)
+        $stderr = $process.StandardError.ReadToEnd()
+        $process.WaitForExit()
+        if ($process.ExitCode -ne 0) { throw "git cat-file failed: $stderr" }
+        $sha256 = [System.Security.Cryptography.SHA256]::Create()
+        try {
+            return [pscustomobject]@{ path = $RelativePath; sha256 = ([System.BitConverter]::ToString($sha256.ComputeHash($bytes.ToArray()))).Replace('-', '').ToLowerInvariant(); size_bytes = [int64]$bytes.Length }
+        }
+        finally { $sha256.Dispose() }
+    }
+    finally { $bytes.Dispose(); $process.Dispose() }
+}
+
+function Get-BCProjectOSGitPayloadRecords {
+    param(
+        [Parameter(Mandatory = $true)][string]$Root,
+        [Parameter(Mandatory = $true)][string]$Revision,
+        [Parameter(Mandatory = $true)]$Scope
+    )
+    $files = @(Get-BCProjectOSPayloadFiles -Root $Root -Scope $Scope)
+    foreach ($file in $files) { Get-BCProjectOSGitBlobRecord -Root $Root -Revision $Revision -RelativePath ([string]$file.path) }
+}
+
 function Get-BCProjectOSChecksumsText {
     param([Parameter(Mandatory = $true)]$Records)
 
