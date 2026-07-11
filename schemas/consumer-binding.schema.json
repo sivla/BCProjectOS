@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.bcprojectos.invalid/schemas/consumer-binding.schema.json",
+  "title": "BCProjectOS Consumer Binding",
+  "type": "object",
+  "required": ["schema_version","binding_status","product_id","repository_url","release_version","release_tag","tag_commit","manifest_path","manifest_source_commit","consumer_mode","installable_blueprint","digest_algorithm","payload_bundle_digest"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "binding_status": {"enum": ["PENDING_BCPROJECTOS_RELEASE", "BOUND"]},
+    "product_id": {"const": "spectra"},
+    "repository_url": {"const": "https://github.com/sivla/BCProjectOS.git"},
+    "release_version": {"type": ["string", "null"], "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "release_tag": {"type": ["string", "null"], "pattern": "^spectra-v[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "tag_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+    "manifest_path": {"type": ["string", "null"], "pattern": "^release/versions/[0-9]+\\.[0-9]+\\.[0-9]+/release-manifest\\.json$"},
+    "manifest_source_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+    "consumer_mode": {"type": ["string", "null"], "enum": ["CONTRACT_REFERENCE_ONLY", "INSTALLABLE_BLUEPRINT", null]},
+    "installable_blueprint": {"type": ["boolean", "null"]},
+    "digest_algorithm": {"type": ["string", "null"], "enum": ["SHA-256", null]},
+    "payload_bundle_digest": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"binding_status": {"const": "PENDING_BCPROJECTOS_RELEASE"}}},
+      "then": {"properties": {"release_version": {"type": "null"}, "release_tag": {"type": "null"}, "tag_commit": {"type": "null"}, "manifest_path": {"type": "null"}, "manifest_source_commit": {"type": "null"}, "consumer_mode": {"type": "null"}, "installable_blueprint": {"type": "null"}, "digest_algorithm": {"type": "null"}, "payload_bundle_digest": {"type": "null"}}},
+      "else": {"properties": {"release_version": {"type": "string"}, "release_tag": {"type": "string"}, "tag_commit": {"type": "string"}, "manifest_path": {"type": "string"}, "manifest_source_commit": {"type": "string"}, "consumer_mode": {"type": "string"}, "installable_blueprint": {"type": "boolean"}, "digest_algorithm": {"const": "SHA-256"}, "payload_bundle_digest": {"type": "string"}}}
+    }
+  ],
+  "additionalProperties": false
+}

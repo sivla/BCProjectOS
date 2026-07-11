@@ -44,10 +44,10 @@ try { $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
 catch { Add-Finding 'RELEASE_MANIFEST_INVALID' $_.Exception.Message; $manifest = $null }
 
 if ($null -ne $manifest) {
-    if ([int]$manifest.schema_version -ne 1 -or [string]$manifest.product_id -ne 'bcprojectos') {
+    if ([int]$manifest.schema_version -ne 1 -or [string]$manifest.product_id -ne 'spectra') {
         Add-Finding 'RELEASE_IDENTITY_INVALID' 'Release manifest has an unsupported schema or product identity.'
     }
-    if ([string]$manifest.release_version -ne $Version -or [string]$manifest.expected_tag -ne "bcprojectos-v$Version") {
+    if ([string]$manifest.release_version -ne $Version -or [string]$manifest.expected_tag -ne "spectra-v$Version") {
         Add-Finding 'RELEASE_VERSION_INVALID' 'Release version and expected tag do not match the requested version.'
     }
     if ([string]$manifest.release_kind -ne 'product_contract' -or [string]$manifest.consumer_mode -ne 'CONTRACT_REFERENCE_ONLY' -or $manifest.installable_blueprint -ne $false) {
@@ -117,7 +117,7 @@ elseif ($sourceCommit -notmatch '^[0-9a-f]{40}$') {
     Add-Finding 'SOURCE_COMMIT_INVALID' 'Manifest source commit is not a full Git SHA.'
 }
 
-$tagName = "bcprojectos-v$Version"
+$tagName = "spectra-v$Version"
 & git -C $repoRoot show-ref --verify --quiet "refs/tags/$tagName"
 $tagExists = $LASTEXITCODE -eq 0
 if (-not $tagExists) {

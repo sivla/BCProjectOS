@@ -13,7 +13,7 @@ function Get-BCProjectOSReleaseScope {
     }
 
     $scope = Get-Content -LiteralPath $scopePath -Raw | ConvertFrom-Json
-    if ([int]$scope.schema_version -ne 1 -or [string]$scope.product_id -ne 'bcprojectos') {
+    if ([int]$scope.schema_version -ne 1 -or [string]$scope.product_id -ne 'spectra') {
         throw 'Release scope has an unsupported schema or product identity.'
     }
     return $scope

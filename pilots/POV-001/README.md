@@ -11,3 +11,5 @@ powershell -NoProfile -ExecutionPolicy Bypass -File pilots/POV-001/automation/Te
 ```
 
 Die finale Produktentscheidung wurde am 2026-07-11 als `Reduce` festgelegt. Diese Entscheidung gibt nur den reduzierten MVP-1-Umfang frei; der Pilot selbst bleibt abgeschlossen und unveraendert synthetisch.
+
+Die versionierten `workspace/`-Metadaten und Verifikationsberichte sind historische, nicht bindbare Pilot-Evidence. Sie belegen weder einen BCProjectOS-Release noch einen installierbaren Blueprint und duerfen nicht als Generator- oder Consumer-Eingabe verwendet werden.

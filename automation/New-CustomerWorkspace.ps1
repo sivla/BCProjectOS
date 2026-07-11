@@ -81,7 +81,7 @@ try {
         schema_version = 1
         artifact_type = 'bcprojectos_synthetic_workspace_fixture'
         fixture_id = New-FixtureId
-        product_id = 'bcprojectos'
+        product_id = 'spectra'
         synthetic = $true
         installable = $false
         release_status = 'PENDING_BCPROJECTOS_RELEASE'

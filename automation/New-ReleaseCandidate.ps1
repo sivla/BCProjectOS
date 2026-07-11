@@ -35,12 +35,12 @@ if (-not [string]::IsNullOrWhiteSpace($SourceCommit)) {
 
 $manifest = [ordered]@{
     schema_version = 1
-    product_id = 'bcprojectos'
+    product_id = 'spectra'
     release_version = $Version
     release_kind = 'product_contract'
     manifest_state = $manifestState
     release_date = $ReleaseDate
-    expected_tag = "bcprojectos-v$Version"
+    expected_tag = "spectra-v$Version"
     source_commit = $resolvedSourceCommit
     consumer_mode = 'CONTRACT_REFERENCE_ONLY'
     installable_blueprint = $false
@@ -77,7 +77,7 @@ Write-BCProjectOSUtf8File -Path $manifestPath -Content $manifestJson
 
 Write-Host "PASS: Prepared BCProjectOS $Version $manifestState manifest with $($records.Count) payload files."
 Write-Host "Bundle digest: $bundleDigest"
-Write-Host "Expected tag: bcprojectos-v$Version"
+Write-Host "Expected tag: spectra-v$Version"
 if ($manifestState -eq 'candidate') {
     Write-Host 'PENDING: No source commit is recorded; this candidate is not binding-eligible.'
 }
