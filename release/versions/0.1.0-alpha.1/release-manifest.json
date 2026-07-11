@@ -12,8 +12,8 @@
     "blueprint_version":  "0.1.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "8ad2eed4e9eaf9dab0a9426c81a1dade6593b6cefcfb4d8170682fb661816a77",
-                    "file_count":  47,
+                    "bundle_digest":  "117d772527ebf62a089a5f652ff8072ad089590ee784662fcee80af1fceb3115",
+                    "file_count":  49,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
                                   {
@@ -35,6 +35,11 @@
                                       "path":  "automation/New-ReleaseCandidate.ps1",
                                       "sha256":  "fe8afe87386701f5fb37f9ae85b74a9faa13bcfb97e2127e75bde65e640b8026",
                                       "size_bytes":  3413
+                                  },
+                                  {
+                                      "path":  "automation/Promote-ReleaseCandidate.ps1",
+                                      "sha256":  "f33766511004c0d4ab464f6ff22faa95743390fd825ad3e389faddeacb821db8",
+                                      "size_bytes":  3401
                                   },
                                   {
                                       "path":  "automation/Release.Common.ps1",
@@ -67,9 +72,14 @@
                                       "size_bytes":  13661
                                   },
                                   {
+                                      "path":  "automation/Test-PromotionWorkflow.ps1",
+                                      "sha256":  "7464a399946c426b8a9d181e76612eddf171ccb33a62c3539a86ba2da49088a0",
+                                      "size_bytes":  3173
+                                  },
+                                  {
                                       "path":  "automation/Test-ReleaseCandidate.ps1",
-                                      "sha256":  "6a66e650ff7f094c18a6d1c159f6b7494a23c44ede20af3b3a8315f5d1eb35b8",
-                                      "size_bytes":  8653
+                                      "sha256":  "64508f0ec20c0db326c469970b23c522996ed0ddd9e78cae60cedf10640ae2b2",
+                                      "size_bytes":  8795
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticWorkspaceFixture.ps1",

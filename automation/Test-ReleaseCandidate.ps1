@@ -97,8 +97,10 @@ if ($LASTEXITCODE -ne 0) {
     Add-Finding 'PRODUCT_CONTRACT_FAILED' ($productOutput -join ' ')
 }
 
-$head = (& git -C $repoRoot rev-parse --verify --quiet 'HEAD^{commit}' 2>$null | Select-Object -First 1)
-$headExists = $LASTEXITCODE -eq 0 -and [string]$head -match '^[0-9a-f]{40}$'
+$headOutput = @(& git -C $repoRoot rev-parse --verify --quiet 'HEAD^{commit}' 2>$null)
+$headExitCode = $LASTEXITCODE
+$head = $headOutput | Select-Object -First 1
+$headExists = $headExitCode -eq 0 -and [string]$head -match '^[0-9a-f]{40}$'
 if (-not $headExists) {
     Add-Pending 'INITIAL_COMMIT_MISSING' 'Repository has no commit history.'
 }
@@ -128,8 +130,10 @@ else {
     if ([string]$tagType -ne 'tag') {
         Add-Pending 'RELEASE_TAG_NOT_ANNOTATED' "Release tag is not annotated: $tagName"
     }
-    $tagCommit = (& git -C $repoRoot rev-parse "refs/tags/$tagName`^{commit}" 2>$null | Select-Object -First 1)
-    if ($LASTEXITCODE -ne 0 -or [string]$tagCommit -notmatch '^[0-9a-f]{40}$') {
+    $tagCommitOutput = @(& git -C $repoRoot rev-parse "refs/tags/$tagName`^{commit}" 2>$null)
+    $tagCommitExitCode = $LASTEXITCODE
+    $tagCommit = $tagCommitOutput | Select-Object -First 1
+    if ($tagCommitExitCode -ne 0 -or [string]$tagCommit -notmatch '^[0-9a-f]{40}$') {
         Add-Finding 'RELEASE_TAG_COMMIT_INVALID' 'Release tag does not resolve to a commit.'
     }
     else {
