@@ -12,8 +12,8 @@
     "blueprint_version":  "0.1.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "117d772527ebf62a089a5f652ff8072ad089590ee784662fcee80af1fceb3115",
-                    "file_count":  49,
+                    "bundle_digest":  "491e5bf6b4e9e148383ede24085449f61d626992a23f96ccf601e0b94bf3d17b",
+                    "file_count":  52,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
                                   {
@@ -35,6 +35,11 @@
                                       "path":  "automation/New-ReleaseCandidate.ps1",
                                       "sha256":  "fe8afe87386701f5fb37f9ae85b74a9faa13bcfb97e2127e75bde65e640b8026",
                                       "size_bytes":  3413
+                                  },
+                                  {
+                                      "path":  "automation/Plan-WorkspaceUpgrade.ps1",
+                                      "sha256":  "65cccf0bbf457583cabe368c53baeb918eacfe58d2a0caa92f951d85a2127945",
+                                      "size_bytes":  5751
                                   },
                                   {
                                       "path":  "automation/Promote-ReleaseCandidate.ps1",
@@ -90,6 +95,11 @@
                                       "path":  "automation/Test-SyntheticWorkspaceFixtureGates.ps1",
                                       "sha256":  "de993b9e4baca829dd43c28a73f3cd6862ef7b626bf64e351809df29a272392f",
                                       "size_bytes":  2458
+                                  },
+                                  {
+                                      "path":  "automation/Test-WorkspaceUpgrade.ps1",
+                                      "sha256":  "a7e7ceaa03b96816e2b3f868d10d3b80b66eda62486b8de5e17b2e7467e20b6c",
+                                      "size_bytes":  3918
                                   },
                                   {
                                       "path":  "catalogs/document-types.yaml",
@@ -230,6 +240,11 @@
                                       "path":  "schemas/synthetic-workspace-fixture.schema.json",
                                       "sha256":  "0633f2f877e663bbb0f1906a381c78a5717e6cc82d78ab089457ab3957b81685",
                                       "size_bytes":  991
+                                  },
+                                  {
+                                      "path":  "schemas/workspace-upgrade-plan.schema.json",
+                                      "sha256":  "27f48705570dd812262443948ee9dc82b654187ac90f0392f2a8fd2ed3ddfbba",
+                                      "size_bytes":  1937
                                   },
                                   {
                                       "path":  "schemas/workspace.schema.json",
