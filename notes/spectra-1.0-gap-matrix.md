@@ -23,3 +23,18 @@ Bewertung aus dem tatsächlichen Branch `codex/spectra-bc-basic-simulation` und 
 ## Abgeleiteter nächster großer Block
 
 Der größte zusammenhängende P1/P2-Abstand ist ein **vollständiger Workspace-Betriebs- und Kontrollkern**: beide Profile, kanonische Projekt-/Ticket-/Risiko-/Entscheidungs-/Work-Package-Datensätze, Referenzgraphvalidierung, einheitliche JSON-Diagnosen und ein synthetischer Implementation-vs-Support-only-End-to-End-Lauf. Eine Folgesemver wird erst nach diesem Delta und seiner Evidence festgelegt.
+
+## Übertragene, anonymisierte Lernbefunde
+
+| Finding-ID | Herkunft / Commit | Klassifikation | Evidence / Anonymisierung | Zielentscheidung | Status |
+|---|---|---|---|---|---|
+| `BCBASIC-CONSUMER-READONLY-001` | BC Basic / vollständiger Commit wird im Consumer-Handoff gebunden | Consumer-seitig | portable read-only Prüfung; keine Kundendaten übernommen | Consumer-Validierung als generische Produktanforderung | proposed |
+| `BCBASIC-PLAYTHROUGH-001` | BC Basic / vollständiger Commit wird im Consumer-Handoff gebunden | generisch-produktseitig | Seite, Aktion, Feld, Preview, Dokument, Ledger, Kontrolle, Fehler, Retest als Modell | in den Projektbetriebs-/Playthrough-Kern aufnehmen | proposed |
+| `BCBASIC-GATES-FIRSTCLASS-001` | BC Basic / vollständiger Commit wird im Consumer-Handoff gebunden | generisch-produktseitig | simulierte Freigaben als First-Class-Gates; synthetisch und anonymisiert | Kontrollkern um Gate-Records erweitern | proposed |
+| `SPECTRA-ID-CONTRACT-001` | Spectra Consumerprüfung / gebundener Commit | Kontroll-/Release-seitig | zentrale Producer-ID-Regel statt abweichender Consumerregex | zentralen ID-Vertrag als einzige Quelle festlegen | proposed |
+| `SPECTRA-BRANCH-BINDING-001` | Spectra Consumerprüfung / gebundener Commit | Consumer-/Release-seitig | `allowedBranch`, `validationStatus`, Allowlistpfade | in Consumer-Binding-Schema und Validator planen | proposed |
+| `SPECTRA-LEGACY-MANIFEST-001` | Spectra Releaseprüfung / gebundener Commit | Kontroll-/Release-seitig | Legacy-Manifeste dürfen Branch-Consumer nicht ungewollt blockieren | Kompatibilitätsregel mit negativer Regressionsevidence | proposed |
+| `TWIN-STATUS-VIEWS-001` | Project Twin / gebundener Commit | Twin-seitig | Status-, Abschluss-, Demo- und Evidence-Sichten | nur bei generischer Portabilitäts-/Validatorlücke übernehmen | proposed |
+| `SPECTRA-BACKUP-RESTORE-001` | Spectra Gap-Matrix / `05b0260...` | generisch-produktseitig | Backup/Restore weiterhin fehlend | eigener späterer P1-Block | proposed |
+
+Alle Befunde sind anonymisiert; keine Rohdaten, Kunden-Evidence oder Fremdrepositoryänderungen wurden übernommen.
