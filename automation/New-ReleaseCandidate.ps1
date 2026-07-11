@@ -35,7 +35,7 @@ if (-not [string]::IsNullOrWhiteSpace($SourceCommit)) {
     $manifestState = 'final'
 }
 
-$records = if ($null -ne $resolvedSourceCommit) { @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision $resolvedSourceCommit -Scope $scope) } else { @(Get-BCProjectOSPayloadRecords -Files $files) }
+$records = if ($null -ne $resolvedSourceCommit) { @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision $resolvedSourceCommit -Scope $scope) } else { @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision 'HEAD' -Scope $scope) }
 $checksumsText = Get-BCProjectOSChecksumsText -Records $records
 $bundleDigest = Get-BCProjectOSTextSha256 -Text $checksumsText
 

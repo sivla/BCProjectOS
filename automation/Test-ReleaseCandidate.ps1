@@ -58,7 +58,7 @@ if ($null -ne $manifest) {
 try {
     $scope = Get-BCProjectOSReleaseScope -Root $root
     $actualFiles = @(Get-BCProjectOSPayloadFiles -Root $root -Scope $scope)
-    $actualRecords = @(Get-BCProjectOSPayloadRecords -Files $actualFiles)
+    $actualRecords = @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision 'HEAD' -Scope $scope)
     $expectedChecksumsText = Get-BCProjectOSChecksumsText -Records $actualRecords
     $storedChecksumsText = ([System.IO.File]::ReadAllText($checksumsPath) -replace "`r`n", "`n")
     if ($storedChecksumsText -ne $expectedChecksumsText) {

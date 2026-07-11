@@ -12,7 +12,7 @@
     "blueprint_version":  "0.1.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "df8a1430173f0fff8a98b55964e5ac3fafcb0da12f5745184ae05276c3b5ed11",
+                    "bundle_digest":  "8ad2eed4e9eaf9dab0a9426c81a1dade6593b6cefcfb4d8170682fb661816a77",
                     "file_count":  47,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
@@ -33,8 +33,8 @@
                                   },
                                   {
                                       "path":  "automation/New-ReleaseCandidate.ps1",
-                                      "sha256":  "4c9de18df640dcb634b7e5f7ed7d5a6baf8fde7297782f774afeeac841b67029",
-                                      "size_bytes":  3456
+                                      "sha256":  "fe8afe87386701f5fb37f9ae85b74a9faa13bcfb97e2127e75bde65e640b8026",
+                                      "size_bytes":  3413
                                   },
                                   {
                                       "path":  "automation/Release.Common.ps1",
@@ -43,8 +43,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-ConsumerBinding.ps1",
-                                      "sha256":  "f3aa2e62bfb2c8d5c353d267148cc4dda45ef489a27cbf6a9dead98213895db7",
-                                      "size_bytes":  9477
+                                      "sha256":  "531cd21526bfc0b62196ba5380cfa67faf1a97978597aa141a403a20ab25bf3c",
+                                      "size_bytes":  9354
                                   },
                                   {
                                       "path":  "automation/Test-ConsumerBindingFixtures.ps1",
@@ -68,8 +68,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-ReleaseCandidate.ps1",
-                                      "sha256":  "09123f6a935ef83192007e7d10d57654f29c73aa02da5f582af1e5dde583a38d",
-                                      "size_bytes":  8627
+                                      "sha256":  "6a66e650ff7f094c18a6d1c159f6b7494a23c44ede20af3b3a8315f5d1eb35b8",
+                                      "size_bytes":  8653
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticWorkspaceFixture.ps1",
