@@ -1,4 +1,5 @@
 - [x] 1.1 Synthetische BC-Basic-Fixture erzeugen.
 - [x] 1.2 Prozesskette Initialisierung bis Handover validieren.
 - [x] 1.3 Positive und negative Manipulationsfixtures ausführen.
+- [x] 1.4 Kunden-/Fachbereichsfreigabe, UAT-Sign-off, Cutover-GO, Go-live-Rehearsal, Hypercare-Abnahme, Restart und Handover als simulierte Gates validieren.
 - [ ] 1.4 Gap-/Nutzungs-Evidence erzeugen und daraus eine begründete Folgeverversion ableiten; keine Candidate-Datei vor der Entscheidung.

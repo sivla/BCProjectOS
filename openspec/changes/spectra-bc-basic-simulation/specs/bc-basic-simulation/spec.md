@@ -10,3 +10,7 @@ The fixture SHALL remain synthetic, non-installable and local-only while exposin
 #### Scenario: Manipulated process chain
 - **WHEN** a required process step is removed or a record status is unknown
 - **THEN** validation fails closed with a stable error code
+
+#### Scenario: Simulated execution gates
+- **WHEN** customer/domain approval, UAT sign-off, cutover GO, go-live rehearsal, hypercare acceptance, restart and handover are represented as synthetic gates
+- **THEN** each gate validates as `simulated_pass` with `synthetic: true` and `external_activity: false`
