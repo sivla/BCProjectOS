@@ -102,7 +102,7 @@ if ($null -ne $binding) {
                         }
                         catch { Add-Finding 'BOUND_PAYLOAD_FILE_MISSING' $_.Exception.Message }
                     }
-                    $checksumText = ((@($actualRecords | Sort-Object path | ForEach-Object { "$($_.sha256)  $($_.path)" }) -join "`n") + "`n")
+                    $checksumText = Get-BCProjectOSChecksumsText -Records $actualRecords
                     if ((Get-TextSha256 -Text $checksumText) -ne [string]$binding.payload_bundle_digest) { Add-Finding 'BOUND_PAYLOAD_DIGEST_MISMATCH' 'Recomputed tagged payload digest differs from the bound digest.' }
                 }
             }

@@ -12,8 +12,8 @@
     "blueprint_version":  "0.1.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "6fe91579532658f70bd3d225772a135104c009a0079082e7068cb68d401b6c8b",
-                    "file_count":  46,
+                    "bundle_digest":  "df8a1430173f0fff8a98b55964e5ac3fafcb0da12f5745184ae05276c3b5ed11",
+                    "file_count":  47,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
                                   {
@@ -28,13 +28,13 @@
                                   },
                                   {
                                       "path":  "automation/New-CustomerWorkspace.ps1",
-                                      "sha256":  "8cd1b5fde547fc781f5417d4e46a2b9b6f9af02f83a1d9ae9f752c19f03968f0",
-                                      "size_bytes":  5734
+                                      "sha256":  "f17ee2fe6a5c6e8062bcaed61b911a77512b97ad290a439694c0b64f2b16c8ec",
+                                      "size_bytes":  8802
                                   },
                                   {
                                       "path":  "automation/New-ReleaseCandidate.ps1",
-                                      "sha256":  "c8d0942f89e3bd888e1d340fee04fb135ba4f0d47834c70ee3d9c44c12accffe",
-                                      "size_bytes":  3378
+                                      "sha256":  "4c9de18df640dcb634b7e5f7ed7d5a6baf8fde7297782f774afeeac841b67029",
+                                      "size_bytes":  3456
                                   },
                                   {
                                       "path":  "automation/Release.Common.ps1",
@@ -43,13 +43,18 @@
                                   },
                                   {
                                       "path":  "automation/Test-ConsumerBinding.ps1",
-                                      "sha256":  "8716bc5da86293763eb13bf15e45a7c7e3688379ed252857b7d7a3885b747450",
-                                      "size_bytes":  9532
+                                      "sha256":  "f3aa2e62bfb2c8d5c353d267148cc4dda45ef489a27cbf6a9dead98213895db7",
+                                      "size_bytes":  9477
                                   },
                                   {
                                       "path":  "automation/Test-ConsumerBindingFixtures.ps1",
                                       "sha256":  "b9e0a082abcb7552bc697010086fe4fedc89043d4508281a5d8e9860f36c2881",
                                       "size_bytes":  923
+                                  },
+                                  {
+                                      "path":  "automation/Test-InstallableWorkspaceGates.ps1",
+                                      "sha256":  "067f751234f84ab78b667e6249c898b2dcd00d42347cc0255a482e53c428c50b",
+                                      "size_bytes":  4478
                                   },
                                   {
                                       "path":  "automation/Test-PayloadDigest.ps1",

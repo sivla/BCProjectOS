@@ -26,8 +26,10 @@ $resolvedSourceCommit = $null
 $manifestState = 'candidate'
 
 if (-not [string]::IsNullOrWhiteSpace($SourceCommit)) {
-    $resolvedSourceCommit = (& git -C $repoRoot rev-parse "$SourceCommit`^{commit}" 2>$null | Select-Object -First 1)
-    if ($LASTEXITCODE -ne 0 -or [string]$resolvedSourceCommit -notmatch '^[0-9a-f]{40}$') {
+    $resolvedOutput = @(& git -C $repoRoot rev-parse "$SourceCommit`^{commit}" 2>$null)
+    $resolvedExitCode = $LASTEXITCODE
+    $resolvedSourceCommit = $resolvedOutput | Select-Object -First 1
+    if ($resolvedExitCode -ne 0 -or [string]$resolvedSourceCommit -notmatch '^[0-9a-f]{40}$') {
         throw "Source commit cannot be resolved: $SourceCommit"
     }
     $manifestState = 'final'
