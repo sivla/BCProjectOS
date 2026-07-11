@@ -2,15 +2,15 @@
 
 ## Rolle dieses Repositories
 
-Dieses Repository ist ausschliesslich der kundenunabhaengige Produktvertrag **BCProjectOS**. Es definiert wiederverwendbare Schemas, IDs, Relationen, Statusmodelle, Ticketstrukturen, Generatoren, Validatoren und allgemeines Business-Central-Wissen.
+Dieses Repository ist die technische Herkunft **BCProjectOS** fuer den kundenunabhaengigen Produktvertrag **Spectra**. Spectra definiert wiederverwendbare Schemas, IDs, Relationen, Statusmodelle, Ticketstrukturen, Generatoren, Validatoren und allgemeines Business-Central-Wissen.
 
-BCProjectOS ist niemals Kunden-Source-of-Truth. Reale Kundendaten, Kunden-Evidence, Tenant-/Umgebungswerte, konkrete Projektentscheidungen und ungefiltertes Kundenwissen gehoeren nicht in dieses Repository.
+BCProjectOS ist technischer Projekt-/Repositoryname und niemals Kunden-Source-of-Truth. Reale Kundendaten, Kunden-Evidence, Tenant-/Umgebungswerte, konkrete Projektentscheidungen und ungefiltertes Kundenwissen gehoeren nicht in dieses Repository.
 
-Der verbindliche Universaarl-Datenfluss lautet:
+Die verbindliche fachliche Produktidentitaet lautet `product_id: spectra` beziehungsweise `productId: spectra`. Der verbindliche Datenfluss lautet:
 
-`BCProjectOS` -> versionierter Produktvertrag -> Kundeninstanz -> validierter Snapshot -> Project Twin
+`Spectra aus BCProjectOS` -> versionierter Produktvertrag -> Kundeninstanz -> validierter Snapshot -> Project Twin
 
-Ein Kontrollzentrum steht ausserhalb dieser Kette. BCProjectOS bearbeitet weder Kundeninstanzen noch Project Twin oder Kontrollzentrum aus diesem Repository heraus.
+Ein Kontrollzentrum steht ausserhalb dieser Kette. BCProjectOS bearbeitet weder Kundeninstanzen noch Project Twin oder Kontrollzentrum aus diesem Repository heraus. Das kanonische Remote bleibt `https://github.com/sivla/BCProjectOS.git`.
 
 ## Repository- und Zweigbindung
 
@@ -44,7 +44,8 @@ Ein Kontrollzentrum steht ausserhalb dieser Kette. BCProjectOS bearbeitet weder 
 
 - Vor einem verifizierten installierbaren Release darf `New-CustomerWorkspace.ps1` nur klar markierte, nicht installierbare synthetische Fixtures in test-eigenen lokalen Zielen erzeugen.
 - Keine Version wird aus einem Arbeitsbaum, Verzeichnisnamen, Roadmaptext oder erwarteten Tag abgeleitet.
-- Eine BCProjectOS-Version gilt erst als gebunden, wenn annotierter unveraenderlicher Tag, aufgeloester Commit, finales Manifest und neu berechneter Produkt-Digest zusammenpassen.
+- Eine Spectra-Version gilt erst als gebunden, wenn annotierter unveraenderlicher Tag, aufgeloester Commit, finales Manifest und neu berechneter Produkt-Digest zusammenpassen.
+- Release-Tags verwenden das Praefix `spectra-v<SemVer>`.
 - Solange dieser Nachweis fehlt, bleibt der Status exakt `PENDING_BCPROJECTOS_RELEASE`.
 - `0.0.x` ist nur ein Produktvertrags-Release. Ein installierbarer Blank-Workspace beginnt fruehestens mit `0.1.0` nach bestandenem MVP-1-Vertrag.
 - Releasekandidaten werden ausschliesslich mit `automation/New-ReleaseCandidate.ps1` erzeugt und mit `automation/Test-ReleaseCandidate.ps1` geprueft.

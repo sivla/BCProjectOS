@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "binding_status": "PENDING_BCPROJECTOS_RELEASE",
+  "product_id": "spectra",
+  "repository_url": "https://github.com/sivla/BCProjectOS.git",
+  "release_version": null,
+  "release_tag": null,
+  "tag_commit": null,
+  "manifest_path": null,
+  "manifest_source_commit": null,
+  "consumer_mode": null,
+  "installable_blueprint": null,
+  "digest_algorithm": null,
+  "payload_bundle_digest": null
+}

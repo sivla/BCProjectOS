@@ -17,10 +17,11 @@
 
 - [ ] 3.1 After verified installable release Evidence exists, add positive workspace fixtures for all three profiles proving the same canonical blank structure with only controlled profile differences.
 - [ ] 3.2 Add negative tests rejecting fabricated projects, support cases, meetings, tickets, Requirements, Changes, Evidence, approvals, UAT, training, release, customer facts, and generated delivery records.
-- [ ] 3.3 Derive version only from verified tag/commit/final-installable-manifest/digest Evidence; allow an expected-version parameter only as an exact comparison and prove no version is inferred from `0.1.0`, Git HEAD, roadmap text, working-tree state, candidate directories, or checksums alone.
-- [ ] 3.4 Resolve the explicit pre-release fixture/schema contract decision without changing current contracts implicitly: do not invent SemVer, and ensure schema-incomplete synthetic fixtures cannot pass customer-workspace validation.
-- [ ] 3.5 Add fail-closed tests for missing tag, unexpected tag commit, tag/manifest version mismatch, manifest/tag commit mismatch, invalid source ancestry, product-scope digest mismatch, expected-version mismatch, candidate-without-tag, and unknown/incomplete release state.
-- [ ] 3.6 Add synthetic-mode tests proving pre-release fixtures are test-only, contain no customer or Evidence data, retain `PENDING_BCPROJECTOS_RELEASE`, and cannot be published or installed.
+- [ ] 3.3 Derive version only from verified tag/externally-resolved-tag-commit/final-installable-manifest/digest Evidence; allow an expected-version parameter only as an exact comparison and prove no version is inferred from `0.1.0`, Git HEAD, roadmap text, working-tree state, candidate directories, or checksums alone.
+- [x] 3.4 Resolve the pre-release fixture/schema contract decision: do not invent SemVer, distinguish historical versioned evidence from new synthetic fixtures, and ensure synthetic fixtures cannot pass customer-workspace validation.
+- [ ] 3.5 Add fail-closed tests for missing tag, unexpected tag commit, tag/manifest version mismatch, invalid source ancestry, product-scope digest mismatch, expected-version mismatch, and unknown/incomplete release state.
+- [x] 3.6 Add synthetic-mode gates proving pre-release fixtures are test-only, contain no customer or Evidence data, retain `PENDING_BCPROJECTOS_RELEASE`, and cannot be reported as customer workspaces.
+- [x] 3.7 Define `schemas/consumer-binding.schema.json` plus read-only validator and deterministic pending/negative fixtures; require repository verification before accepting `BOUND`.
 
 ## 4. Deterministic Fail-Closed Validation
 
@@ -28,7 +29,7 @@
 - [ ] 4.2 Add deterministic positive tests comparing non-volatile tree shape, managed files, catalog hashes, and controlled content across equivalent requests.
 - [ ] 4.3 Add negative fixtures for missing paths, path escape, reparse-point escape, invalid schema, catalog drift, unknown profile, second OpenSpec root, deferred-feature requests, partial generation failure, and synthetic-fixture publication attempts.
 - [ ] 4.4 Prove generator and validator perform no network, external-system, Project-Twin, database, UI, publishing, or live Business Central action.
-- [ ] 4.5 Prove `examples/bc-enterprise-blueprint/` sources and the existing `evaluate-openspec-for-bc-workflows` change remain byte-identical.
+- [ ] 4.5 Prove `examples/bc-enterprise-blueprint/` sources remain byte-identical.
 
 ## 5. MVP-1 Acceptance
 

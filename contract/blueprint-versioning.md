@@ -14,11 +14,11 @@ Downgrade ist nicht garantiert; Restore ist der Rollbackweg. Der technische Spik
 
 ## Produktvertrag und installierbarer Blueprint
 
-BCProjectOS unterscheidet den versionierten Produktvertrag vom installierbaren Kundenworkspace-Blueprint:
+Spectra unterscheidet den versionierten Produktvertrag vom installierbaren Kundenworkspace-Blueprint. Das technische Repository bleibt BCProjectOS:
 
 - `0.0.x` versioniert vor MVP 1 ausschliesslich den kundenunabhaengigen Produktvertrag. Ein solcher Release ist `CONTRACT_REFERENCE_ONLY` und darf keine installierte Blueprint-Version vortaeuschen.
 - `0.1.0` bleibt dem ersten installierbaren Blank-Workspace nach Abschluss von MVP 1 vorbehalten.
-- Release-Tags folgen `bcprojectos-v<SemVer>` und muessen annotiert und unveraenderlich sein.
+- Release-Tags folgen `spectra-v<SemVer>` und muessen annotiert und unveraenderlich sein.
 - Eine Bindung ist nur mit Tag, aufgeloestem Tag-Commit, Manifest-Source-Commit und SHA-256-Payload-Digest gueltig.
 - Ohne vollstaendige Git-Historie, finalisiertes Manifest und Release-Tag bleibt der Verbraucherstatus `PENDING_BCPROJECTOS_RELEASE`.
 
@@ -31,3 +31,14 @@ Der Manifestinhalt speichert keinen `release_commit`, weil ein Commit seine eige
 ## Synthetische Vorab-Fixtures
 
 Eine Vorab-Fixture ist kein Kundenworkspace und wird nicht gegen `workspace.schema.json` ausgegeben. Sie besitzt kein `workspace.yaml`, keine Kundenidentitaet und keine Produktversion. Ihre ausschliesslich testlokale Metadatei `synthetic-fixture.yaml` folgt `schemas/synthetic-workspace-fixture.schema.json` und belegt konstant `synthetic: true`, `installable: false` sowie `PENDING_BCPROJECTOS_RELEASE`. Erst echte Release-Evidence erlaubt die Erzeugung eines schema-validen Kundenworkspace mit releasegebundenen Versionsfeldern.
+
+Die versionierten Dateien unter `examples/minimal-contract/` und `pilots/POV-001/` sind abgeschlossene synthetische Vertrags- beziehungsweise Pilot-Evidence. Ihre historischen Versionsfelder sind keine Release-Bindung, keine Vorab-Fixture im Sinn dieses Abschnitts und keine Eingabe fuer Generatoren oder Consumer. Neue Fixtures duerfen nur den hier definierten nicht-versionierten Vorab-Fixturetyp oder einen spaeter ausdruecklich normierten Fixturetyp verwenden.
+
+## Maschinenlesbare Consumer-Bindung
+
+`schemas/consumer-binding.schema.json` beschreibt die einzige portable Consumer-Aussage ueber einen Spectra-Stand. Sie verwendet genau zwei fail-closed Zustaende:
+
+- `PENDING_BCPROJECTOS_RELEASE` identifiziert ausschliesslich `product_id: spectra` und die kanonische `repository_url`. Alle Releasewerte, einschliesslich Version, Tag, Tag-Commit, Manifestpfad, Source-Commit, Consumer-Modus, Installierbarkeit und Digest, sind `null`. Die Repository-URL allein ist kein Releasebeweis.
+- `BOUND` ist nur nach externer Repository-Pruefung zulaessig. Der Consumer prueft einen annotierten Tag, dessen aufgeloesten `tag_commit`, das finale Manifest genau an diesem Commit, die gleiche Version und den gleichen Tag, den `manifest_source_commit` als Vorfahr, konsistenten Consumer-Modus und Installierbarkeit sowie den SHA-256-Payload-Digest. Das Manifest besitzt bewusst kein `release_commit`.
+
+`automation/Test-ConsumerBinding.ps1` akzeptiert `BOUND` nur mit einem pruefbaren Repository-Root. Solange die erforderliche Evidence fehlt, ist ein strukturell aussehender BOUND-Datensatz kein akzeptierter Binding-Status.

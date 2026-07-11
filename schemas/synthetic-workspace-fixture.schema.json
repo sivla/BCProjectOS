@@ -8,7 +8,7 @@
     "schema_version": {"const": 1},
     "artifact_type": {"const": "bcprojectos_synthetic_workspace_fixture"},
     "fixture_id": {"type": "string", "pattern": "^TFX-[0-9A-HJKMNP-TV-Z]{26}$"},
-    "product_id": {"const": "bcprojectos"},
+    "product_id": {"const": "spectra"},
     "synthetic": {"const": true},
     "installable": {"const": false},
     "release_status": {"const": "PENDING_BCPROJECTOS_RELEASE"},

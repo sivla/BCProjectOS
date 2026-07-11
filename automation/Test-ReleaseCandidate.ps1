@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
-    [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+$')]
-    [string]$Version = '0.0.1',
+    [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$')]
+    [string]$Version = '0.1.0-alpha.1',
 
     [switch]$RequirePublished
 )
@@ -44,21 +44,21 @@ try { $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
 catch { Add-Finding 'RELEASE_MANIFEST_INVALID' $_.Exception.Message; $manifest = $null }
 
 if ($null -ne $manifest) {
-    if ([int]$manifest.schema_version -ne 1 -or [string]$manifest.product_id -ne 'bcprojectos') {
+    if ([int]$manifest.schema_version -ne 1 -or [string]$manifest.product_id -ne 'spectra') {
         Add-Finding 'RELEASE_IDENTITY_INVALID' 'Release manifest has an unsupported schema or product identity.'
     }
-    if ([string]$manifest.release_version -ne $Version -or [string]$manifest.expected_tag -ne "bcprojectos-v$Version") {
+    if ([string]$manifest.release_version -ne $Version -or [string]$manifest.expected_tag -ne "spectra-v$Version") {
         Add-Finding 'RELEASE_VERSION_INVALID' 'Release version and expected tag do not match the requested version.'
     }
-    if ([string]$manifest.release_kind -ne 'product_contract' -or [string]$manifest.consumer_mode -ne 'CONTRACT_REFERENCE_ONLY' -or $manifest.installable_blueprint -ne $false) {
-        Add-Finding 'RELEASE_SCOPE_CLAIM_INVALID' 'Release must remain a non-installable product-contract reference.'
+    if ([string]$manifest.release_kind -ne 'installable_blueprint' -or [string]$manifest.consumer_mode -ne 'INSTALLABLE_BLUEPRINT' -or $manifest.installable_blueprint -ne $true -or [string]$manifest.blueprint_version -ne $Version) {
+        Add-Finding 'RELEASE_SCOPE_CLAIM_INVALID' 'Release candidate must describe the installable Spectra blueprint.'
     }
 }
 
 try {
     $scope = Get-BCProjectOSReleaseScope -Root $root
     $actualFiles = @(Get-BCProjectOSPayloadFiles -Root $root -Scope $scope)
-    $actualRecords = @(Get-BCProjectOSPayloadRecords -Files $actualFiles)
+    $actualRecords = @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision 'HEAD' -Scope $scope)
     $expectedChecksumsText = Get-BCProjectOSChecksumsText -Records $actualRecords
     $storedChecksumsText = ([System.IO.File]::ReadAllText($checksumsPath) -replace "`r`n", "`n")
     if ($storedChecksumsText -ne $expectedChecksumsText) {
@@ -97,8 +97,10 @@ if ($LASTEXITCODE -ne 0) {
     Add-Finding 'PRODUCT_CONTRACT_FAILED' ($productOutput -join ' ')
 }
 
-$head = (& git -C $repoRoot rev-parse --verify --quiet 'HEAD^{commit}' 2>$null | Select-Object -First 1)
-$headExists = $LASTEXITCODE -eq 0 -and [string]$head -match '^[0-9a-f]{40}$'
+$headOutput = @(& git -C $repoRoot rev-parse --verify --quiet 'HEAD^{commit}' 2>$null)
+$headExitCode = $LASTEXITCODE
+$head = $headOutput | Select-Object -First 1
+$headExists = $headExitCode -eq 0 -and [string]$head -match '^[0-9a-f]{40}$'
 if (-not $headExists) {
     Add-Pending 'INITIAL_COMMIT_MISSING' 'Repository has no commit history.'
 }
@@ -117,7 +119,7 @@ elseif ($sourceCommit -notmatch '^[0-9a-f]{40}$') {
     Add-Finding 'SOURCE_COMMIT_INVALID' 'Manifest source commit is not a full Git SHA.'
 }
 
-$tagName = "bcprojectos-v$Version"
+$tagName = "spectra-v$Version"
 & git -C $repoRoot show-ref --verify --quiet "refs/tags/$tagName"
 $tagExists = $LASTEXITCODE -eq 0
 if (-not $tagExists) {
@@ -128,8 +130,10 @@ else {
     if ([string]$tagType -ne 'tag') {
         Add-Pending 'RELEASE_TAG_NOT_ANNOTATED' "Release tag is not annotated: $tagName"
     }
-    $tagCommit = (& git -C $repoRoot rev-parse "refs/tags/$tagName`^{commit}" 2>$null | Select-Object -First 1)
-    if ($LASTEXITCODE -ne 0 -or [string]$tagCommit -notmatch '^[0-9a-f]{40}$') {
+    $tagCommitOutput = @(& git -C $repoRoot rev-parse "refs/tags/$tagName`^{commit}" 2>$null)
+    $tagCommitExitCode = $LASTEXITCODE
+    $tagCommit = $tagCommitOutput | Select-Object -First 1
+    if ($tagCommitExitCode -ne 0 -or [string]$tagCommit -notmatch '^[0-9a-f]{40}$') {
         Add-Finding 'RELEASE_TAG_COMMIT_INVALID' 'Release tag does not resolve to a commit.'
     }
     else {

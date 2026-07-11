@@ -1,6 +1,6 @@
-# BCProjectOS
+# Spectra (technisches Projekt: BCProjectOS)
 
-BCProjectOS ist der wiederverwendbare, kundenunabhaengige Produktvertrag fuer Business-Central-Projekte und Supportarbeit. Dieses Repository enthaelt den normativen Vertrag, einen synthetischen Proof of Value, einen technischen Referenz-Spike und die OpenSpec-Vorhaben fuer die weitere Produktentwicklung.
+Spectra ist der wiederverwendbare, kundenunabhaengige Produktvertrag fuer Business-Central-Projekte und Supportarbeit. Dieses Repository enthaelt den normativen Vertrag, einen synthetischen Proof of Value, einen technischen Referenz-Spike und die OpenSpec-Vorhaben fuer die weitere Produktentwicklung. Das technische Repository und Projekt heissen weiterhin BCProjectOS.
 
 Es ist keine Kundeninstanz, kein Kontrollzentrum und kein Project Twin. Reale Kundenwahrheit, Kundendaten und Kunden-Evidence gehoeren ausschliesslich in die jeweilige Kundeninstanz.
 
@@ -51,17 +51,10 @@ OpenSpec streng pruefen:
 openspec validate define-reduced-bcprojectos-mvp1 --strict
 ```
 
-## Nicht bindender Contract-Releasekandidat
-
-Ein lokaler Kandidat unter `release/versions/0.0.1/` darf ausschliesslich als `CONTRACT_REFERENCE_ONLY` erzeugt werden. Er ist kein installierbarer Kundenworkspace und kein veroeffentlichter Release. Im Initialstand wird bewusst kein veralteter, ungebundener Kandidat mitgefuehrt.
+Consumer-Bindungsvertrag pruefen:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File automation/New-ReleaseCandidate.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File automation/Test-ReleaseCandidate.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File automation/Test-ConsumerBindingFixtures.ps1
 ```
 
-Die strikte Publikationspruefung ist erst nach separater Autorisierung, finalem Manifest und annotiertem Tag sinnvoll:
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File automation/Test-ReleaseCandidate.ps1 -RequirePublished
-```
+Die kanonische Repository-URL identifiziert nur das Produkt. Ohne extern geprueften annotierten Tag, dessen Commit, finales Manifest, Source-Ancestor und passenden SHA-256-Payload-Digest bleibt jeder Consumer bindend bei `PENDING_BCPROJECTOS_RELEASE`.

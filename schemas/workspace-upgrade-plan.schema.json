@@ -1,0 +1,18 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://local.bcprojectos.invalid/schemas/workspace-upgrade-plan.schema.json",
+  "title":"Spectra Workspace Upgrade Plan",
+  "type":"object",
+  "required":["schema_version","plan_status","dry_run","source_binding","target_binding","changes","conflicts","manual_decisions"],
+  "properties":{
+    "schema_version":{"const":1},
+    "plan_status":{"enum":["PLANNED","NOOP","BLOCKED","APPLIED"]},
+    "dry_run":{"type":"boolean"},
+    "source_binding":{"type":"object","required":["release_version","release_tag","tag_commit","payload_bundle_digest"],"additionalProperties":false,"properties":{"release_version":{"type":"string"},"release_tag":{"type":"string"},"tag_commit":{"type":"string","pattern":"^[0-9a-f]{40}$"},"payload_bundle_digest":{"type":"string","pattern":"^[a-f0-9]{64}$"}}},
+    "target_binding":{"type":"object","required":["release_version","release_tag","tag_commit","manifest_source_commit","payload_bundle_digest"],"additionalProperties":false,"properties":{"release_version":{"type":"string"},"release_tag":{"type":"string"},"tag_commit":{"type":"string","pattern":"^[0-9a-f]{40}$"},"manifest_source_commit":{"type":"string","pattern":"^[0-9a-f]{40}$"},"payload_bundle_digest":{"type":"string","pattern":"^[a-f0-9]{64}$"}}},
+    "changes":{"type":"array","items":{"type":"object","required":["path","action","decision"],"additionalProperties":false,"properties":{"path":{"type":"string"},"action":{"enum":["update-managed-fields","no-change"]},"decision":{"enum":["automatic","manual"]}}}},
+    "conflicts":{"type":"array","items":{"type":"object","required":["code","path","resolution"],"additionalProperties":false,"properties":{"code":{"type":"string"},"path":{"type":"string"},"resolution":{"enum":["manual-decision-required","abort"]}}}},
+    "manual_decisions":{"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties":false
+}

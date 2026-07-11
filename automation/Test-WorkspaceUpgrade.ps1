@@ -1,0 +1,19 @@
+[CmdletBinding()]param()
+$ErrorActionPreference='Stop';Set-StrictMode -Version 2.0
+$root=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'));$temp=Join-Path ([IO.Path]::GetTempPath()) ('spectra-upgrade-'+[guid]::NewGuid().ToString('N'));$repo=Join-Path $temp 'repo';$workspace=Join-Path $temp 'workspace';New-Item -ItemType Directory -Force $repo|Out-Null
+try {
+  foreach($p in @('AGENTS.md','README.md','automation','catalogs','contract','examples\minimal-contract','schemas','release','tests\invalid')){Copy-Item (Join-Path $root $p) (Join-Path $repo $p) -Recurse -Force}
+  git -C $repo init -b main|Out-Null;git -C $repo remote add origin https://github.com/sivla/BCProjectOS.git;git -C $repo config core.autocrlf false;git -C $repo config user.email test@example.invalid;git -C $repo config user.name SpectraFixture;git -C $repo add .;git -C $repo commit -m fixture|Out-Null
+  Push-Location $repo; & powershell -NoProfile -ExecutionPolicy Bypass -File automation\New-ReleaseCandidate.ps1 -Version 0.1.0-alpha.1 -ReleaseDate 2026-07-11|Out-Null;git add release;git commit -m candidate1|Out-Null
+  & powershell -NoProfile -ExecutionPolicy Bypass -File automation\Promote-ReleaseCandidate.ps1 -RepositoryRoot $repo -Version 0.1.0-alpha.1 -SyntheticRepository|Out-Null
+  Pop-Location; & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repo 'automation\New-CustomerWorkspace.ps1') -ProductRoot $repo -Destination $workspace -Profile implementation -ExpectedBlueprintVersion 0.1.0-alpha.1 -CustomerAlias alpha-fixture|Out-Null
+  New-Item -ItemType Directory -Force (Join-Path $workspace 'company')|Out-Null;[IO.File]::WriteAllText((Join-Path $workspace 'company\customer-note.md'),'customer-owned')
+  Push-Location $repo; & powershell -NoProfile -ExecutionPolicy Bypass -File automation\New-ReleaseCandidate.ps1 -Version 0.1.0-alpha.2 -ReleaseDate 2026-07-11|Out-Null;git add release;git commit -m candidate2|Out-Null
+  & powershell -NoProfile -ExecutionPolicy Bypass -File automation\Promote-ReleaseCandidate.ps1 -RepositoryRoot $repo -Version 0.1.0-alpha.2 -SyntheticRepository|Out-Null;Pop-Location
+  $plan=Join-Path $temp 'plan.json';& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repo 'automation\Plan-WorkspaceUpgrade.ps1') -WorkspacePath $workspace -TargetVersion 0.1.0-alpha.2 -ProductRoot $repo -PlanPath $plan|Out-Null;if((Get-Content $plan -Raw|ConvertFrom-Json).plan_status-ne 'PLANNED'){throw 'UPGRADE_PLAN_NOT_PLANNED'}
+  & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repo 'automation\Plan-WorkspaceUpgrade.ps1') -WorkspacePath $workspace -TargetVersion 0.1.0-alpha.2 -ProductRoot $repo -PlanPath $plan -Apply -Approve|Out-Null;if((Get-Content (Join-Path $workspace 'governance\policies\release-binding.json') -Raw|ConvertFrom-Json).release_version-ne '0.1.0-alpha.2'){throw 'UPGRADE_APPLY_FAILED'}
+  & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repo 'automation\Plan-WorkspaceUpgrade.ps1') -WorkspacePath $workspace -TargetVersion 0.1.0-alpha.2 -ProductRoot $repo -PlanPath $plan|Out-Null;if((Get-Content $plan -Raw|ConvertFrom-Json).plan_status-ne 'NOOP'){throw 'UPGRADE_REPEAT_NOT_NOOP'}
+  $downgradeOk=$true;try{& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repo 'automation\Plan-WorkspaceUpgrade.ps1') -WorkspacePath $workspace -TargetVersion 0.1.0-alpha.1 -ProductRoot $repo 2>&1|Out-Null}catch{$downgradeOk=$false};if($downgradeOk){throw 'DOWNGRADE_ACCEPTED'}
+  [IO.File]::AppendAllText((Join-Path $workspace 'company\customer-note.md'),' unchanged');if([IO.File]::ReadAllText((Join-Path $workspace 'company\customer-note.md')) -notlike 'customer-owned*'){throw 'CUSTOMER_FILE_CHANGED'}
+  Write-Host 'PASS: synthetic candidate-to-final upgrade, apply, repeat, downgrade and customer-isolation gates.'
+} finally { if(Test-Path $temp){Remove-Item $temp -Recurse -Force -ErrorAction SilentlyContinue} }

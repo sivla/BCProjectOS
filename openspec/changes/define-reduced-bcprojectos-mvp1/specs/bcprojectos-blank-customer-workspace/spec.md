@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: One local command creates a complete blank workspace
-The future MVP-1 implementation SHALL expose exactly one documented local PowerShell command that creates one complete blank BCProjectOS customer workspace for a requested destination and profile.
+The future MVP-1 implementation SHALL expose exactly one documented local PowerShell command that creates one complete blank Spectra customer workspace for a requested destination and profile. The technical repository remains BCProjectOS.
 
 #### Scenario: Valid creation request
 - **WHEN** the operator supplies a new local destination, a supported profile, and a non-sensitive customer alias, and the product has complete verified installable release Evidence
@@ -48,7 +48,7 @@ The future generator SHALL take the complete controlled catalog set from `catalo
 
 #### Scenario: Catalog copies match the product input
 - **WHEN** the workspace is validated after generation
-- **THEN** catalog names and SHA-256 hashes SHALL match the selected BCProjectOS product input exactly
+- **THEN** catalog names and SHA-256 hashes SHALL match the selected Spectra product input exactly
 
 #### Scenario: Catalog is missing, modified, or unknown
 - **WHEN** a catalog file is absent, its content hash differs, or an extra uncontrolled catalog is present
@@ -100,15 +100,15 @@ The generated workspace SHALL expose navigable empty roots for Sales, Purchasing
 - **THEN** validation MUST fail closed
 
 ### Requirement: Verified immutable release Evidence gates installable workspaces
-The future generator SHALL derive `blueprint_version` and `created_with_version` only from one verified installable BCProjectOS release identity and SHALL NOT treat operator input or candidate files as sufficient release Evidence.
+The future generator SHALL derive `blueprint_version` and `created_with_version` only from one verified installable Spectra release identity and SHALL NOT treat operator input or candidate files as sufficient release Evidence.
 
 #### Scenario: Valid immutable installable release is available
 - **WHEN** the expected annotated tag exists, resolves to a concrete release commit, contains a matching final installable manifest, and the released product-scope digest matches that manifest
 - **THEN** the command SHALL write the verified manifest version to `blueprint_version` and `created_with_version`
-- **AND** the version, tag, resolved commit, manifest commit claims, source commit, installable mode, and digest SHALL be mutually consistent
+- **AND** the version, tag, externally resolved tag commit, manifest source commit, installable mode, and digest SHALL be mutually consistent
 
 #### Scenario: Release tag is missing
-- **WHEN** no `bcprojectos-v<SemVer>` tag exists for the proposed installable release
+- **WHEN** no `spectra-v<SemVer>` tag exists for the proposed installable release
 - **THEN** customer-workspace generation MUST fail non-zero
 - **AND** status SHALL remain `PENDING_BCPROJECTOS_RELEASE`
 
@@ -122,8 +122,8 @@ The future generator SHALL derive `blueprint_version` and `created_with_version`
 - **THEN** generation MUST fail closed
 - **AND** neither value SHALL be selected by preference or guessing
 
-#### Scenario: Manifest commit contradicts the resolved tag
-- **WHEN** a manifest-recorded release commit is missing or differs from the commit resolved from the verified tag, or its source commit is not valid release ancestry
+#### Scenario: Manifest source commit is not valid release ancestry
+- **WHEN** the final manifest source commit is missing, invalid, or is not an ancestor of the commit resolved from the verified tag
 - **THEN** generation MUST fail closed
 - **AND** the working tree or Git HEAD MUST NOT substitute for the contradictory commit Evidence
 
@@ -136,11 +136,6 @@ The future generator SHALL derive `blueprint_version` and `created_with_version`
 - **WHEN** optional `-ExpectedBlueprintVersion` differs from the version proven by the tag and final manifest
 - **THEN** the command MUST return non-zero
 - **AND** it MUST NOT rewrite, reinterpret, or select either version
-
-#### Scenario: Release candidate exists without a real release tag
-- **WHEN** release-candidate manifests, checksums, notes, directories, or validation scripts exist but no verified immutable release tag and final binding exist
-- **THEN** they SHALL NOT authorize an installable customer workspace
-- **AND** status SHALL remain `PENDING_BCPROJECTOS_RELEASE`
 
 #### Scenario: Release state is unknown or incomplete
 - **WHEN** any required tag, commit, manifest field, installable-release claim, ancestry proof, product-scope file, digest, or consistency check is missing, unknown, or contradictory
@@ -176,6 +171,19 @@ The generated customer workspace SHALL contain exactly one OpenSpec root at `<wo
 #### Scenario: Additional OpenSpec root is detected
 - **WHEN** validation finds a project-specific, profile-specific, nested, or second OpenSpec root
 - **THEN** validation MUST fail closed
+
+### Requirement: Consumer bindings are portable and fail closed
+A consumer binding SHALL follow `schemas/consumer-binding.schema.json` and SHALL not infer release identity from repository identity alone.
+
+#### Scenario: Release evidence is pending
+- **WHEN** no complete immutable release evidence exists
+- **THEN** the binding SHALL use `PENDING_BCPROJECTOS_RELEASE`
+- **AND** every release-related field SHALL be `null`
+
+#### Scenario: Consumer claims a bound release
+- **WHEN** a binding uses `BOUND`
+- **THEN** the validator SHALL require an annotated tag, externally resolved tag commit, final manifest at that commit, source-commit ancestry, matching consumer mode, installability and SHA-256 payload digest
+- **AND** it MUST reject a structurally plausible binding that lacks repository verification
 
 ### Requirement: MVP-1 generation remains inside the reduced product boundary
 The future generator SHALL remain local-first and SHALL NOT implement or invoke deferred product, platform, customer, or integration capabilities.

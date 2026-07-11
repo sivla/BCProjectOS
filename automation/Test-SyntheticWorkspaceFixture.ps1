@@ -66,7 +66,7 @@ if ($null -ne $metadata) {
         Add-Finding 'SYNTHETIC_METADATA_PROPERTIES_INVALID' 'Synthetic metadata has missing or additional properties.'
     }
     if ([int]$metadata.schema_version -ne 1 -or [string]$metadata.artifact_type -ne 'bcprojectos_synthetic_workspace_fixture' -or
-        [string]$metadata.product_id -ne 'bcprojectos' -or $metadata.synthetic -ne $true -or $metadata.installable -ne $false -or
+        [string]$metadata.product_id -ne 'spectra' -or $metadata.synthetic -ne $true -or $metadata.installable -ne $false -or
         [string]$metadata.release_status -ne 'PENDING_BCPROJECTOS_RELEASE') {
         Add-Finding 'SYNTHETIC_IDENTITY_INVALID' 'Synthetic fixture identity or release state is invalid.'
     }
@@ -105,11 +105,11 @@ if (($actualFiles -join '|') -ne (($allowedFiles | Sort-Object) -join '|')) {
 }
 
 if ($findings.Count -gt 0) {
-    Write-Host 'BLOCKED: Synthetic BCProjectOS fixture validation failed.'
+    Write-Host 'BLOCKED: Synthetic Spectra fixture validation failed.'
     foreach ($finding in $findings) { Write-Host "- [$($finding.code)] $($finding.message)" }
     exit 1
 }
 
-Write-Host 'PASS: Synthetic BCProjectOS fixture is structurally valid and non-installable.'
+Write-Host 'PASS: Synthetic Spectra fixture is structurally valid and non-installable.'
 Write-Host 'PASS: No workspace.yaml or product version claim exists.'
 Write-Host 'PASS: Catalogs and the single OpenSpec root are valid.'

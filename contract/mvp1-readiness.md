@@ -4,7 +4,7 @@ Status: ARCHITECTURE_READY; POV_DECISION_REDUCE; MVP1_START_AUTHORIZED
 
 MVP 1 ist architektonisch bereit, weil folgende Grundsatzentscheidungen verbindlich getroffen sind:
 
-- BCProjectOS-Produktgrenze und externe Systemgrenzen;
+- Spectra-Produktgrenze und externe Systemgrenzen; das technische Repository bleibt BCProjectOS;
 - ein physisch isolierter Kundenworkspace als oberste Einheit;
 - genau ein OpenSpec-Root pro Kundenworkspace;
 - kanonische Entitaeten, Speicherorte, stabile IDs und gerichtete Relationen;
@@ -31,7 +31,7 @@ Der Generator muss die in `workspace-architecture.md` festgelegte High-Level-Str
 | Offene Grundsatzentscheidung | PASS | Keine Architekturentscheidung blockiert den Blank-Workspace. |
 | Proof of Value | PASS | POV-001 ist synthetisch und lokal validiert; die Grenzen der Aussagekraft bleiben dokumentiert. |
 | Nutzerentscheidung | PASS | Der Nutzer hat am 2026-07-11 `Reduce` explizit freigegeben. |
-| Start MVP 1 insgesamt | AUTHORIZED | Der reduzierte MVP-1-Umfang darf begonnen werden; die Umsetzung ist noch nicht gestartet. |
+| Start MVP 1 insgesamt | IN_PROGRESS | Der reduzierte MVP-1-Umfang laeuft; eine nicht installierbare synthetische Teilimplementierung und Consumer-Bindungsvalidierung existieren, der installierbare Workspace bleibt gesperrt. |
 
 ## Keine offenen Architekturentscheidungen
 
@@ -49,3 +49,5 @@ Inbox-Verarbeitung, OCR, Klassifikationsschwellen, UI, Datenbank, Git LFS/Object
 
 - Das finale installierbare Release-Manifest folgt `schemas/release-manifest.schema.json`; der annotierte Tag-Commit bleibt die extern aufgeloeste Release-Bindung und wird nicht zirkulaer in sein eigenes Manifest geschrieben.
 - Synthetische Vorab-Fixtures folgen `schemas/synthetic-workspace-fixture.schema.json`, enthalten kein `workspace.yaml` und keine erfundene Produktversion. Sie sind keine Kundenworkspaces und koennen die installierbare Workspace-Pruefung nicht bestehen.
+- Die historische synthetische Vertrags- und POV-Evidence bleibt unveraendert als nicht bindbare historische Evidence klassifiziert; sie ist weder Vorab-Fixture noch Release-Eingabe.
+- Consumer-Bindungen folgen `schemas/consumer-binding.schema.json`: Ohne vollstaendige externe Tag-, Commit-, finales-Manifest- und Digest-Pruefung bleibt nur `PENDING_BCPROJECTOS_RELEASE` zulaessig.

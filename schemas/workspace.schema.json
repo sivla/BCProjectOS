@@ -14,8 +14,8 @@
     "created_at": {"type":"string","format":"date-time"},
     "relations": {"type":"array","maxItems":0},
     "blueprint_id": {"const":"bcprojectos"},
-    "blueprint_version": {"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+$"},
-    "created_with_version": {"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "blueprint_version": {"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"},
+    "created_with_version": {"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"},
     "last_migrated_at": {"type":["string","null"]},
     "openspec_roots": {"const":["openspec"]}
   },
