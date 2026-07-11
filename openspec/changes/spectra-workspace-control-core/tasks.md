@@ -7,3 +7,4 @@
 - [x] 1.5 Add negative profile and record-boundary fixtures.
 - [x] 1.6 Produce gap evidence for the next release decision.
 - [x] 1.6 Review anonymized cross-project findings through this WIP-1 change and record adoption/rejection decisions.
+- [x] 1.7 Record release delta and SemVer rationale: published `0.1.0-beta.1` -> proposed `0.2.0-alpha.1`; no tag/release.

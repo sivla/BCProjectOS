@@ -10,3 +10,7 @@ The product SHALL represent implementation and support-only work with one shared
 #### Scenario: Profile boundary is manipulated
 - **WHEN** a record claims an unknown profile or customer-specific identity
 - **THEN** validation fails closed
+
+#### Scenario: Release delta is bounded
+- **WHEN** the control core is evaluated against published `0.1.0-beta.1`
+- **THEN** the candidate scope contains only profile/control records and does not claim 1.0.0 readiness
