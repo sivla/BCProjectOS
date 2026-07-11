@@ -1,6 +1,8 @@
 - [ ] 1.1 Generate both supported synthetic profiles.
 - [ ] 1.2 Validate canonical project/ticket/risk/decision records.
 - [ ] 1.3 Validate phases, work packages, dates, roles, risks and decisions.
-- [ ] 1.4 Add negative profile and record-boundary fixtures.
-- [ ] 1.5 Produce gap evidence for the next release decision.
+- [x] 1.3 Validate phases, work packages, dates, roles, risks and decisions.
+- [x] 1.4 Validate reference graph uniqueness, dangling references and cycles.
+- [ ] 1.5 Add negative profile and record-boundary fixtures.
+- [ ] 1.6 Produce gap evidence for the next release decision.
 - [ ] 1.6 Review anonymized cross-project findings through this WIP-1 change and record adoption/rejection decisions.
