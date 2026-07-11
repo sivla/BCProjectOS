@@ -12,7 +12,7 @@
     "blueprint_version":  "0.1.0-beta.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "e885c26488455418e0fa4a78501af78e953eae89e373c798d9b654089efb4efe",
+                    "bundle_digest":  "d7dfdee83671602eba3e49a0d770461cbeddb64e41f4277c886f530c05a44abd",
                     "file_count":  57,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
@@ -38,8 +38,8 @@
                                   },
                                   {
                                       "path":  "automation/New-SyntheticBCBasicFixture.ps1",
-                                      "sha256":  "190d84fc91af29e4ca3796a7f735df108d36f99ad5e1f356aa55a796eab162a1",
-                                      "size_bytes":  1748
+                                      "sha256":  "d0ced425713f8cb56bf0bcd4af2ae9bfc5da26c80d37537ebc1240845661c9f0",
+                                      "size_bytes":  1856
                                   },
                                   {
                                       "path":  "automation/Plan-WorkspaceUpgrade.ps1",
@@ -98,8 +98,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticBCBasicWorkspace.ps1",
-                                      "sha256":  "eaabac8cc00cd0cbe22ec5018552025e2b57fd89bb55eb88a397a0b84bb19bb6",
-                                      "size_bytes":  1595
+                                      "sha256":  "74796bcab99dff60b53601b1b164ea5a56a39277d466e0ef7c2be7e029798a55",
+                                      "size_bytes":  1722
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticWorkspaceFixture.ps1",
