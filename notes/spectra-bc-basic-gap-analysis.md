@@ -12,6 +12,6 @@
 - Keine Nutzungskennzahlen aus einem vollständig simulierten Projektlauf.
 - Keine belastbare SemVer-Folgereleaseentscheidung.
 
-## Versionsentscheidung
+## SemVer-Evidence
 
-Eine Folgeverversion wird erst nach Abschluss der Nutzungs-/Gap-Evidence und einer separaten Scope-Prüfung festgelegt. Dieser unreleased Change behauptet weder `0.1.0-beta.1` noch eine andere neue Version.
+`0.1.0-beta.1` ist als Candidate begründet: Alpha.2 lieferte Validator-/Releasebindung; dieses Delta ergänzt eine ausführbare, synthetische Gesamtprozesskette und simulierte Gates. Das ist ein Reifegrad-Sprung innerhalb der 0.1-Linie, aber keine 1.0-Garantie. `1.0.0` bleibt ausgeschlossen, weil reale Pilot-/Betriebsevidence, externe Integrationsnachweise und echte Kundenfreigaben fehlen.
