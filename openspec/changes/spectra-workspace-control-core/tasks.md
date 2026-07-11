@@ -3,6 +3,7 @@
 - [ ] 1.3 Validate phases, work packages, dates, roles, risks and decisions.
 - [x] 1.3 Validate phases, work packages, dates, roles, risks and decisions.
 - [x] 1.4 Validate reference graph uniqueness, dangling references and cycles.
+- [x] 1.4 Portable read-only Consumer-Binding-Prüfung ergänzen.
 - [x] 1.5 Add negative profile and record-boundary fixtures.
 - [x] 1.6 Produce gap evidence for the next release decision.
 - [ ] 1.6 Review anonymized cross-project findings through this WIP-1 change and record adoption/rejection decisions.
