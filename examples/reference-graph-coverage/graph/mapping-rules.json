@@ -1,0 +1,40 @@
+{
+    "mappings":  [
+                     {
+                         "mapping_id":  "MAP-PAGE-TICKET",
+                         "native_class":  "page-ticket-link",
+                         "portable_class":  "page-ticket",
+                         "outcome":  "projected",
+                         "native_count":  4,
+                         "portable_edge_count":  4,
+                         "reason_code":  "direct"
+                     },
+                     {
+                         "mapping_id":  "MAP-TICKET-EVIDENCE",
+                         "native_class":  "ticket-evidence-detail",
+                         "portable_class":  "ticket-evidence",
+                         "outcome":  "merged",
+                         "native_count":  4,
+                         "portable_edge_count":  2,
+                         "reason_code":  "merged-duplicates"
+                     },
+                     {
+                         "mapping_id":  "MAP-DECISION-DELIVERABLE",
+                         "native_class":  "decision-deliverable-link",
+                         "portable_class":  "decision-deliverable",
+                         "outcome":  "transformed",
+                         "native_count":  2,
+                         "portable_edge_count":  2,
+                         "reason_code":  "transformed-domain"
+                     },
+                     {
+                         "mapping_id":  "MAP-INTERNAL-ORDER",
+                         "native_class":  "internal-display-order",
+                         "portable_class":  null,
+                         "outcome":  "excluded",
+                         "native_count":  2,
+                         "portable_edge_count":  0,
+                         "reason_code":  "excluded-nonportable"
+                     }
+                 ]
+}

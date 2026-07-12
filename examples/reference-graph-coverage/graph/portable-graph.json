@@ -1,0 +1,52 @@
+{
+    "edges":  [
+                  {
+                      "id":  "EDGE-PAGE-TICKET-1",
+                      "class":  "page-ticket",
+                      "from":  "PAGE-1",
+                      "to":  "TICKET-1"
+                  },
+                  {
+                      "id":  "EDGE-PAGE-TICKET-2",
+                      "class":  "page-ticket",
+                      "from":  "PAGE-2",
+                      "to":  "TICKET-2"
+                  },
+                  {
+                      "id":  "EDGE-PAGE-TICKET-3",
+                      "class":  "page-ticket",
+                      "from":  "PAGE-3",
+                      "to":  "TICKET-3"
+                  },
+                  {
+                      "id":  "EDGE-PAGE-TICKET-4",
+                      "class":  "page-ticket",
+                      "from":  "PAGE-4",
+                      "to":  "TICKET-4"
+                  },
+                  {
+                      "id":  "EDGE-TICKET-EVIDENCE-1",
+                      "class":  "ticket-evidence",
+                      "from":  "TICKET-1",
+                      "to":  "EVIDENCE-1"
+                  },
+                  {
+                      "id":  "EDGE-TICKET-EVIDENCE-2",
+                      "class":  "ticket-evidence",
+                      "from":  "TICKET-3",
+                      "to":  "EVIDENCE-2"
+                  },
+                  {
+                      "id":  "EDGE-DECISION-DELIVERABLE-1",
+                      "class":  "decision-deliverable",
+                      "from":  "DECISION-1",
+                      "to":  "DELIVERABLE-1"
+                  },
+                  {
+                      "id":  "EDGE-DECISION-DELIVERABLE-2",
+                      "class":  "decision-deliverable",
+                      "from":  "DECISION-2",
+                      "to":  "DELIVERABLE-2"
+                  }
+              ]
+}
