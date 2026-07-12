@@ -1,0 +1,10 @@
+{
+  "spectra_template": true,
+  "template_id": "TPL-JIRA-STRUCTURE",
+  "content_status": "blank",
+  "hierarchy": ["phase", "epic", "story", "task"],
+  "billable_work_item": "task",
+  "billable_types": ["task"],
+  "project_specific_mapping": null,
+  "live_write_enabled": false
+}

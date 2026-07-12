@@ -25,6 +25,13 @@ $config=$raw|ConvertFrom-Json
 . (Join-Path $PSScriptRoot 'Spectra.JsonSchema.ps1')
 $schema=Get-Content -LiteralPath (Join-Path $PSScriptRoot '..\schemas\project-init.schema.json') -Raw|ConvertFrom-Json
 try{Test-SpectraJsonSchema -Value $config -Schema $schema -RootSchema $schema -Path root}catch{throw 'INIT_SCHEMA_INVALID'}
+. (Join-Path $PSScriptRoot 'Blueprint.Catalog.ps1')
+$productRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+$catalog=Test-SpectraBlueprintCatalog $productRoot
+$selectedBlueprints=@($config.blueprints)
+if(@($selectedBlueprints|Group-Object|Where-Object Count -gt 1).Count-gt0){throw 'INIT_BLUEPRINT_DUPLICATE'}
+foreach($blueprintId in $selectedBlueprints){if(@($catalog.blueprints|Where-Object id -eq $blueprintId).Count-ne1){throw 'INIT_BLUEPRINT_UNKNOWN'}}
+$recommendedBlueprints=if($config.profile-eq'implementation'){@('BPC-CONFLUENCE-PROJECT','BPC-JIRA-PROJECT','BPC-BLANK-DOCUMENTS','BPC-METADATA')}else{@('BPC-CONFLUENCE-PROJECT','BPC-JIRA-PROJECT','BPC-METADATA')}
 if($config.mode -eq 'onboard' -and $config.collaboration -ne 'existing-atlassian-readonly'){throw 'INIT_ONBOARDING_MODE_INVALID'}
 if($config.mode -ne 'onboard' -and $null -ne $config.onboarding_source){throw 'INIT_ONBOARDING_SOURCE_UNEXPECTED'}
 if(@($config.processes|Group-Object|Where-Object Count -gt 1).Count -gt 0){throw 'INIT_PROCESS_DUPLICATE'}
@@ -76,6 +83,7 @@ $plan=[ordered]@{
   schema_version=1;product_id='spectra';mode=$config.mode;project_id=$config.project_id;profile=$config.profile
   destination=$destinationFull;project_space=$config.project_space.id;referenced_space_count=@($config.referenced_spaces).Count
   processes=@($config.processes);ticket_strategy=$config.ticket_structure.strategy;mapping_version=$config.ticket_structure.mapping_version
+  selected_blueprints=$selectedBlueprints;recommended_blueprints=$recommendedBlueprints
   writes_performed=$false;status='PLANNED';source_inventory=$inventory
 }
 if(-not$Apply){$plan|ConvertTo-Json -Depth 8 -Compress;return}
@@ -107,6 +115,16 @@ try{
     live_write_enabled=$false
   }
   Write-Utf8 (Join-Path $staging 'collaboration\jira-structure.json') (($jira|ConvertTo-Json -Depth 8)+"`n")
+  foreach($blueprintId in $selectedBlueprints){
+    $blueprint=@($catalog.blueprints|Where-Object id -eq $blueprintId)[0]
+    foreach($artifact in @($blueprint.artifacts)){
+      $source=Join-Path $productRoot ([string]$artifact.source_path -replace'/','\')
+      $target=Join-Path $staging ([string]$artifact.target_path -replace'/','\')
+      $targetParent=Split-Path -Parent $target
+      if(-not(Test-Path -LiteralPath $targetParent)){New-Item -ItemType Directory -Path $targetParent -Force|Out-Null}
+      Copy-Item -LiteralPath $source -Destination $target
+    }
+  }
   Write-Utf8 (Join-Path $staging 'openspec\config.yaml') "schema: spec-driven`n"
   Write-Utf8 (Join-Path $staging 'README.md') "# Spectra Projektworkspace`n`nProjekt: $($config.project_name)`n`nModus: $($config.mode)`n`nKeine Live-Atlassian-Schreibverbindung aktiviert.`n"
   Move-Item -LiteralPath $staging -Destination $destinationFull

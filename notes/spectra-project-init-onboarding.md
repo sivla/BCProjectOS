@@ -22,3 +22,14 @@ Onboarding verändert die Exportquelle nicht. Live-Endpunkte, Tokens und Kundenw
 ## Projektspezifische Ticketstruktur
 
 Das Init-Formular fragt die Ticketstrategie ab: `spectra-standard`, `project-mapping` oder `imported-readonly`. Eigene Vorgangstypen und Status werden nicht umbenannt, sondern über `mapping_version` auf stabile Spectra-Kategorien und Status abgebildet. Unbekannte Werte stoppen das Onboarding und werden als manuelle Mappingentscheidung sichtbar.
+
+## Blueprint-Auswahl
+
+`blueprints` enthält ausschließlich die Pakete, die im neuen Workspace benötigt werden. Spectra empfiehlt für Implementation alle vier Pakete und für Support-only die Confluence-, Jira- und Metadatenpakete. Kopiert werden dennoch nur explizit ausgewählte IDs:
+
+- `BPC-CONFLUENCE-PROJECT`
+- `BPC-JIRA-PROJECT`
+- `BPC-BLANK-DOCUMENTS`
+- `BPC-METADATA`
+
+Damit bleibt ein kleines Support- oder Fit-Gap-Projekt schlank. Unterseiten werden nicht vorsorglich vervielfältigt, sondern nur als auswählbare Blankovorlagen bereitgestellt.

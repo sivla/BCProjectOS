@@ -1,0 +1,10 @@
+{
+  "spectra_template": true,
+  "template_id": "TPL-META-SNAPSHOT",
+  "content_status": "blank",
+  "snapshot_id": null,
+  "source_commit": null,
+  "digest": null,
+  "validation_status": null,
+  "known_limits": []
+}

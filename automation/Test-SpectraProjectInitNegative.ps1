@@ -2,7 +2,7 @@ $ErrorActionPreference='Stop'
 $tmp=Join-Path $env:TEMP ('spectra-project-init-negative-'+[guid]::NewGuid().ToString('N'))
 function Expect-Failure([string]$Name,[scriptblock]$Mutate,[string]$Code){
   $case=Join-Path $tmp $Name;New-Item -ItemType Directory -Path $case -Force|Out-Null
-  $x=[ordered]@{schema_version=1;product_id='spectra';mode='new';project_id='PRJ-SYN-NEG';project_name='Synthetisches Projekt';profile='implementation';language='de-DE';bc_package='bc-basic-standard';processes=@('finance');collaboration='portable-atlassian';project_space=[ordered]@{id='SPACE-PROJECT';title='Projektbereich'};referenced_spaces=@();ticket_structure=[ordered]@{strategy='spectra-standard';provider='jira';mapping_version='1.0.0';read_only=$true;issue_types=@([ordered]@{source_type='Task';spectra_category='work';hierarchy_level=1});status_mappings=@([ordered]@{source_status='Open';spectra_status='planned'})};onboarding_source=$null}
+  $x=[ordered]@{schema_version=1;product_id='spectra';mode='new';project_id='PRJ-SYN-NEG';project_name='Synthetisches Projekt';profile='implementation';language='de-DE';bc_package='bc-basic-standard';processes=@('finance');collaboration='portable-atlassian';project_space=[ordered]@{id='SPACE-PROJECT';title='Projektbereich'};referenced_spaces=@();ticket_structure=[ordered]@{strategy='spectra-standard';provider='jira';mapping_version='1.0.0';read_only=$true;issue_types=@([ordered]@{source_type='Task';spectra_category='work';hierarchy_level=1});status_mappings=@([ordered]@{source_status='Open';spectra_status='planned'})};blueprints=@('BPC-CONFLUENCE-PROJECT');onboarding_source=$null}
   & $Mutate $x $case
   $config=Join-Path $case 'init.json';[IO.File]::WriteAllText($config,($x|ConvertTo-Json -Depth 10),(New-Object Text.UTF8Encoding($false)))
   try{& (Join-Path $PSScriptRoot 'Initialize-SpectraProject.ps1') -ConfigPath $config -Destination (Join-Path $case 'workspace')|Out-Null;throw "EXPECTED_FAILURE_NOT_RAISED:$Name"}catch{if($_.Exception.Message-ne$Code){throw "NEGATIVE_CODE_MISMATCH:${Name}:$($_.Exception.Message)"}}
@@ -12,6 +12,8 @@ try{
   $cases=@(
     @('unknown-process',{param($x,$d)$x.processes=@('unknown')},'INIT_SCHEMA_INVALID'),
     @('duplicate-process',{param($x,$d)$x.processes=@('finance','finance')},'INIT_PROCESS_DUPLICATE'),
+    @('unknown-blueprint',{param($x,$d)$x.blueprints=@('BPC-UNKNOWN')},'INIT_BLUEPRINT_UNKNOWN'),
+    @('duplicate-blueprint',{param($x,$d)$x.blueprints=@('BPC-CONFLUENCE-PROJECT','BPC-CONFLUENCE-PROJECT')},'INIT_BLUEPRINT_DUPLICATE'),
     @('duplicate-ticket-type',{param($x,$d)$x.ticket_structure.issue_types+=,[ordered]@{source_type='Task';spectra_category='defect';hierarchy_level=1}},'INIT_TICKET_TYPE_MAPPING_DUPLICATE'),
     @('duplicate-ticket-status',{param($x,$d)$x.ticket_structure.status_mappings+=,[ordered]@{source_status='Open';spectra_status='ready'}},'INIT_TICKET_STATUS_MAPPING_DUPLICATE'),
     @('unknown-ticket-category',{param($x,$d)$x.ticket_structure.issue_types[0].spectra_category='unknown'},'INIT_SCHEMA_INVALID'),
