@@ -1,37 +1,38 @@
-# Spectra 1.0.0 Gap-Matrix nach 0.14.0-alpha.1
+# Spectra 1.0.0 Gap-Matrix nach RC.1 und lokalen Init-Folgeblöcken
 
-Bewertungsbasis ist der veröffentlichte und gebundene Release `0.14.0-alpha.1`. Statuswerte sind `vorhanden`, `teilweise`, `fehlend` oder `unbewiesen`. Synthetische Evidence ist keine reale Kunden-, BC-, Steuer- oder Rechtsaktivität.
+Veröffentlichte Bewertungsbasis ist `spectra-v1.0.0-rc.1`. Die nachgelagerten Init-, Blueprint- und integrierten Pilotblöcke sind lokale, noch unveröffentlichte Produktstände und werden ausdrücklich nicht dem RC zugerechnet. Statuswerte sind `vorhanden`, `teilweise`, `fehlend` oder `unbewiesen`. Synthetische Evidence ist keine reale Kunden-, BC-, Steuer- oder Rechtsaktivität.
 
 ## Produkt- und Betriebsfähigkeit
 
 | Pflichtbereich | Status | Evidence | Verbleibende Hauptlücke |
 |---|---|---|---|
-| Produktkern/Schemas | teilweise | Engagement, Setup/Daten, UAT/Training/Defects und lokaler Betriebsdurchstich | unabhängige Pilotevidence fehlt |
-| Implementation-Profil | vorhanden | isolierter Release-Pilot von Engagement bis Handover einschließlich Recovery | unabhängige RC-Kontrolle ausstehend |
-| Support-only-Profil | vorhanden | isolierter Supportpilot mit Evidence, Recovery und Handover | unabhängige RC-Kontrolle ausstehend |
+| Produktkern/Schemas | vorhanden | Engagement, Setup/Daten, UAT/Training/Defects, Betriebsdurchstich, Projekt-Init und Blueprint-Katalog | Integration der lokalen Folgeblöcke in einen kontrollierten Release |
+| Implementation-Profil | vorhanden | releasegebundener Guided Init, vollständiger Blueprintsatz, Fachstrecke und Backup/Restore | unabhängige Review des integrierten Init-Piloten |
+| Support-only-Profil | vorhanden | schlanker Guided Init ohne unnötige Consulting-Vorlagen, Supportqualität, Betrieb und Recovery | unabhängige Review des integrierten Init-Piloten |
 | Engagement/Fit-to-Standard | vorhanden | Scope, E2E-Prozesse, Fit/Gap und Entscheidungen | reale Kundenparameter bleiben Kundenevidence |
-| Setup/Berechtigungen/Daten | vorhanden | 14 Setupbereiche, SoD-Proben, acht Vorlagen und drei Wellen | reale Pilotevidence bleibt unbewiesen |
-| UAT/Training/Defects | vorhanden | sieben Kernprozesse, vier Testpfade, Rollenbefähigung, Defect-/Exit-Gates | unabhängige Pilotevidence bleibt unbewiesen |
-| Cutover/Betriebsübergabe | vorhanden | veröffentlichter Vertrag für Mock-Cutover, Go/No-Go, Hypercare, Restart, Support und Handover | unabhängiger Pilot fehlt |
-| Validatorplattform | vorhanden | Schema, referenzielle Regeln, stabile Fehlercodes und Negativmatrizen | neue Fachtypen je Release integrieren |
-| Upgrade | vorhanden | Dry-run, Konflikte, Apply, Wiederholung, Kundeninhaltschutz und Alpha/Beta/RC/Final-SemVer | RC-Candidate noch unveröffentlicht |
-| Backup/Restore | vorhanden | beide Profil-Roundtrips und Recoverygates im isolierten Pilot | unabhängige RC-Kontrolle ausstehend |
-| CLI/Bedienung | vorhanden | Fachgeneratoren/-validatoren, Upgrade und Recovery | End-to-End-Handbuch bis RC konsolidieren |
-| Supply Chain | vorhanden | Candidate-/Finalprovenienz, Tag, Payload und Digest | RC-/1.0-Gesamtproof fehlt |
+| Setup/Berechtigungen/Daten | vorhanden | 14 Setupbereiche, SoD-Proben, acht Vorlagen und drei Wellen | reale Projektwerte bleiben Kundenwahrheit |
+| UAT/Training/Defects | vorhanden | sieben Kernprozesse, vier Testpfade, Rollenbefähigung, Defect-/Exit-Gates | reale Abnahme bleibt Kundenwahrheit |
+| Cutover/Betriebsübergabe | vorhanden | Mock-Cutover, Go/No-Go, Hypercare, Restart, Support und Handover | reale Betriebsfreigabe bleibt Kundenwahrheit |
+| Projektinitialisierung | vorhanden | Guided Init, Projekt-/Ticketmapping, kuratierte Blueprints und final gebundene atomare Installation | unabhängige Releaseintegration der Folgeblöcke |
+| Validatorplattform | vorhanden | Schema, Referenzen, stabile Fehlercodes und isolierte Negativmatrizen | neue Vertragstypen je Release weiter regressionsprüfen |
+| Upgrade | vorhanden | Dry-run, Konflikte, Apply, Wiederholung und Kundeninhaltschutz | integrierter finaler 1.0-Fresh-Clone-Proof |
+| Backup/Restore | vorhanden | beide releasegebunden initialisierten Profile werden gesichert, wiederhergestellt und erneut validiert | unabhängige Kontrolle des integrierten Proofs |
+| CLI/Bedienung | vorhanden | Guided Init, Validate, Fachgeneratoren, Upgrade, Backup/Restore und deutscher Quickstart | unabhängige Bedienprüfung aus finalem Clone |
+| Supply Chain | vorhanden | Candidate-/Finalprovenienz, Tag, Payload und Digest | kontrollierte Integration und finaler 1.0.0-Releaseproof |
 
-## Aktiver Releaseblock
+## Aktiver lokaler Block
 
-`spectra-v1-pilot-rc-evidence` belegt zwei isolierte Profile, Upgrade, Recovery, Dokumentation und null offene P1/P2. Ergebnis ist `GO_FOR_1.0.0-RC.1_CANDIDATE`; finale 1.0-Reife wird noch nicht behauptet.
+`spectra-v1-integrated-init-pilots` verbindet die vorhandenen Fähigkeiten in zwei isolierten, releasegebundenen Bedienpfaden. Implementation und Support-only werden über Guided Init erzeugt, read-only validiert, mit profilgerechten Blueprints ausgestattet, fachlich durchlaufen, gesichert, wiederhergestellt und erneut validiert. Die maschinenlesbare Evidence meldet null offene P1/P2 und `GO_FOR_V1_FINAL_REVIEW`; sie ist noch keine externe Freigabe und keine Releasebehauptung.
 
-## Priorisierte Folgeblöcke bis 1.0
+## Verbleibender Pfad zu 1.0.0
 
-1. RC-Pilot: unabhängige Implementation- und Support-only-Piloten, Upgrade, Backup/Restore, Recovery und deutsche Handbücher ohne offene P1/P2.
-2. RC-Candidate nur bei vollständigem Funktionsumfang und ehrlichem GO.
-3. `1.0.0`: erst nach unabhängiger Evidence für alle Pflichtfähigkeiten.
+1. Die lokalen Folgeblöcke in ihrer Abhängigkeitsreihenfolge unabhängig prüfen und kontrolliert integrieren.
+2. Einen finalen Fresh-Clone-Pilot beider Profile aus dem integrierten Release ohne offene P1/P2 durchführen.
+3. `1.0.0` erst nach unabhängigem Release-GO, finalem Manifest, annotiertem Tag, veröffentlichter Release-Evidence und Postcheck ausgeben.
 
 ## Wahrheitsgrenzen
 
 - Keine Kunden-Source-of-Truth oder Kunden-Evidence wird in Spectra übernommen.
-- Sandbox, Profile und technische Automation sind keine Produktions-, Berechtigungs- oder fachliche Freigabeevidence.
-- P1–P4, Waiver, Retest und Exit-Gates sind Spectra-Governance.
+- Synthetische Profile und technische Automation sind keine Produktions-, Berechtigungs- oder fachliche Freigabeevidence.
+- Reale Freigaben, Steuer-/Rechtsentscheidungen, Zugangsdaten und Projektwerte entstehen ausschließlich im Kundenworkspace.
 - Releaseversionen entstehen nur aus belegtem Delta und getrenntem Release-Gate.

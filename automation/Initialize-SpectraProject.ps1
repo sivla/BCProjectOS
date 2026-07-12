@@ -96,6 +96,7 @@ try{
     schema_version=1;product_id='spectra';mode=$config.mode;project_id=$config.project_id;project_name=$config.project_name
     profile=$config.profile;language=$config.language;bc_package=$config.bc_package;processes=@($config.processes);collaboration=$config.collaboration
     project_space=$config.project_space;referenced_spaces=@($config.referenced_spaces);ticket_structure=$config.ticket_structure;source_inventory=$inventory
+    blueprints=@($selectedBlueprints);recommended_blueprints=@($recommendedBlueprints)
     customer_truth_boundary='workspace-owned';live_write_enabled=$false
   }
   Write-Utf8 (Join-Path $staging 'governance\project-init.json') (($contract|ConvertTo-Json -Depth 12)+"`n")

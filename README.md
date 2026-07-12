@@ -17,15 +17,9 @@ Es ist keine Kundeninstanz, kein Kontrollzentrum und kein Project Twin. Reale Ku
 
 ## Aktueller Status
 
-Der reduzierte MVP-1-Change `define-reduced-bcprojectos-mvp1` ist in Arbeit. Vor einem echten installierbaren Release erzeugt `automation/New-CustomerWorkspace.ps1` ausschliesslich explizite, nicht installierbare synthetische Fixtures.
+Die veröffentlichte Basis ist `spectra-v1.0.0-rc.1`. Nachgelagerte lokale Init- und Blueprintblöcke sind noch kein Bestandteil dieses Releases und bleiben bis zu ihrer getrennten Integration unveröffentlicht. Ein Arbeitsbaum, SemVer-Text, Kandidatenmanifest oder erwarteter Tag ist kein unveränderlicher Release-Nachweis.
 
-Der Release-Status bleibt ehrlich:
-
-```text
-PENDING_BCPROJECTOS_RELEASE
-```
-
-Ein Arbeitsbaum, SemVer-Text, Kandidatenmanifest oder erwarteter Tag ist kein unveraenderlicher Release-Nachweis.
+Das Ziel bleibt der unabhängig geprüfte Hauptrelease `1.0.0`. Der aktuelle lokale Nachweis verbindet releasegebundenen Guided Init, profilgerechte Blueprints, Workspacevalidierung und Backup/Restore für Implementation und Support-only.
 
 ## Lokale Verifikation
 
@@ -50,6 +44,15 @@ OpenSpec streng pruefen:
 ```powershell
 openspec validate define-reduced-bcprojectos-mvp1 --strict
 ```
+
+Der integrierte V1-Init-Pilot wird lokal so geprüft:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File automation/Test-SpectraV1IntegratedInitPilots.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File automation/Test-SpectraV1IntegratedInitEvidenceNegative.ps1
+```
+
+Die konkreten Operatorbefehle für beide Profile stehen in `notes/spectra-v1-integrated-init-quickstart.md`.
 
 Consumer-Bindungsvertrag pruefen:
 
