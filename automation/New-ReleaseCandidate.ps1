@@ -7,7 +7,8 @@ param(
     [string]$ReleaseDate = '2026-07-11',
 
     [Parameter(Mandatory=$true)]
-    [string]$SourceCommit
+    [Alias('SourceCommit')]
+    [string]$CandidateSourceCommit
 )
 
 $ErrorActionPreference = 'Stop'
@@ -19,9 +20,9 @@ $env:GIT_OPTIONAL_LOCKS = '0'
 $root = Get-BCProjectOSRoot
 $repoRoot = $root
 $scope = Get-BCProjectOSReleaseScope -Root $root
-$resolvedOutput = @(& git -C $repoRoot rev-parse "$SourceCommit`^{commit}" 2>$null)
+$resolvedOutput = @(& git -C $repoRoot rev-parse "$CandidateSourceCommit`^{commit}" 2>$null)
 $resolvedSourceCommit = $resolvedOutput | Select-Object -First 1
-if ($LASTEXITCODE -ne 0 -or [string]$resolvedSourceCommit -notmatch '^[0-9a-f]{40}$') { throw "CANDIDATE_SOURCE_COMMIT_INVALID:$SourceCommit" }
+if ($LASTEXITCODE -ne 0 -or [string]$resolvedSourceCommit -notmatch '^[0-9a-f]{40}$') { throw "CANDIDATE_SOURCE_COMMIT_INVALID:$CandidateSourceCommit" }
 $head = (& git -C $repoRoot rev-parse 'HEAD^{commit}').Trim()
 if ($resolvedSourceCommit -ne $head) { throw 'CANDIDATE_SOURCE_MUST_BE_HEAD' }
 $sourceTree = (& git -C $repoRoot rev-parse "$resolvedSourceCommit`^{tree}").Trim()
@@ -33,15 +34,17 @@ $checksumsText = Get-BCProjectOSChecksumsText -Records $records
 $bundleDigest = Get-BCProjectOSTextSha256 -Text $checksumsText
 
 $manifest = [ordered]@{
-    schema_version = 2
+    schema_version = 3
     product_id = 'spectra'
     release_version = $Version
     release_kind = 'installable_blueprint'
     manifest_state = 'candidate'
     release_date = $ReleaseDate
     expected_tag = "spectra-v$Version"
-    source_commit = $resolvedSourceCommit
-    source_tree = $sourceTree
+    source_commit = $null
+    source_tree = $null
+    candidate_source_commit = $resolvedSourceCommit
+    candidate_source_tree = $sourceTree
     consumer_mode = 'CONTRACT_REFERENCE_ONLY'
     installable_blueprint = $false
     blueprint_version = $Version
@@ -60,7 +63,7 @@ $manifest = [ordered]@{
     )
     excluded_from_payload = @($scope.excluded_roots)
     known_limits = @(
-        'Candidate is source-bound but not installable or release-bound until promotion, annotated tag and final manifest verification',
+        'Candidate provenance is bound but final source fields remain unset until promotion; candidate is not installable or published',
         'Operator pilots use isolated synthetic workspaces and provide no customer evidence',
         'Reconciliation records never assert invoices, postings, payments or productive activity',
         'Adapter provenance is local and read-only; no live adapter, Project Twin write path or external-system integration'
