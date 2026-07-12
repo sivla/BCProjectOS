@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Spectra Reference Graph Projection Coverage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract_version", "record_type", "coverage_id", "product_id", "classification", "coverage_semantics", "native_relation_classes", "portable_relation_classes", "mappings", "summary", "provenance", "claims"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "contract_version": {"const": "1.0.0"},
+    "record_type": {"const": "reference-graph-projection-coverage"},
+    "coverage_id": {"type": "string", "pattern": "^RGC-[A-Z0-9-]{4,64}$"},
+    "product_id": {"const": "spectra"},
+    "classification": {"enum": ["synthetic-fixture", "customer-workspace"]},
+    "coverage_semantics": {"const": "explained-native-relations"},
+    "native_relation_classes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/relationClass"}},
+    "portable_relation_classes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/relationClass"}},
+    "mappings": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/mapping"}},
+    "summary": {"$ref": "#/$defs/summary"},
+    "provenance": {"$ref": "#/$defs/provenance"},
+    "claims": {"$ref": "#/$defs/claims"}
+  },
+  "$defs": {
+    "relationClass": {
+      "type": "object", "additionalProperties": false,
+      "required": ["class_id", "count"],
+      "properties": {"class_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{2,63}$"}, "count": {"type": "integer", "minimum": 0}}
+    },
+    "mapping": {
+      "type": "object", "additionalProperties": false,
+      "required": ["mapping_id", "native_class", "portable_class", "outcome", "native_count", "portable_edge_count", "reason_code"],
+      "properties": {
+        "mapping_id": {"type": "string", "pattern": "^MAP-[A-Z0-9-]{4,64}$"},
+        "native_class": {"type": "string", "pattern": "^[a-z][a-z0-9-]{2,63}$"},
+        "portable_class": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9-]{2,63}$"},
+        "outcome": {"enum": ["projected", "merged", "transformed", "excluded"]},
+        "native_count": {"type": "integer", "minimum": 0},
+        "portable_edge_count": {"type": "integer", "minimum": 0},
+        "reason_code": {"enum": ["direct", "merged-duplicates", "transformed-domain", "excluded-nonportable", "excluded-policy"]}
+      }
+    },
+    "summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["native_total", "portable_edge_total", "accounted_native_total", "projected_native_total", "excluded_native_total", "coverage_numerator", "coverage_denominator", "coverage_ratio"],
+      "properties": {
+        "native_total": {"type": "integer", "minimum": 1}, "portable_edge_total": {"type": "integer", "minimum": 0},
+        "accounted_native_total": {"type": "integer", "minimum": 0}, "projected_native_total": {"type": "integer", "minimum": 0},
+        "excluded_native_total": {"type": "integer", "minimum": 0}, "coverage_numerator": {"type": "integer", "minimum": 0},
+        "coverage_denominator": {"type": "integer", "minimum": 1}, "coverage_ratio": {"type": "number", "minimum": 0}
+      }
+    },
+    "fileBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source", "mapping", "projection", "digest_algorithm", "source_mode", "source_unchanged", "writes_performed", "projection_only"],
+      "properties": {
+        "source": {"$ref": "#/$defs/fileBinding"}, "mapping": {"$ref": "#/$defs/fileBinding"}, "projection": {"$ref": "#/$defs/fileBinding"},
+        "digest_algorithm": {"const": "SHA-256"}, "source_mode": {"const": "read-only"},
+        "source_unchanged": {"const": true}, "writes_performed": {"const": false}, "projection_only": {"const": true}
+      }
+    },
+    "claims": {
+      "type": "object", "additionalProperties": false,
+      "required": ["one_to_one_claim", "complete_projection_claim", "explanation_complete"],
+      "properties": {"one_to_one_claim": {"const": false}, "complete_projection_claim": {"const": false}, "explanation_complete": {"type": "boolean"}}
+    }
+  }
+}

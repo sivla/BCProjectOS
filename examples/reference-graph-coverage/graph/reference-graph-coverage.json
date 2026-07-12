@@ -1,0 +1,113 @@
+{
+    "schema_version":  1,
+    "contract_version":  "1.0.0",
+    "record_type":  "reference-graph-projection-coverage",
+    "coverage_id":  "RGC-SYNTHETIC-GENERIC",
+    "product_id":  "spectra",
+    "classification":  "synthetic-fixture",
+    "coverage_semantics":  "explained-native-relations",
+    "native_relation_classes":  [
+                                    {
+                                        "class_id":  "page-ticket-link",
+                                        "count":  4
+                                    },
+                                    {
+                                        "class_id":  "ticket-evidence-detail",
+                                        "count":  4
+                                    },
+                                    {
+                                        "class_id":  "decision-deliverable-link",
+                                        "count":  2
+                                    },
+                                    {
+                                        "class_id":  "internal-display-order",
+                                        "count":  2
+                                    }
+                                ],
+    "portable_relation_classes":  [
+                                      {
+                                          "class_id":  "page-ticket",
+                                          "count":  4
+                                      },
+                                      {
+                                          "class_id":  "ticket-evidence",
+                                          "count":  2
+                                      },
+                                      {
+                                          "class_id":  "decision-deliverable",
+                                          "count":  2
+                                      }
+                                  ],
+    "mappings":  [
+                     {
+                         "mapping_id":  "MAP-PAGE-TICKET",
+                         "native_class":  "page-ticket-link",
+                         "portable_class":  "page-ticket",
+                         "outcome":  "projected",
+                         "native_count":  4,
+                         "portable_edge_count":  4,
+                         "reason_code":  "direct"
+                     },
+                     {
+                         "mapping_id":  "MAP-TICKET-EVIDENCE",
+                         "native_class":  "ticket-evidence-detail",
+                         "portable_class":  "ticket-evidence",
+                         "outcome":  "merged",
+                         "native_count":  4,
+                         "portable_edge_count":  2,
+                         "reason_code":  "merged-duplicates"
+                     },
+                     {
+                         "mapping_id":  "MAP-DECISION-DELIVERABLE",
+                         "native_class":  "decision-deliverable-link",
+                         "portable_class":  "decision-deliverable",
+                         "outcome":  "transformed",
+                         "native_count":  2,
+                         "portable_edge_count":  2,
+                         "reason_code":  "transformed-domain"
+                     },
+                     {
+                         "mapping_id":  "MAP-INTERNAL-ORDER",
+                         "native_class":  "internal-display-order",
+                         "portable_class":  null,
+                         "outcome":  "excluded",
+                         "native_count":  2,
+                         "portable_edge_count":  0,
+                         "reason_code":  "excluded-nonportable"
+                     }
+                 ],
+    "summary":  {
+                    "native_total":  12,
+                    "portable_edge_total":  8,
+                    "accounted_native_total":  12,
+                    "projected_native_total":  10,
+                    "excluded_native_total":  2,
+                    "coverage_numerator":  12,
+                    "coverage_denominator":  12,
+                    "coverage_ratio":  1
+                },
+    "provenance":  {
+                       "source":  {
+                                      "path":  "graph/native-relations.json",
+                                      "sha256":  "9504f8814a52a1d0c0669ead2c09da70834aa781af9fb9983b57deb7735db29c"
+                                  },
+                       "mapping":  {
+                                       "path":  "graph/mapping-rules.json",
+                                       "sha256":  "0449bb01ea0a2cc2ebe9807a575b70c2103073211edededed1bb4390099c0638"
+                                   },
+                       "projection":  {
+                                          "path":  "graph/portable-graph.json",
+                                          "sha256":  "5b73e48fb850a3e1c29c5bf57455938c564e7d2b775b8c1a06f198ed498ca8f3"
+                                      },
+                       "digest_algorithm":  "SHA-256",
+                       "source_mode":  "read-only",
+                       "source_unchanged":  true,
+                       "writes_performed":  false,
+                       "projection_only":  true
+                   },
+    "claims":  {
+                   "one_to_one_claim":  false,
+                   "complete_projection_claim":  false,
+                   "explanation_complete":  true
+               }
+}

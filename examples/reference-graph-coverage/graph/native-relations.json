@@ -1,0 +1,76 @@
+{
+    "relations":  [
+                      {
+                          "id":  "NREL-PAGE-TICKET-1",
+                          "class":  "page-ticket-link",
+                          "from":  "PAGE-1",
+                          "to":  "TICKET-1"
+                      },
+                      {
+                          "id":  "NREL-PAGE-TICKET-2",
+                          "class":  "page-ticket-link",
+                          "from":  "PAGE-2",
+                          "to":  "TICKET-2"
+                      },
+                      {
+                          "id":  "NREL-PAGE-TICKET-3",
+                          "class":  "page-ticket-link",
+                          "from":  "PAGE-3",
+                          "to":  "TICKET-3"
+                      },
+                      {
+                          "id":  "NREL-PAGE-TICKET-4",
+                          "class":  "page-ticket-link",
+                          "from":  "PAGE-4",
+                          "to":  "TICKET-4"
+                      },
+                      {
+                          "id":  "NREL-TICKET-EVIDENCE-1",
+                          "class":  "ticket-evidence-detail",
+                          "from":  "TICKET-1",
+                          "to":  "EVIDENCE-1"
+                      },
+                      {
+                          "id":  "NREL-TICKET-EVIDENCE-2",
+                          "class":  "ticket-evidence-detail",
+                          "from":  "TICKET-2",
+                          "to":  "EVIDENCE-1"
+                      },
+                      {
+                          "id":  "NREL-TICKET-EVIDENCE-3",
+                          "class":  "ticket-evidence-detail",
+                          "from":  "TICKET-3",
+                          "to":  "EVIDENCE-2"
+                      },
+                      {
+                          "id":  "NREL-TICKET-EVIDENCE-4",
+                          "class":  "ticket-evidence-detail",
+                          "from":  "TICKET-4",
+                          "to":  "EVIDENCE-2"
+                      },
+                      {
+                          "id":  "NREL-DECISION-DELIVERABLE-1",
+                          "class":  "decision-deliverable-link",
+                          "from":  "DECISION-1",
+                          "to":  "DELIVERABLE-1"
+                      },
+                      {
+                          "id":  "NREL-DECISION-DELIVERABLE-2",
+                          "class":  "decision-deliverable-link",
+                          "from":  "DECISION-2",
+                          "to":  "DELIVERABLE-2"
+                      },
+                      {
+                          "id":  "NREL-INTERNAL-ORDER-1",
+                          "class":  "internal-display-order",
+                          "from":  "ITEM-1",
+                          "to":  "ITEM-2"
+                      },
+                      {
+                          "id":  "NREL-INTERNAL-ORDER-2",
+                          "class":  "internal-display-order",
+                          "from":  "ITEM-2",
+                          "to":  "ITEM-3"
+                      }
+                  ]
+}
