@@ -30,6 +30,11 @@ if($config.mode -ne 'onboard' -and $null -ne $config.onboarding_source){throw 'I
 if(@($config.processes|Group-Object|Where-Object Count -gt 1).Count -gt 0){throw 'INIT_PROCESS_DUPLICATE'}
 if(@($config.referenced_spaces|Where-Object id -eq $config.project_space.id).Count -gt 0){throw 'INIT_PROJECT_SPACE_DUPLICATED'}
 if(@($config.referenced_spaces|Group-Object id|Where-Object Count -gt 1).Count -gt 0){throw 'INIT_REFERENCED_SPACE_DUPLICATE'}
+$issueMappings=@($config.ticket_structure.issue_types)
+$statusMappings=@($config.ticket_structure.status_mappings)
+if(@($issueMappings|Group-Object source_type|Where-Object Count -gt 1).Count -gt 0){throw 'INIT_TICKET_TYPE_MAPPING_DUPLICATE'}
+if(@($statusMappings|Group-Object source_status|Where-Object Count -gt 1).Count -gt 0){throw 'INIT_TICKET_STATUS_MAPPING_DUPLICATE'}
+if($config.mode -eq 'onboard' -and $config.ticket_structure.strategy -ne 'imported-readonly'){throw 'INIT_TICKET_STRATEGY_INVALID'}
 
 $destinationFull=[IO.Path]::GetFullPath($Destination)
 if($destinationFull -eq [IO.Path]::GetPathRoot($destinationFull)){throw 'INIT_DESTINATION_UNSAFE'}
@@ -38,6 +43,8 @@ if(-not(Test-Path -LiteralPath $parent -PathType Container)){throw 'INIT_DESTINA
 if(Test-Path -LiteralPath $destinationFull){throw 'INIT_DESTINATION_EXISTS'}
 
 $inventory=@()
+$observedIssueTypes=@()
+$observedStatuses=@()
 if($config.mode -eq 'onboard'){
   Assert-SafeRelative ([string]$config.onboarding_source.path)
   $sourceRoot=[IO.Path]::GetFullPath((Join-Path (Split-Path -Parent $configFull) ([string]$config.onboarding_source.path)))
@@ -46,16 +53,30 @@ if($config.mode -eq 'onboard'){
     if(-not(Test-Path -LiteralPath $file -PathType Leaf)){throw 'INIT_ONBOARDING_EXPORT_INCOMPLETE'}
     $before=Get-Sha $file
     $records=@(Get-Content -LiteralPath $file -Raw|ConvertFrom-Json)
-    foreach($record in $records){if([string]::IsNullOrWhiteSpace([string]$record.id)){throw 'INIT_ONBOARDING_RECORD_INVALID'}}
+    foreach($record in $records){
+      if([string]::IsNullOrWhiteSpace([string]$record.id)){throw 'INIT_ONBOARDING_RECORD_INVALID'}
+      if($name -eq 'jira-issues.json'){
+        if([string]::IsNullOrWhiteSpace([string]$record.type)-or[string]::IsNullOrWhiteSpace([string]$record.status)){throw 'INIT_ONBOARDING_RECORD_INVALID'}
+        $observedIssueTypes+=,[string]$record.type
+        $observedStatuses+=,[string]$record.status
+      }
+    }
     $inventory+=,[ordered]@{file=$name;sha256=$before;record_count=$records.Count;read_only=$true}
     if((Get-Sha $file)-ne$before){throw 'INIT_ONBOARDING_SOURCE_MUTATED'}
+  }
+  foreach($type in @($observedIssueTypes|Sort-Object -Unique)){
+    if(@($issueMappings|Where-Object{[string]$_.source_type -ceq $type}).Count -ne 1){throw 'INIT_TICKET_TYPE_UNMAPPED'}
+  }
+  foreach($status in @($observedStatuses|Sort-Object -Unique)){
+    if(@($statusMappings|Where-Object{[string]$_.source_status -ceq $status}).Count -ne 1){throw 'INIT_TICKET_STATUS_UNMAPPED'}
   }
 }
 
 $plan=[ordered]@{
   schema_version=1;product_id='spectra';mode=$config.mode;project_id=$config.project_id;profile=$config.profile
   destination=$destinationFull;project_space=$config.project_space.id;referenced_space_count=@($config.referenced_spaces).Count
-  processes=@($config.processes);writes_performed=$false;status='PLANNED';source_inventory=$inventory
+  processes=@($config.processes);ticket_strategy=$config.ticket_structure.strategy;mapping_version=$config.ticket_structure.mapping_version
+  writes_performed=$false;status='PLANNED';source_inventory=$inventory
 }
 if(-not$Apply){$plan|ConvertTo-Json -Depth 8 -Compress;return}
 
@@ -66,13 +87,25 @@ try{
   $contract=[ordered]@{
     schema_version=1;product_id='spectra';mode=$config.mode;project_id=$config.project_id;project_name=$config.project_name
     profile=$config.profile;language=$config.language;bc_package=$config.bc_package;processes=@($config.processes);collaboration=$config.collaboration
-    project_space=$config.project_space;referenced_spaces=@($config.referenced_spaces);source_inventory=$inventory
+    project_space=$config.project_space;referenced_spaces=@($config.referenced_spaces);ticket_structure=$config.ticket_structure;source_inventory=$inventory
     customer_truth_boundary='workspace-owned';live_write_enabled=$false
   }
   Write-Utf8 (Join-Path $staging 'governance\project-init.json') (($contract|ConvertTo-Json -Depth 12)+"`n")
   $space=[ordered]@{schema_version=1;project_space=$config.project_space;referenced_spaces=@($config.referenced_spaces);page_roots=@('Projektstart','Scope und Entscheidungen','Prozesse','Tests und Freigaben','Betrieb und Handover')}
   Write-Utf8 (Join-Path $staging 'collaboration\project-space.json') (($space|ConvertTo-Json -Depth 8)+"`n")
-  $jira=[ordered]@{schema_version=1;issue_types=@('epic','story','task','subtask','bug','change','support');components=@($config.processes);live_write_enabled=$false}
+  $jira=[ordered]@{
+    schema_version=1
+    canonical_categories=@('work','defect','change','decision','risk','evidence','support')
+    canonical_statuses=@('planned','ready','in_progress','blocked','done','closed','rejected')
+    strategy=$config.ticket_structure.strategy
+    provider=$config.ticket_structure.provider
+    mapping_version=$config.ticket_structure.mapping_version
+    issue_type_mappings=@($issueMappings)
+    status_mappings=@($statusMappings)
+    components=@($config.processes)
+    source_values_preserved=$true
+    live_write_enabled=$false
+  }
   Write-Utf8 (Join-Path $staging 'collaboration\jira-structure.json') (($jira|ConvertTo-Json -Depth 8)+"`n")
   Write-Utf8 (Join-Path $staging 'openspec\config.yaml') "schema: spec-driven`n"
   Write-Utf8 (Join-Path $staging 'README.md') "# Spectra Projektworkspace`n`nProjekt: $($config.project_name)`n`nModus: $($config.mode)`n`nKeine Live-Atlassian-Schreibverbindung aktiviert.`n"

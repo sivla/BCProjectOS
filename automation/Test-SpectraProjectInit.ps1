@@ -8,9 +8,16 @@ try{
     if($mode-eq'onboard'){
       $source=Join-Path $case 'export';New-Item -ItemType Directory -Path $source|Out-Null
       @([ordered]@{id='PAGE-SYN-001';title='Synthetischer Projektstart'})|ConvertTo-Json|Set-Content (Join-Path $source 'confluence-pages.json') -Encoding utf8
-      @([ordered]@{id='ISSUE-SYN-001';type='task';title='Synthetische Aufgabe'})|ConvertTo-Json|Set-Content (Join-Path $source 'jira-issues.json') -Encoding utf8
+      @([ordered]@{id='ISSUE-SYN-001';type='Feature Request';status='In Delivery';title='Synthetische Aufgabe'})|ConvertTo-Json|Set-Content (Join-Path $source 'jira-issues.json') -Encoding utf8
     }
-    $config=[ordered]@{schema_version=1;product_id='spectra';mode=$mode;project_id="PRJ-SYN-$($mode.ToUpperInvariant())";project_name="Synthetisches Projekt $mode";profile=if($mode-eq'local'){'support-only'}else{'implementation'};language='de-DE';bc_package='bc-basic-standard';processes=@('finance','p2p','o2c');collaboration=if($mode-eq'onboard'){'existing-atlassian-readonly'}elseif($mode-eq'local'){'local-only'}else{'portable-atlassian'};project_space=[ordered]@{id="SPACE-PROJECT-$($mode.ToUpperInvariant())";title='Zentraler Projektbereich'};referenced_spaces=@([ordered]@{id='SPACE-KNOWLEDGE';title='Referenziertes Wissen';read_only=$true});onboarding_source=if($mode-eq'onboard'){[ordered]@{path='export';format='spectra-portable-atlassian-v1'}}else{$null}}
+    $ticket=if($mode-eq'onboard'){
+      [ordered]@{strategy='imported-readonly';provider='jira';mapping_version='2.1.0';read_only=$true;issue_types=@([ordered]@{source_type='Feature Request';spectra_category='work';hierarchy_level=1});status_mappings=@([ordered]@{source_status='In Delivery';spectra_status='in_progress'})}
+    }elseif($mode-eq'local'){
+      [ordered]@{strategy='project-mapping';provider='generic-file';mapping_version='1.2.0';read_only=$true;issue_types=@([ordered]@{source_type='Work Item';spectra_category='work';hierarchy_level=0},[ordered]@{source_type='Service Case';spectra_category='support';hierarchy_level=0});status_mappings=@([ordered]@{source_status='Queued';spectra_status='ready'},[ordered]@{source_status='Completed';spectra_status='done'})}
+    }else{
+      [ordered]@{strategy='spectra-standard';provider='jira';mapping_version='1.0.0';read_only=$true;issue_types=@([ordered]@{source_type='Epic';spectra_category='work';hierarchy_level=0},[ordered]@{source_type='Task';spectra_category='work';hierarchy_level=1},[ordered]@{source_type='Bug';spectra_category='defect';hierarchy_level=1});status_mappings=@([ordered]@{source_status='Open';spectra_status='planned'},[ordered]@{source_status='Done';spectra_status='done'})}
+    }
+    $config=[ordered]@{schema_version=1;product_id='spectra';mode=$mode;project_id="PRJ-SYN-$($mode.ToUpperInvariant())";project_name="Synthetisches Projekt $mode";profile=if($mode-eq'local'){'support-only'}else{'implementation'};language='de-DE';bc_package='bc-basic-standard';processes=@('finance','p2p','o2c');collaboration=if($mode-eq'onboard'){'existing-atlassian-readonly'}elseif($mode-eq'local'){'local-only'}else{'portable-atlassian'};project_space=[ordered]@{id="SPACE-PROJECT-$($mode.ToUpperInvariant())";title='Zentraler Projektbereich'};referenced_spaces=@([ordered]@{id='SPACE-KNOWLEDGE';title='Referenziertes Wissen';read_only=$true});ticket_structure=$ticket;onboarding_source=if($mode-eq'onboard'){[ordered]@{path='export';format='spectra-portable-atlassian-v1'}}else{$null}}
     $configPath=Join-Path $case 'init.json';[IO.File]::WriteAllText($configPath,($config|ConvertTo-Json -Depth 10),(New-Object Text.UTF8Encoding($false)))
     $destination=Join-Path $case 'workspace'
     $before=if($mode-eq'onboard'){(Get-FileHash (Join-Path $case 'export\jira-issues.json')).Hash}else{$null}
@@ -20,7 +27,9 @@ try{
     if(-not$apply.writes_performed-or$apply.status-ne'APPLIED'){throw 'INIT_APPLY_FAILED'}
     $result=Get-Content (Join-Path $destination 'governance\project-init.json') -Raw|ConvertFrom-Json
     if($result.project_space.id-ne$config.project_space.id-or$result.live_write_enabled-ne$false){throw 'INIT_PROJECT_SPACE_INVALID'}
+    $ticketResult=Get-Content (Join-Path $destination 'collaboration\jira-structure.json') -Raw|ConvertFrom-Json
+    if($ticketResult.strategy-ne$ticket.strategy-or$ticketResult.mapping_version-ne$ticket.mapping_version-or$ticketResult.source_values_preserved-ne$true){throw 'INIT_TICKET_MAPPING_INVALID'}
     if($mode-eq'onboard' -and (Get-FileHash (Join-Path $case 'export\jira-issues.json')).Hash-ne$before){throw 'INIT_ONBOARDING_SOURCE_MUTATED'}
   }
-  Write-Host 'PASS: New, local and read-only onboarding initialization are deterministic and isolated.'
+  Write-Host 'PASS: Standardprofil und zwei abweichende Projekt-Ticketstrukturen sind deterministisch, portabel und isoliert.'
 }finally{if(Test-Path $tmp){Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue}}

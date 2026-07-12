@@ -18,3 +18,7 @@ Der erste Aufruf ist ein Dry-run. `-Apply` schreibt atomar in ein leeres Ziel.
 - `onboard`: read-only Inventarisierung eines dateibasierten Exports.
 
 Onboarding verändert die Exportquelle nicht. Live-Endpunkte, Tokens und Kundenwerte gehören nicht in Spectra. Eine spätere Live-Synchronisation benötigt einen eigenen geprüften Releasezyklus.
+
+## Projektspezifische Ticketstruktur
+
+Das Init-Formular fragt die Ticketstrategie ab: `spectra-standard`, `project-mapping` oder `imported-readonly`. Eigene Vorgangstypen und Status werden nicht umbenannt, sondern über `mapping_version` auf stabile Spectra-Kategorien und Status abgebildet. Unbekannte Werte stoppen das Onboarding und werden als manuelle Mappingentscheidung sichtbar.

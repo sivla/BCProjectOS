@@ -4,7 +4,7 @@
   "title": "Spectra Project Initialization Contract",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "product_id", "mode", "project_id", "project_name", "profile", "language", "bc_package", "processes", "collaboration", "project_space", "referenced_spaces"],
+  "required": ["schema_version", "product_id", "mode", "project_id", "project_name", "profile", "language", "bc_package", "processes", "collaboration", "project_space", "referenced_spaces", "ticket_structure"],
   "properties": {
     "schema_version": {"const": 1},
     "product_id": {"const": "spectra"},
@@ -18,10 +18,40 @@
     "collaboration": {"enum": ["local-only", "portable-atlassian", "existing-atlassian-readonly"]},
     "project_space": {"$ref": "#/$defs/space"},
     "referenced_spaces": {"type": "array", "items": {"$ref": "#/$defs/referencedSpace"}},
+    "ticket_structure": {"$ref": "#/$defs/ticketStructure"},
     "onboarding_source": {"type": ["object", "null"], "additionalProperties": false, "required": ["path", "format"], "properties": {"path": {"type": "string", "minLength": 1}, "format": {"const": "spectra-portable-atlassian-v1"}}}
   },
   "$defs": {
     "space": {"type": "object", "additionalProperties": false, "required": ["id", "title"], "properties": {"id": {"type": "string", "pattern": "^SPACE-[A-Z0-9-]{3,40}$"}, "title": {"type": "string", "minLength": 3}}},
-    "referencedSpace": {"type": "object", "additionalProperties": false, "required": ["id", "title", "read_only"], "properties": {"id": {"type": "string", "pattern": "^SPACE-[A-Z0-9-]{3,40}$"}, "title": {"type": "string", "minLength": 3}, "read_only": {"const": true}}}
+    "referencedSpace": {"type": "object", "additionalProperties": false, "required": ["id", "title", "read_only"], "properties": {"id": {"type": "string", "pattern": "^SPACE-[A-Z0-9-]{3,40}$"}, "title": {"type": "string", "minLength": 3}, "read_only": {"const": true}}},
+    "ticketStructure": {
+      "type": "object", "additionalProperties": false,
+      "required": ["strategy", "provider", "mapping_version", "read_only", "issue_types", "status_mappings"],
+      "properties": {
+        "strategy": {"enum": ["spectra-standard", "project-mapping", "imported-readonly"]},
+        "provider": {"enum": ["jira", "generic-file", "other"]},
+        "mapping_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "read_only": {"const": true},
+        "issue_types": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/issueTypeMapping"}},
+        "status_mappings": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/statusMapping"}}
+      }
+    },
+    "issueTypeMapping": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_type", "spectra_category", "hierarchy_level"],
+      "properties": {
+        "source_type": {"type": "string", "minLength": 1},
+        "spectra_category": {"enum": ["work", "defect", "change", "decision", "risk", "evidence", "support"]},
+        "hierarchy_level": {"type": "integer", "minimum": 0}
+      }
+    },
+    "statusMapping": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_status", "spectra_status"],
+      "properties": {
+        "source_status": {"type": "string", "minLength": 1},
+        "spectra_status": {"enum": ["planned", "ready", "in_progress", "blocked", "done", "closed", "rejected"]}
+      }
+    }
   }
 }
