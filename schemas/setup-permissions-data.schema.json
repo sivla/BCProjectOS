@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.bcprojectos.invalid/schemas/setup-permissions-data.schema.json",
+  "type": "object",
+  "required": ["schema_version","product_id","profile","project_id","setup_steps","roles","data_templates","migration_waves","readiness"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "product_id": {"const": "spectra"},
+    "profile": {"enum": ["implementation","support-only"]},
+    "project_id": {"type": "string", "pattern": "^SYN-[A-Z0-9-]+$"},
+    "setup_steps": {"type": "array", "minItems": 14, "items": {"$ref": "#/$defs/setup"}},
+    "roles": {"type": "array", "minItems": 3, "items": {"$ref": "#/$defs/role"}},
+    "data_templates": {"type": "array", "minItems": 8, "maxItems": 8, "items": {"$ref": "#/$defs/template"}},
+    "migration_waves": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/wave"}},
+    "readiness": {"type": "object", "required": ["dry_run","customer_content_embedded","localization_tax_confirmed","status"], "properties": {"dry_run":{"const":true},"customer_content_embedded":{"const":false},"localization_tax_confirmed":{"type":"boolean"},"status":{"enum":["READY","CONFIRMATION_REQUIRED"]}}, "additionalProperties": false}
+  },
+  "$defs": {
+    "setup": {"type":"object","required":["id","area","sequence","entry","exit","depends_on","parameters"],"properties":{"id":{"type":"string","pattern":"^SET-[A-Z0-9-]+$"},"area":{"type":"string"},"sequence":{"type":"integer","minimum":1},"entry":{"type":"string","minLength":1},"exit":{"type":"string","minLength":1},"depends_on":{"type":"array","items":{"type":"string","pattern":"^SET-[A-Z0-9-]+$"}},"parameters":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/parameter"}}},"additionalProperties":false},
+    "parameter": {"type":"object","required":["id","bc_search","field","value_classification","owner_role","effect","verification_step","expected_result","process_ref","uat_ref","deviation_path"],"properties":{"id":{"type":"string","pattern":"^PAR-[A-Z0-9-]+$"},"bc_search":{"type":"string","minLength":1},"field":{"type":"string","minLength":1},"value_classification":{"enum":["standard","customer_parameter","localization_or_tax_confirmation"]},"owner_role":{"type":"string","pattern":"^ROLE-[A-Z0-9-]+$"},"effect":{"type":"string","minLength":1},"verification_step":{"type":"string","minLength":1},"expected_result":{"type":"string","minLength":1},"process_ref":{"type":"string","pattern":"^PROC-[A-Z0-9-]+$"},"uat_ref":{"type":"string","pattern":"^UAT-[A-Z0-9-]+$"},"deviation_path":{"enum":["standard","parameterize","change","out_of_scope"]}},"additionalProperties":false},
+    "role": {"type":"object","required":["id","allowed_task","permission_need","forbidden_with","positive_probe","denied_probe"],"properties":{"id":{"type":"string","pattern":"^ROLE-[A-Z0-9-]+$"},"allowed_task":{"type":"string","minLength":1},"permission_need":{"type":"string","minLength":1},"forbidden_with":{"type":"array","items":{"type":"string","pattern":"^ROLE-[A-Z0-9-]+$"}},"positive_probe":{"type":"string","minLength":1},"denied_probe":{"type":"string","minLength":1}},"additionalProperties":false},
+    "template": {"type":"object","required":["id","type","required_fields","format_rules","reference_rules","contains_customer_data"],"properties":{"id":{"type":"string","pattern":"^TPL-[A-Z0-9-]+$"},"type":{"enum":["gl_account","dimension","customer","vendor","item","bank_account","opening_balance","open_document"]},"required_fields":{"type":"array","minItems":1,"items":{"type":"string"}},"format_rules":{"type":"array","minItems":1,"items":{"type":"string"}},"reference_rules":{"type":"array","items":{"type":"string","pattern":"^TPL-[A-Z0-9-]+$"}},"contains_customer_data":{"const":false}},"additionalProperties":false},
+    "wave": {"type":"object","required":["id","name","sequence","template_refs","dry_run","source_count","accepted_count","rejected_count","control_total","error_classes","correction","retest_status"],"properties":{"id":{"type":"string","pattern":"^WAVE-[A-Z0-9-]+$"},"name":{"enum":["foundation","master_data","opening_and_open_items"]},"sequence":{"type":"integer","minimum":1,"maximum":3},"template_refs":{"type":"array","minItems":1,"items":{"type":"string","pattern":"^TPL-[A-Z0-9-]+$"}},"dry_run":{"const":true},"source_count":{"type":"integer","minimum":0},"accepted_count":{"type":"integer","minimum":0},"rejected_count":{"type":"integer","minimum":0},"control_total":{"type":"string","pattern":"^[a-f0-9]{64}$"},"error_classes":{"type":"array","items":{"enum":["missing_required","invalid_format","invalid_reference","duplicate","control_total_mismatch"]}},"correction":{"type":"string","minLength":1},"retest_status":{"enum":["PASS","CORRECTION_REQUIRED"]}},"additionalProperties":false}
+  },
+  "additionalProperties": false
+}

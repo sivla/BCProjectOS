@@ -12,7 +12,7 @@ param(
   [switch]$Approve
 )
 $ErrorActionPreference='Stop'
-$supportedCommands=@('init','validate','validate-reconciliation','validate-provenance','validate-graph-coverage','validate-engagement-fit-standard','plan-upgrade','upgrade','backup','restore','candidate-check')
+$supportedCommands=@('init','validate','validate-reconciliation','validate-provenance','validate-graph-coverage','validate-engagement-fit-standard','generate-setup-data','validate-setup-data','plan-upgrade','upgrade','backup','restore','candidate-check')
 if($Command -notin $supportedCommands){throw 'SPECTRA_COMMAND_UNKNOWN'}
 
 function Assert-SpectraDelegateExit {
@@ -23,7 +23,7 @@ if($ProductRoot){$product=[IO.Path]::GetFullPath($ProductRoot)}
 $workspacePath=[IO.Path]::GetFullPath($Workspace)
 if($workspacePath -eq [IO.Path]::GetPathRoot($workspacePath)){throw 'SPECTRA_PATH_UNSAFE'}
 if($Target){$targetPath=[IO.Path]::GetFullPath($Target);if($targetPath -eq [IO.Path]::GetPathRoot($targetPath)){throw 'SPECTRA_TARGET_PATH_UNSAFE'}}
-$writeCommands=@('init','upgrade','backup','restore')
+$writeCommands=@('init','generate-setup-data','upgrade','backup','restore')
 if($Apply -and $Command -notin $writeCommands){throw 'SPECTRA_APPLY_NOT_SUPPORTED'}
 $mode=if($Apply){'apply'}else{'dry-run'}
 $result=[ordered]@{product_id='spectra';command=$Command;mode=$mode;status='PLANNED';code='SPECTRA_OK';workspace=$workspacePath;target=if($Target){$targetPath}else{$null};writes_performed=$false;delegate=$null}
@@ -71,6 +71,17 @@ try{
       $global:LASTEXITCODE=0
       & (Join-Path $PSScriptRoot 'Test-EngagementFitStandard.ps1') -Path $workspacePath|Out-Null
       Assert-SpectraDelegateExit
+      $result.status='VALIDATED'
+    }
+    'generate-setup-data' {
+      $result.delegate='New-SyntheticSetupPermissionsData.ps1'
+      if(-not $Apply){break}
+      & (Join-Path $PSScriptRoot 'New-SyntheticSetupPermissionsData.ps1') -Destination $workspacePath -Profile $Profile|Out-Null
+      $result.status='APPLIED';$result.writes_performed=$true
+    }
+    'validate-setup-data' {
+      $result.delegate='Test-SetupPermissionsData.ps1'
+      & (Join-Path $PSScriptRoot 'Test-SetupPermissionsData.ps1') -Path $workspacePath|Out-Null
       $result.status='VALIDATED'
     }
     'plan-upgrade' {
