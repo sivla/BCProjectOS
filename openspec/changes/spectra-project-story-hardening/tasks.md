@@ -1,0 +1,4 @@
+- [x] 1.1 Define specialized project-story structures and typed comments.
+- [x] 1.2 Generate and validate hardened synthetic story.
+- [x] 1.3 Add negative matrix for closure, pages, chronology, budget and hypercare.
+- [x] 1.4 Derive `0.6.0-alpha.1` and candidate evidence.
