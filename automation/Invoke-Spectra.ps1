@@ -12,7 +12,7 @@ param(
   [switch]$Approve
 )
 $ErrorActionPreference='Stop'
-$supportedCommands=@('init','validate','validate-reconciliation','validate-provenance','validate-graph-coverage','plan-upgrade','upgrade','backup','restore','candidate-check')
+$supportedCommands=@('init','validate','validate-reconciliation','validate-provenance','validate-graph-coverage','validate-engagement-fit-standard','plan-upgrade','upgrade','backup','restore','candidate-check')
 if($Command -notin $supportedCommands){throw 'SPECTRA_COMMAND_UNKNOWN'}
 
 function Assert-SpectraDelegateExit {
@@ -63,6 +63,13 @@ try{
       $result.delegate='Test-ReferenceGraphCoverage.ps1'
       $global:LASTEXITCODE=0
       & (Join-Path $PSScriptRoot 'Test-ReferenceGraphCoverage.ps1') -Path $workspacePath|Out-Null
+      Assert-SpectraDelegateExit
+      $result.status='VALIDATED'
+    }
+    'validate-engagement-fit-standard' {
+      $result.delegate='Test-EngagementFitStandard.ps1'
+      $global:LASTEXITCODE=0
+      & (Join-Path $PSScriptRoot 'Test-EngagementFitStandard.ps1') -Path $workspacePath|Out-Null
       Assert-SpectraDelegateExit
       $result.status='VALIDATED'
     }

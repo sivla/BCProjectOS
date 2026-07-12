@@ -58,3 +58,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File automation/Test-ConsumerBind
 ```
 
 Die kanonische Repository-URL identifiziert nur das Produkt. Ohne extern geprueften annotierten Tag, dessen Commit, finales Manifest, Source-Ancestor und passenden SHA-256-Payload-Digest bleibt jeder Consumer bindend bei `PENDING_BCPROJECTOS_RELEASE`.
+
+## Engagement und Fit-to-Standard
+
+Spectra modelliert den fachlichen Einstieg einer BC-Einführung als zusammenhängenden Vertrag aus Angebot, Scope, Annahmen, Ausschlüssen, Phasen, Deliverables, RACI, Prozesslandkarten, E2E-Geschäftsfällen, Fit-/Gap-Assessments, Entscheidungen und offenen Fragen. Ein synthetisches Fixture kann mit `automation/New-SyntheticEngagementFitStandard.ps1` erzeugt und über `automation/Invoke-Spectra.ps1 -Command validate-engagement-fit-standard` strikt read-only geprüft werden. Steuer-, Rechts- und Kundenentscheidungen bleiben außerhalb des Produkt-Repositories.
