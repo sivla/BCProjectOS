@@ -1,0 +1,5 @@
+- [x] 1.1 Implement synthetic intake generator with dry-run/apply.
+- [x] 1.2 Validate metadata, classification, sensitivity, path, hash and references.
+- [x] 1.3 Add quarantine and negative safety matrix.
+- [x] 1.4 Add operator/recovery documentation.
+- [x] 1.5 Derive `0.4.0-alpha.1` and candidate evidence from the actual delta.
