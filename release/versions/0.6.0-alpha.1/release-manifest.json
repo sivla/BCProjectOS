@@ -12,8 +12,8 @@
     "blueprint_version":  "0.6.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "d3dce3f6833efe423e69b659fce1890bf96b861fdfe15dca74c0c48bdccd6a14",
-                    "file_count":  74,
+                    "bundle_digest":  "0b3299148f05eaa69826db2999c10873f3cf8f0f90e6b7b868ce0a26fb3fb162",
+                    "file_count":  75,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
                                   {
@@ -58,8 +58,8 @@
                                   },
                                   {
                                       "path":  "automation/New-SyntheticProjectStoryHardening.ps1",
-                                      "sha256":  "15e2db9092a9d50661666b2ce9ac4e38994cf30a4aed0b0ed481d2d24aa061af",
-                                      "size_bytes":  2964
+                                      "sha256":  "beae6591f846291ef9ff3a5847d50085a38dfa734b5c7d1f838a59a0b028ae28",
+                                      "size_bytes":  2836
                                   },
                                   {
                                       "path":  "automation/New-SyntheticWorkspaceControlFixture.ps1",
@@ -163,8 +163,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticProjectStoryHardening.ps1",
-                                      "sha256":  "4d724eeedf41e366adec38ba14daa522603e0dd648f9a1f22d767a1b85c113a9",
-                                      "size_bytes":  1453
+                                      "sha256":  "315b53134bc4ddf108062912ae14ed12342ced7f051ee7828bdcb0505f33e64c",
+                                      "size_bytes":  2754
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticProjectStoryHardeningNegative.ps1",
@@ -340,6 +340,11 @@
                                       "path":  "schemas/external-file.schema.json",
                                       "sha256":  "6a3dd361b52c0d64509b1db0bfec35a49b5fa60c099dccad4319decca06b742f",
                                       "size_bytes":  470
+                                  },
+                                  {
+                                      "path":  "schemas/project-story.schema.json",
+                                      "sha256":  "d5de5bd9779bac182b057f2ec9ec25cc79d8c043287f4dbb45f1a53b60058e5a",
+                                      "size_bytes":  553
                                   },
                                   {
                                       "path":  "schemas/release-manifest.schema.json",
