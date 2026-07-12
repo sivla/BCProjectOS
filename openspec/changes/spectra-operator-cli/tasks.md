@@ -1,0 +1,6 @@
+- [x] 1.1 Define dispatcher contract, scope and SemVer rationale.
+- [x] 1.2 Implement deterministic dry-run dispatcher and stable codes.
+- [x] 1.3 Add isolated implementation/support-only pilot fixtures.
+- [x] 1.4 Add positive, negative and restart/rollback tests.
+- [ ] 1.5 Complete delegated Apply flows and fresh-clone proof.
+- [ ] 1.6 Produce and verify the 0.8.0-alpha.1 candidate.
