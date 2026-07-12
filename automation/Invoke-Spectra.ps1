@@ -12,7 +12,7 @@ param(
   [switch]$Approve
 )
 $ErrorActionPreference='Stop'
-$supportedCommands=@('init','validate','plan-upgrade','upgrade','backup','restore','candidate-check')
+$supportedCommands=@('init','validate','validate-reconciliation','validate-provenance','plan-upgrade','upgrade','backup','restore','candidate-check')
 if($Command -notin $supportedCommands){throw 'SPECTRA_COMMAND_UNKNOWN'}
 
 function Assert-SpectraDelegateExit {
@@ -42,6 +42,20 @@ try{
       $result.delegate='Test-SyntheticWorkspaceFixture.ps1'
       $global:LASTEXITCODE=0
       & (Join-Path $PSScriptRoot 'Test-SyntheticWorkspaceFixture.ps1') -Path $workspacePath|Out-Null
+      Assert-SpectraDelegateExit
+      $result.status='VALIDATED'
+    }
+    'validate-reconciliation' {
+      $result.delegate='Test-ProjectReconciliation.ps1'
+      $global:LASTEXITCODE=0
+      & (Join-Path $PSScriptRoot 'Test-ProjectReconciliation.ps1') -Workspace $workspacePath|Out-Null
+      Assert-SpectraDelegateExit
+      $result.status='VALIDATED'
+    }
+    'validate-provenance' {
+      $result.delegate='Test-AdapterProvenance.ps1'
+      $global:LASTEXITCODE=0
+      & (Join-Path $PSScriptRoot 'Test-AdapterProvenance.ps1') -Workspace $workspacePath|Out-Null
       Assert-SpectraDelegateExit
       $result.status='VALIDATED'
     }
