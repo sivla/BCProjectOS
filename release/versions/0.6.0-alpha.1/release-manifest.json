@@ -12,7 +12,7 @@
     "blueprint_version":  "0.6.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "b318fef7b79346023b67214d111c9e1a8d188cec636ee8941db0b102923e1983",
+                    "bundle_digest":  "dae6d636647c2c18ffb400607cd0eed3164c7cc15c5d9558fd7d6e9c99e6efce",
                     "file_count":  76,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
@@ -58,8 +58,8 @@
                                   },
                                   {
                                       "path":  "automation/New-SyntheticProjectStoryHardening.ps1",
-                                      "sha256":  "737b96cbd4b6d85310813c589253b3dbd411236319ef300251e94cd67f8bfe3f",
-                                      "size_bytes":  3570
+                                      "sha256":  "9e55027e053f04903932c044d2c41e26e926bd65352a9456aa6f8cc6da583d3d",
+                                      "size_bytes":  3741
                                   },
                                   {
                                       "path":  "automation/New-SyntheticWorkspaceControlFixture.ps1",
@@ -128,8 +128,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-ProjectStoryContract.ps1",
-                                      "sha256":  "555fb752128c9e6af18e47cbe35c9315c7a3f207a97b33a58d267d36d457e3ce",
-                                      "size_bytes":  4422
+                                      "sha256":  "4bab4293d14828fa0081347066934f6bf3cac7af8d223185cd36c69fabb36769",
+                                      "size_bytes":  8179
                                   },
                                   {
                                       "path":  "automation/Test-PromotionWorkflow.ps1",
@@ -173,8 +173,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticProjectStoryHardeningNegative.ps1",
-                                      "sha256":  "7c977c9782ff5517e6109336e961f4ddd756504c11748cab90fb01e2985f175b",
-                                      "size_bytes":  1984
+                                      "sha256":  "34cd4a56814643663e7f917354893eb5f1b6ff6c9fb44a27a71ff906e14c9adb",
+                                      "size_bytes":  2739
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticProjectStoryNegative.ps1",
@@ -348,8 +348,8 @@
                                   },
                                   {
                                       "path":  "schemas/project-story.schema.json",
-                                      "sha256":  "d70464450b20eb9ba00fedd49c260072c5a916f072314a9e7d1e5732f6568cc9",
-                                      "size_bytes":  1777
+                                      "sha256":  "b82c591141dfef277a555be95d41b60b60e557b3c99649753da7553e523fb3f7",
+                                      "size_bytes":  6445
                                   },
                                   {
                                       "path":  "schemas/release-manifest.schema.json",
