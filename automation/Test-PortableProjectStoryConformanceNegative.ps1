@@ -10,7 +10,7 @@ $cases=@(
  @{code='PORTABLE_DUPLICATE_ID';m={param($x)$x.pages[1].id=$x.pages[0].id}},
  @{code='PORTABLE_DUPLICATE_SOURCEPATH';m={param($x)$x.pages[1].sourcePath=$x.pages[0].sourcePath}},
  @{code='PORTABLE_PAGE_PARENT';m={param($x)$x.pages[1].parent='UNKNOWN'}},
- @{code='PORTABLE_DUPLICATE_ID';m={param($x)$x.pages[0].id=$x.pages[1].id}},
+ @{code='PORTABLE_PAGE_CYCLE';m={param($x)$x.pages[0].parent='PAGE-PORT-02';$x.pages[1].parent='PAGE-PORT-01'}},
  @{code='PORTABLE_PAGE_METADATA';m={param($x)$x.pages[0].version=2}},
  @{code='PORTABLE_STATUS_HISTORY';m={param($x)$x.tickets[0].status_history[1].time='2026-01-01T00:00:00Z'}},
  @{code='PORTABLE_STATUS_TERMINAL';m={param($x)$x.tickets[0].status='open'}},
