@@ -12,7 +12,7 @@
     "blueprint_version":  "0.7.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "24685824917c1cdec5156c549cccba45dc5b8118373c156ac7af367d4438d421",
+                    "bundle_digest":  "e3269c8c8cab0a6bf665a6b38af2e3bb39a1a5accab70c370fa4cdbe91fa580d",
                     "file_count":  86,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
@@ -48,8 +48,8 @@
                                   },
                                   {
                                       "path":  "automation/New-PortableProjectStoryFixture.ps1",
-                                      "sha256":  "257cdfe3af523f6b0b756302c3429894494557ad7cffe578989ba690f9e486f6",
-                                      "size_bytes":  2756
+                                      "sha256":  "58958966fe9d0bb7985c6dba794bb83742f85c21437e91d3cf90510e20f0461d",
+                                      "size_bytes":  4312
                                   },
                                   {
                                       "path":  "automation/New-ReleaseCandidate.ps1",
@@ -163,8 +163,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-PortableStructuralGates.ps1",
-                                      "sha256":  "c2226aac8a196f1d2677d94a70e2333ff311085eb733f21f908935ba1c0d1d7f",
-                                      "size_bytes":  747
+                                      "sha256":  "60792317a7ecc6e5ff051c5708bd8458a50c10a6aee6e6e54f3878ef0e66e6d3",
+                                      "size_bytes":  1570
                                   },
                                   {
                                       "path":  "automation/Test-ProductContract.ps1",
@@ -393,8 +393,8 @@
                                   },
                                   {
                                       "path":  "schemas/portable-project-story.schema.json",
-                                      "sha256":  "235662222c19f2a4763bd6e854ad09715feb7463b219524ca9d3d24738645fd0",
-                                      "size_bytes":  3655
+                                      "sha256":  "b1b4e498ef550b9081167358e1fbdde58ff3fe17a679881ec7378a37605b9b2a",
+                                      "size_bytes":  3799
                                   },
                                   {
                                       "path":  "schemas/project-story.schema.json",
