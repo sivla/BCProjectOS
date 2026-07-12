@@ -12,8 +12,8 @@
     "blueprint_version":  "0.7.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "1e574cf00b20c503c49421014c58d157106fd6c629ad097202f90f7e3dacb685",
-                    "file_count":  80,
+                    "bundle_digest":  "c9fc53c1d828e0712c0bd05f7f876b3c1393dcb387beafeb08a656ea3616b3b9",
+                    "file_count":  81,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
                                   {
@@ -133,13 +133,13 @@
                                   },
                                   {
                                       "path":  "automation/Test-PortableProjectStoryConformance.ps1",
-                                      "sha256":  "0fcd95f954256a1bb8782fbdc9743ebeb3c4b05e7f07224c20bfe3dcdac92f96",
-                                      "size_bytes":  4012
+                                      "sha256":  "73362162629db28b8919a0edc1e5fdb0fafc2e335da460fce53b03eaab4fbb63",
+                                      "size_bytes":  4239
                                   },
                                   {
                                       "path":  "automation/Test-PortableProjectStoryConformanceNegative.ps1",
-                                      "sha256":  "bcf865c947f98b72efb3c200f1600eb17f9aa10ae9f1a346a718356eced5e3f7",
-                                      "size_bytes":  6022
+                                      "sha256":  "d295312b4de38eac0b81a1577b14c0c1549a2f9fd0c8a9a5e52999b4234cc681",
+                                      "size_bytes":  6160
                                   },
                                   {
                                       "path":  "automation/Test-ProductContract.ps1",
@@ -365,6 +365,11 @@
                                       "path":  "schemas/external-file.schema.json",
                                       "sha256":  "6a3dd361b52c0d64509b1db0bfec35a49b5fa60c099dccad4319decca06b742f",
                                       "size_bytes":  470
+                                  },
+                                  {
+                                      "path":  "schemas/portable-project-story.schema.json",
+                                      "sha256":  "20910803a8372d314d5ea3faaf0139d51c188e94fd5e36bfb1b5e026cde88c90",
+                                      "size_bytes":  3906
                                   },
                                   {
                                       "path":  "schemas/project-story.schema.json",
