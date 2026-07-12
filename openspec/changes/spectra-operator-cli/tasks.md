@@ -5,4 +5,4 @@
 - [x] 1.5 Complete delegated Apply flows and isolated recovery proof.
 - [x] 1.5a Evaluate the three anonymized BC learning candidates without scope drift.
 - [x] 1.5b Complete fresh-clone proof with the committed operator, recovery and product-contract suites.
-- [ ] 1.6 Produce and verify the 0.8.0-alpha.1 candidate.
+- [x] 1.6 Produce and verify the 0.8.0-alpha.1 candidate with pending binding, Git-blob checksums and full gates.
