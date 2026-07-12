@@ -5,6 +5,10 @@
 ### Requirement: Atlassian-Strukturen bleiben portabel
 Spectra MUST Confluence-Seitenbaum und Ticketstruktur als dateibasierten Vertrag erzeugen und MUST projektspezifische Vorgangstypen und Status über ein versioniertes Mapping auf ein stabiles kanonisches Kernmodell abbilden.
 
+#### Scenario: Portabler Kollaborationsvertrag
+- **WHEN** `portable-atlassian` gewählt wird
+- **THEN** erzeugt Spectra lokale Seiten- und Vorgangsstrukturen mit deaktiviertem Live-Schreibzugriff
+
 #### Scenario: Neues Projekt mit Standardprofil
 - **WHEN** ein neues Projekt `spectra-standard` auswählt
 - **THEN** wird eine schlanke empfohlene Ticketstruktur als austauschbares Profil erzeugt
