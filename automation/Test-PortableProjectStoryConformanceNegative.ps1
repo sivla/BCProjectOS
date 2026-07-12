@@ -6,7 +6,7 @@ function Remove-Prop($o,$n){$o.PSObject.Properties.Remove($n)};function Unknown-
 function Invoke-V([string]$d){$s=[Diagnostics.ProcessStartInfo]::new();$s.FileName='powershell.exe';$s.Arguments="-NoProfile -ExecutionPolicy Bypass -File `"$root\automation\Run-PortableConformanceExact.ps1`" -Path `"$d`"";$s.UseShellExecute=$false;$s.RedirectStandardOutput=$true;$s.RedirectStandardError=$true;$p=[Diagnostics.Process]::Start($s);$o=$p.StandardOutput.ReadToEnd().Trim();$e=$p.StandardError.ReadToEnd().Trim();$p.WaitForExit();[pscustomobject]@{Exit=$p.ExitCode;Raw=$o;Err=$e}}
 $cases=@(
  @{code='PORTABLE_SCHEMA_REQUIRED';m={param($x)Remove-Prop $x 'project_id'}},
- @{code='PORTABLE_IDENTITY_INVALID';m={param($x)$x.story_id=42}},
+ @{code='PORTABLE_SCHEMA_TYPE_INVALID';m={param($x)$x.story_id=42}},
  @{code='PORTABLE_SCHEMA_ADDITIONAL_PROPERTY';m={param($x)Add-Member -InputObject $x.offer -NotePropertyName extra -NotePropertyValue x}},
  @{code='PORTABLE_TIMELINE_RANGE';m={param($x)$x.offer.end_time='2020-01-01T00:00:00Z'}},
  @{code='PORTABLE_DUPLICATE_ID';m={param($x)$x.pages[1].id=$x.pages[0].id}},
