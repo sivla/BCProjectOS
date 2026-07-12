@@ -1,0 +1,6 @@
+- [ ] 1.1 Define versioned portable contract and compatibility matrix against 0.6.
+- [ ] 1.2 Implement explicit-path read-only validator and full schema keyword engine.
+- [ ] 1.3 Generate the 3-offer/19-page/17-ticket conformance fixture.
+- [ ] 1.4 Add positive foreign-directory proof and complete negative matrix.
+- [ ] 1.5 Run Product Contract, OpenSpec, upgrade compatibility and candidate gates.
+- [ ] 1.6 Derive SemVer and candidate manifest from committed evidence.
