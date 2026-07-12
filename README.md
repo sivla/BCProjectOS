@@ -62,6 +62,10 @@ Spectra trennt die technische Workspaceform von der fachlichen Projektart. Guide
 
 Der kundenbezogene Kern führt Umgebungen, Gesellschaften, optionale Projekte, direkte Supportfälle, Wissen, Budgets, Lieferverpflichtungen sowie kundeninstanzgebundene Personen und Rollen. Die Knowledge Inbox bindet lokale Quellen unveränderlich und erzeugt ausschließlich Observations, Vergleiche und Proposals. Auch angenommene Vorschläge verändern den Workspace nicht automatisch. Der synthetische Quickstart steht in `notes/spectra-customer-workspace-knowledge-inbox.md`.
 
+## Dokumentprojektion
+
+`generate-document-projection` erzeugt ausschließlich synthetische lokale Projektionen. `validate-document-projection` prüft beliebig viele Dokumentationsräume, Hierarchien, authored/generated-Eigentum, Provenienz und getrennte Jira-Sichten read-only. Die Materialisierung in Atlassian-Systeme ist ausdrücklich nicht Bestandteil dieses Vertrags.
+
 Consumer-Bindungsvertrag pruefen:
 
 ```powershell
