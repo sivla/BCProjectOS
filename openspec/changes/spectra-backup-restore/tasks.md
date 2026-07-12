@@ -1,0 +1,4 @@
+- [x] 1.1 Implement deterministic backup manifest and exclusions (`automation/Backup-Workspace.ps1`).
+- [x] 1.2 Implement dry-run and atomic restore (`automation/Restore-Workspace.ps1`).
+- [x] 1.3 Add roundtrip and negative recovery fixtures (`automation/Test-BackupRestore.ps1`, `automation/Test-ProductContract.ps1`).
+- [x] 1.4 Derive `0.5.0-alpha.1` and candidate evidence from the actual delta; retain PENDING until separate promotion.
