@@ -2,8 +2,12 @@
 
 ## MODIFIED Requirements
 
-### Requirement: Die Operator-CLI delegiert reale Produktfunktionen
-Die Spectra-Operator-CLI MUST für Init entweder einen expliziten Projektvertrag oder einen geführten Assistenten verwenden und MUST Dry-run, Apply und stabile Fehlercodes beibehalten.
+### Requirement: Unified dispatcher
+Spectra MUST expose deterministic commands for initialization, validation, upgrade planning, upgrade, backup, restore and candidate checking. Initialization MUST accept either an explicit project contract or a guided assistant while preserving dry-run, apply and stable error codes.
+
+#### Scenario: Dry-run command
+- **WHEN** an operator invokes a supported command without Apply
+- **THEN** no workspace mutation occurs and a machine-readable plan is returned
 
 #### Scenario: Interaktiver Projektstart
 - **WHEN** `init -Guided` ohne Answer-Datei aufgerufen wird

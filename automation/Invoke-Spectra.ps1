@@ -43,10 +43,17 @@ try{
           $guidedArgs=@{OutputPath=$guidedConfig}
           if($AnswersPath){$guidedArgs.AnswersPath=$AnswersPath}else{$guidedArgs.Interactive=$true}
           & (Join-Path $PSScriptRoot 'New-SpectraInitConfiguration.ps1') @guidedArgs|Out-Null
-          $result.delegate='New-SpectraInitConfiguration.ps1 -> Initialize-SpectraProject.ps1'
-          $initArgs=@{ConfigPath=$guidedConfig;Destination=$workspacePath};if($Apply){$initArgs.Apply=$true}
-          $initResult=& (Join-Path $PSScriptRoot 'Initialize-SpectraProject.ps1') @initArgs|ConvertFrom-Json
-          $result.status=$initResult.status;$result.writes_performed=[bool]$initResult.writes_performed
+          if($Apply-and-not$SyntheticPilot){
+            if(-not$Version-or-not$CustomerAlias){throw 'SPECTRA_INIT_BINDING_REQUIRED'}
+            $result.delegate='New-SpectraInitConfiguration.ps1 -> New-ReleaseBoundProjectWorkspace.ps1'
+            & (Join-Path $PSScriptRoot 'New-ReleaseBoundProjectWorkspace.ps1') -Destination $workspacePath -Profile $Profile -CustomerAlias $CustomerAlias -Version $Version -ProductRoot $product -ConfigPath $guidedConfig|Out-Null
+            $result.status='APPLIED';$result.writes_performed=$true
+          }else{
+            $result.delegate='New-SpectraInitConfiguration.ps1 -> Initialize-SpectraProject.ps1'
+            $initArgs=@{ConfigPath=$guidedConfig;Destination=$workspacePath};if($Apply){$initArgs.Apply=$true}
+            $initResult=& (Join-Path $PSScriptRoot 'Initialize-SpectraProject.ps1') @initArgs|ConvertFrom-Json
+            $result.status=$initResult.status;$result.writes_performed=[bool]$initResult.writes_performed
+          }
         }finally{if($temporaryConfig-and(Test-Path $guidedConfig)){Remove-Item $guidedConfig -Force -ErrorAction SilentlyContinue}}
         break
       }
@@ -67,9 +74,9 @@ try{
       $result.status='APPLIED';$result.writes_performed=$true
     }
     'validate' {
-      $result.delegate='Test-SyntheticWorkspaceFixture.ps1'
       $global:LASTEXITCODE=0
-      & (Join-Path $PSScriptRoot 'Test-SyntheticWorkspaceFixture.ps1') -Path $workspacePath|Out-Null
+      if(Test-Path (Join-Path $workspacePath 'workspace.yaml') -PathType Leaf){$result.delegate='Test-CustomerWorkspace.ps1';& (Join-Path $PSScriptRoot 'Test-CustomerWorkspace.ps1') -Path $workspacePath -ProductRoot $product|Out-Null}
+      else{$result.delegate='Test-SyntheticWorkspaceFixture.ps1';& (Join-Path $PSScriptRoot 'Test-SyntheticWorkspaceFixture.ps1') -Path $workspacePath|Out-Null}
       Assert-SpectraDelegateExit
       $result.status='VALIDATED'
     }
