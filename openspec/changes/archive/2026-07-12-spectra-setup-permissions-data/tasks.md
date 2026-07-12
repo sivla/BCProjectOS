@@ -5,4 +5,4 @@
 - [x] 1.3 Positive Fixture und isolierte Negativmatrix nachweisen (beide Profile und 10 isolierte Fehlerklassen: PASS)
 - [x] 1.4 CLI, deutsche Dokumentation und Gap-Matrix aktualisieren (`Invoke-Spectra.ps1`, Quickstart, Gap-Matrix)
 - [x] 1.5 Upgrade, Backup/Restore, Regression, OpenSpec strict und Fresh Clone nachweisen (commitgebundene Wegwerfkopie: PASS)
-- [ ] 1.6 PENDING-Candidate aus belegtem Produktcommit erzeugen und commitgebunden pruefen
+- [x] 1.6 PENDING-Candidate aus belegtem Produktcommit erzeugen und commitgebunden pruefen (`0.12.0-alpha.1`, 124 Payloads, veröffentlichter Postcheck: PASS)
