@@ -12,7 +12,7 @@
     "blueprint_version":  "0.6.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "dae6d636647c2c18ffb400607cd0eed3164c7cc15c5d9558fd7d6e9c99e6efce",
+                    "bundle_digest":  "4aff31dc619c617b5597e395c28a4f3bd376661166036bdb76b6089d09a1cb36",
                     "file_count":  76,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
@@ -128,8 +128,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-ProjectStoryContract.ps1",
-                                      "sha256":  "4bab4293d14828fa0081347066934f6bf3cac7af8d223185cd36c69fabb36769",
-                                      "size_bytes":  8179
+                                      "sha256":  "5bb6900d976338dbb8d8159d363fe919ff871de2e256a24b79e6afd69a05ae13",
+                                      "size_bytes":  8647
                                   },
                                   {
                                       "path":  "automation/Test-PromotionWorkflow.ps1",
@@ -173,8 +173,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticProjectStoryHardeningNegative.ps1",
-                                      "sha256":  "34cd4a56814643663e7f917354893eb5f1b6ff6c9fb44a27a71ff906e14c9adb",
-                                      "size_bytes":  2739
+                                      "sha256":  "03ecb8959f0ae55b8c3a4f5f74fae9ab09e9709122b1270ed8e3631bed378e70",
+                                      "size_bytes":  3903
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticProjectStoryNegative.ps1",
