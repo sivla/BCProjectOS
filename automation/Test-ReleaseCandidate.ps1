@@ -1,7 +1,8 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$')][string]$Version = '0.1.0-alpha.1',
-    [switch]$RequirePublished
+    [switch]$RequirePublished,
+    [switch]$SkipProductContract
 )
 $ErrorActionPreference='Stop';Set-StrictMode -Version 2.0;$env:GIT_OPTIONAL_LOCKS='0'
 . (Join-Path $PSScriptRoot 'Release.Common.ps1')
@@ -64,7 +65,7 @@ if($sourceResolved){
     $payloadStatus=@(& git -C $root status --porcelain --untracked-files=all -- @payloadPaths 2>$null);if($payloadStatus.Count){Add-Finding 'PAYLOAD_NOT_COMMITTED' 'Product payload differs from HEAD.'}
 }
 
-$product=@(& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'automation\Test-ProductContract.ps1') 2>&1);if($LASTEXITCODE-ne0){Add-Finding 'PRODUCT_CONTRACT_FAILED' ($product-join' ')}
+if(-not$SkipProductContract){$product=@(& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'automation\Test-ProductContract.ps1') 2>&1);if($LASTEXITCODE-ne0){Add-Finding 'PRODUCT_CONTRACT_FAILED' ($product-join' ')}}
 $tagName="spectra-v$Version";& git -C $root show-ref --verify --quiet "refs/tags/$tagName";$tagExists=$LASTEXITCODE-eq0
 if(-not$tagExists){Add-Pending 'RELEASE_TAG_MISSING' "Annotated release tag is missing: $tagName"}else{
     $tagType=(& git -C $root cat-file -t "refs/tags/$tagName" 2>$null|Select-Object -First 1);if($tagType-ne'tag'){Add-Finding 'RELEASE_TAG_NOT_ANNOTATED' 'Release tag is not annotated.'}
