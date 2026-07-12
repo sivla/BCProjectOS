@@ -8,6 +8,9 @@ param(
   [string]$ProductRoot,
   [string]$CustomerAlias,
   [string]$ConfigPath,
+  [switch]$Guided,
+  [string]$AnswersPath,
+  [string]$ConfigOutput,
   [switch]$SyntheticPilot,
   [switch]$Apply,
   [switch]$Approve
@@ -31,6 +34,22 @@ $result=[ordered]@{product_id='spectra';command=$Command;mode=$mode;status='PLAN
 try{
   switch($Command){
     'init' {
+      if($Guided){
+        if($ConfigPath){throw 'SPECTRA_GUIDED_CONFIG_CONFLICT'}
+        $temporaryConfig=[string]::IsNullOrWhiteSpace($ConfigOutput)
+        $guidedBase=if($AnswersPath){Split-Path -Parent ([IO.Path]::GetFullPath($AnswersPath))}else{[IO.Path]::GetFullPath((Get-Location).Path)}
+        $guidedConfig=if($temporaryConfig){Join-Path $guidedBase ('.spectra-guided-'+[guid]::NewGuid().ToString('N')+'.json')}else{[IO.Path]::GetFullPath($ConfigOutput)}
+        try{
+          $guidedArgs=@{OutputPath=$guidedConfig}
+          if($AnswersPath){$guidedArgs.AnswersPath=$AnswersPath}else{$guidedArgs.Interactive=$true}
+          & (Join-Path $PSScriptRoot 'New-SpectraInitConfiguration.ps1') @guidedArgs|Out-Null
+          $result.delegate='New-SpectraInitConfiguration.ps1 -> Initialize-SpectraProject.ps1'
+          $initArgs=@{ConfigPath=$guidedConfig;Destination=$workspacePath};if($Apply){$initArgs.Apply=$true}
+          $initResult=& (Join-Path $PSScriptRoot 'Initialize-SpectraProject.ps1') @initArgs|ConvertFrom-Json
+          $result.status=$initResult.status;$result.writes_performed=[bool]$initResult.writes_performed
+        }finally{if($temporaryConfig-and(Test-Path $guidedConfig)){Remove-Item $guidedConfig -Force -ErrorAction SilentlyContinue}}
+        break
+      }
       if($ConfigPath){
         $result.delegate='Initialize-SpectraProject.ps1'
         $args=@{ConfigPath=$ConfigPath;Destination=$workspacePath}
