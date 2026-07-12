@@ -12,7 +12,7 @@ param(
   [switch]$Approve
 )
 $ErrorActionPreference='Stop'
-$supportedCommands=@('init','validate','validate-reconciliation','validate-provenance','validate-graph-coverage','validate-engagement-fit-standard','generate-setup-data','validate-setup-data','generate-uat-training-defects','validate-uat-training-defects','plan-upgrade','upgrade','backup','restore','candidate-check')
+$supportedCommands=@('init','validate','validate-reconciliation','validate-provenance','validate-graph-coverage','validate-engagement-fit-standard','generate-setup-data','validate-setup-data','generate-uat-training-defects','validate-uat-training-defects','generate-cutover-operations','validate-cutover-operations','plan-upgrade','upgrade','backup','restore','candidate-check')
 if($Command -notin $supportedCommands){throw 'SPECTRA_COMMAND_UNKNOWN'}
 
 function Assert-SpectraDelegateExit {
@@ -23,7 +23,7 @@ if($ProductRoot){$product=[IO.Path]::GetFullPath($ProductRoot)}
 $workspacePath=[IO.Path]::GetFullPath($Workspace)
 if($workspacePath -eq [IO.Path]::GetPathRoot($workspacePath)){throw 'SPECTRA_PATH_UNSAFE'}
 if($Target){$targetPath=[IO.Path]::GetFullPath($Target);if($targetPath -eq [IO.Path]::GetPathRoot($targetPath)){throw 'SPECTRA_TARGET_PATH_UNSAFE'}}
-$writeCommands=@('init','generate-setup-data','generate-uat-training-defects','upgrade','backup','restore')
+$writeCommands=@('init','generate-setup-data','generate-uat-training-defects','generate-cutover-operations','upgrade','backup','restore')
 if($Apply -and $Command -notin $writeCommands){throw 'SPECTRA_APPLY_NOT_SUPPORTED'}
 $mode=if($Apply){'apply'}else{'dry-run'}
 $result=[ordered]@{product_id='spectra';command=$Command;mode=$mode;status='PLANNED';code='SPECTRA_OK';workspace=$workspacePath;target=if($Target){$targetPath}else{$null};writes_performed=$false;delegate=$null}
@@ -93,6 +93,17 @@ try{
     'validate-uat-training-defects' {
       $result.delegate='Test-UatTrainingDefects.ps1'
       & (Join-Path $PSScriptRoot 'Test-UatTrainingDefects.ps1') -Path $workspacePath|Out-Null
+      $result.status='VALIDATED'
+    }
+    'generate-cutover-operations' {
+      $result.delegate='New-SyntheticCutoverOperationsHandover.ps1'
+      if(-not $Apply){break}
+      & (Join-Path $PSScriptRoot 'New-SyntheticCutoverOperationsHandover.ps1') -Destination $workspacePath -Profile $Profile|Out-Null
+      $result.status='APPLIED';$result.writes_performed=$true
+    }
+    'validate-cutover-operations' {
+      $result.delegate='Test-CutoverOperationsHandover.ps1'
+      & (Join-Path $PSScriptRoot 'Test-CutoverOperationsHandover.ps1') -Path $workspacePath|Out-Null
       $result.status='VALIDATED'
     }
     'plan-upgrade' {

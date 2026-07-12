@@ -1,17 +1,18 @@
-# Spectra 1.0.0 Gap-Matrix nach 0.12.0-alpha.1
+# Spectra 1.0.0 Gap-Matrix nach 0.13.0-alpha.1
 
-Bewertungsbasis ist der veröffentlichte und gebundene Release `0.12.0-alpha.1`. Statuswerte sind `vorhanden`, `teilweise`, `fehlend` oder `unbewiesen`. Synthetische Evidence ist keine reale Kunden-, BC-, Steuer- oder Rechtsaktivität.
+Bewertungsbasis ist der veröffentlichte und gebundene Release `0.13.0-alpha.1`. Statuswerte sind `vorhanden`, `teilweise`, `fehlend` oder `unbewiesen`. Synthetische Evidence ist keine reale Kunden-, BC-, Steuer- oder Rechtsaktivität.
 
 ## Produkt- und Betriebsfähigkeit
 
 | Pflichtbereich | Status | Evidence | Verbleibende Hauptlücke |
 |---|---|---|---|
-| Produktkern/Schemas | teilweise | Engagement, Setup/Daten und UAT/Training/Defects | Cutover/Betriebsübergabe fehlt |
+| Produktkern/Schemas | teilweise | Engagement, Setup/Daten, UAT/Training/Defects und lokaler Betriebsdurchstich | unabhängige Pilotevidence fehlt |
 | Implementation-Profil | teilweise | deterministische Fachprofile und Installationsgates | unabhängiger Pilot bis Handover fehlt |
 | Support-only-Profil | teilweise | Operator- und Fachprofile | vollständiger Support-/Knowledge-Pilot fehlt |
 | Engagement/Fit-to-Standard | vorhanden | Scope, E2E-Prozesse, Fit/Gap und Entscheidungen | reale Kundenparameter bleiben Kundenevidence |
 | Setup/Berechtigungen/Daten | vorhanden | 14 Setupbereiche, SoD-Proben, acht Vorlagen und drei Wellen | reale Pilotevidence bleibt unbewiesen |
-| UAT/Training/Defects | teilweise | sieben Kernprozesse, vier Testpfade, Rollenbefähigung, Defect-/Exit-Gates | unabhängige Pilotevidence bleibt unbewiesen |
+| UAT/Training/Defects | vorhanden | sieben Kernprozesse, vier Testpfade, Rollenbefähigung, Defect-/Exit-Gates | unabhängige Pilotevidence bleibt unbewiesen |
+| Cutover/Betriebsübergabe | teilweise | lokaler Vertrag für Mock-Cutover, Go/No-Go, Hypercare, Restart, Support und Handover | Candidate, Release und unabhängiger Pilot fehlen |
 | Validatorplattform | vorhanden | Schema, referenzielle Regeln, stabile Fehlercodes und Negativmatrizen | neue Fachtypen je Release integrieren |
 | Upgrade | vorhanden | Dry-run, Konflikte, Apply, Wiederholung und Kundeninhaltschutz | RC-Kompatibilitätsmatrix fehlt |
 | Backup/Restore | vorhanden | Profil-Roundtrips und Recoverygates | großer unabhängiger Recoverypilot fehlt |
@@ -20,11 +21,11 @@ Bewertungsbasis ist der veröffentlichte und gebundene Release `0.12.0-alpha.1`.
 
 ## Aktiver Releaseblock
 
-`spectra-uat-training-defects` führt von der Testvorbereitung über rollenbezogene Befähigung und Defect-Retest bis zur Exit-Entscheidung. Das additive Delta begründet `0.13.0-alpha.1`. Cutover, Hypercare, Restart, Supportbetrieb und Handover sind ausdrücklich Nicht-Scope.
+`spectra-cutover-operations-handover` führt vom UAT-Exit über Mock-Cutover, Go/No-Go und Hypercare bis Restart, Supportannahme und Handover. Das additive Delta begründet `0.14.0-alpha.1`; RC- und 1.0-Reife werden nicht behauptet.
 
 ## Priorisierte Folgeblöcke bis 1.0
 
-1. Cutover und Betriebsübergabe: Mock-Cutover, Go-live, Hypercare, Restart, Support und Handover.
+1. Betriebsdurchstich `0.14.0-alpha.1` als Candidate prüfen und getrennt veröffentlichen.
 2. RC-Pilot: unabhängige Implementation- und Support-only-Piloten, Upgrade, Backup/Restore, Recovery und deutsche Handbücher ohne offene P1/P2.
 3. `1.0.0`: erst nach unabhängiger Evidence für alle Pflichtfähigkeiten.
 
