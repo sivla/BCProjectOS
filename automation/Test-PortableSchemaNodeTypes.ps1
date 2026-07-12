@@ -1,0 +1,2 @@
+$ErrorActionPreference='Stop';$v=('{"offer":{"id":"x"}}'|ConvertFrom-Json).offer
+if($null -eq $v){throw 'PORTABLE_NODE_NULL'};if($v -is [bool] -or $v -is [string] -or $v -is [ValueType]){throw 'PORTABLE_NODE_PRIMITIVE'};if($v -is [Collections.IList] -or $v.GetType().IsArray){throw 'PORTABLE_NODE_ARRAY'};if(@($v.PSObject.Properties).Count -le 0){throw 'PORTABLE_NODE_NOT_OBJECT'};Write-Host 'PASS: PSCustomObject JSON object node.'
