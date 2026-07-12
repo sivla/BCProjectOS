@@ -12,8 +12,8 @@
     "blueprint_version":  "0.7.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "a5d06fad96d28fbaf10db1df18cffa9b3d12033a92f0b553ae02ef932f7e6a07",
-                    "file_count":  84,
+                    "bundle_digest":  "24685824917c1cdec5156c549cccba45dc5b8118373c156ac7af367d4438d421",
+                    "file_count":  86,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
                                   {
@@ -30,6 +30,11 @@
                                       "path":  "automation/Backup-Workspace.ps1",
                                       "sha256":  "077e18ff0f84c5e37234a000ed9029e11079c088eb6509e45ca48302460dbffe",
                                       "size_bytes":  1800
+                                  },
+                                  {
+                                      "path":  "automation/Invoke-PortableFullConformance.ps1",
+                                      "sha256":  "0834f5249cedb5efda40b543e4e64bbcbe33a42dba167a43814ab75d8bea2a8a",
+                                      "size_bytes":  263
                                   },
                                   {
                                       "path":  "automation/Invoke-PortableSchemaValidation.ps1",
@@ -98,8 +103,8 @@
                                   },
                                   {
                                       "path":  "automation/Run-PortableConformanceExact.ps1",
-                                      "sha256":  "fbbd6d6da839c0218ae364b0cd86c12b9c30e99511ac92048cb8002776462b18",
-                                      "size_bytes":  271
+                                      "sha256":  "1be50c1fec297148859c94ab8c74b35b93289252882eddf899801d9e2c9dc10c",
+                                      "size_bytes":  265
                                   },
                                   {
                                       "path":  "automation/Test-BackupRestore.ps1",
@@ -155,6 +160,11 @@
                                       "path":  "automation/Test-PortableSchemaNodeTypes.ps1",
                                       "sha256":  "f99d52c1b8a5cb108c9230ad26d52af7c9802ad3f01e00d3d9cf1f8a0a4a0959",
                                       "size_bytes":  433
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableStructuralGates.ps1",
+                                      "sha256":  "c2226aac8a196f1d2677d94a70e2333ff311085eb733f21f908935ba1c0d1d7f",
+                                      "size_bytes":  747
                                   },
                                   {
                                       "path":  "automation/Test-ProductContract.ps1",
