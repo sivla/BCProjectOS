@@ -58,6 +58,10 @@ Die konkreten Operatorbefehle für beide Profile stehen in `notes/spectra-v1-int
 
 Spectra trennt die technische Workspaceform von der fachlichen Projektart. Guided Init unterstützt `implementation`, `support`, `fit-gap` und `migration` mit kuratierten Blueprintempfehlungen. Optionale Vorgängerprojekte werden ausschließlich über eine stabile read-only Referenz verbunden; Inhalte werden weder kopiert noch verändert. Der Vertrag und die Übergänge sind in `notes/spectra-project-scenarios.md` beschrieben.
 
+## Kundenworkspace und Knowledge Inbox
+
+Der kundenbezogene Kern führt Umgebungen, Gesellschaften, optionale Projekte, direkte Supportfälle, Wissen, Budgets, Lieferverpflichtungen sowie kundeninstanzgebundene Personen und Rollen. Die Knowledge Inbox bindet lokale Quellen unveränderlich und erzeugt ausschließlich Observations, Vergleiche und Proposals. Auch angenommene Vorschläge verändern den Workspace nicht automatisch. Der synthetische Quickstart steht in `notes/spectra-customer-workspace-knowledge-inbox.md`.
+
 Consumer-Bindungsvertrag pruefen:
 
 ```powershell
