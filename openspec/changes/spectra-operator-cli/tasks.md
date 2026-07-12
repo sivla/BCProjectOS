@@ -1,0 +1,8 @@
+- [x] 1.1 Define dispatcher contract, scope and SemVer rationale.
+- [x] 1.2 Implement deterministic dry-run dispatcher and stable codes.
+- [x] 1.3 Add isolated implementation/support-only pilot fixtures.
+- [x] 1.4 Add positive, negative and restart/rollback tests.
+- [x] 1.5 Complete delegated Apply flows and isolated recovery proof.
+- [x] 1.5a Evaluate the three anonymized BC learning candidates without scope drift.
+- [x] 1.5b Complete fresh-clone proof with the committed operator, recovery and product-contract suites.
+- [x] 1.6 Produce and verify the 0.8.0-alpha.1 candidate with pending binding, Git-blob checksums and full gates.

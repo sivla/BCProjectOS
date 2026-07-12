@@ -66,10 +66,10 @@ $manifest = [ordered]@{
     )
     excluded_from_payload = @($scope.excluded_roots)
     known_limits = @(
-        'No blank customer workspace generator',
-        'No productive external-file intake',
-        'No Project Twin snapshot or integration',
-        'No external-system writes'
+        'Candidate is not binding-eligible until promotion, annotated tag and final manifest verification',
+        'Operator pilots use isolated synthetic workspaces and provide no customer evidence',
+        'Baseline reconciliation and adapter provenance remain deferred pending commit-bound evidence',
+        'No Project Twin or live external-system integration'
     )
 }
 
