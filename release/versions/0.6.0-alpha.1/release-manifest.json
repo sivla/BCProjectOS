@@ -12,7 +12,7 @@
     "blueprint_version":  "0.6.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "0b3299148f05eaa69826db2999c10873f3cf8f0f90e6b7b868ce0a26fb3fb162",
+                    "bundle_digest":  "bdf1063b99b9e67dc4edcd2f58b521af46f7c5383b1837acf57fa49b7215964c",
                     "file_count":  75,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
@@ -163,8 +163,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticProjectStoryHardening.ps1",
-                                      "sha256":  "315b53134bc4ddf108062912ae14ed12342ced7f051ee7828bdcb0505f33e64c",
-                                      "size_bytes":  2754
+                                      "sha256":  "88e19c8e32730f68154b8501123aa3818bed2df9bcf464c9037faa284696da08",
+                                      "size_bytes":  2941
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticProjectStoryHardeningNegative.ps1",
@@ -343,8 +343,8 @@
                                   },
                                   {
                                       "path":  "schemas/project-story.schema.json",
-                                      "sha256":  "d5de5bd9779bac182b057f2ec9ec25cc79d8c043287f4dbb45f1a53b60058e5a",
-                                      "size_bytes":  553
+                                      "sha256":  "d70464450b20eb9ba00fedd49c260072c5a916f072314a9e7d1e5732f6568cc9",
+                                      "size_bytes":  1777
                                   },
                                   {
                                       "path":  "schemas/release-manifest.schema.json",
