@@ -14,6 +14,7 @@ Veröffentlichte Bewertungsbasis ist `spectra-v1.0.0-rc.1`. Die nachgelagerten I
 | UAT/Training/Defects | vorhanden | sieben Kernprozesse, vier Testpfade, Rollenbefähigung, Defect-/Exit-Gates | reale Abnahme bleibt Kundenwahrheit |
 | Cutover/Betriebsübergabe | vorhanden | Mock-Cutover, Go/No-Go, Hypercare, Restart, Support und Handover | reale Betriebsfreigabe bleibt Kundenwahrheit |
 | Projektinitialisierung | vorhanden | Guided Init, Projekt-/Ticketmapping, kuratierte Blueprints und final gebundene atomare Installation | unabhängige Releaseintegration der Folgeblöcke |
+| Projektarten/Lifecycle | vorhanden | Implementation, Support, Fit-Gap und Migration mit profilgerechten Empfehlungen und read-only Vorgängerreferenz | unabhängige Review und Releaseintegration |
 | Validatorplattform | vorhanden | Schema, Referenzen, stabile Fehlercodes und isolierte Negativmatrizen | neue Vertragstypen je Release weiter regressionsprüfen |
 | Upgrade | vorhanden | Dry-run, Konflikte, Apply, Wiederholung und Kundeninhaltschutz | integrierter finaler 1.0-Fresh-Clone-Proof |
 | Backup/Restore | vorhanden | beide releasegebunden initialisierten Profile werden gesichert, wiederhergestellt und erneut validiert | unabhängige Kontrolle des integrierten Proofs |

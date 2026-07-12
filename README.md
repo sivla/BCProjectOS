@@ -54,6 +54,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File automation/Test-SpectraV1Int
 
 Die konkreten Operatorbefehle für beide Profile stehen in `notes/spectra-v1-integrated-init-quickstart.md`.
 
+## Projektarten
+
+Spectra trennt die technische Workspaceform von der fachlichen Projektart. Guided Init unterstützt `implementation`, `support`, `fit-gap` und `migration` mit kuratierten Blueprintempfehlungen. Optionale Vorgängerprojekte werden ausschließlich über eine stabile read-only Referenz verbunden; Inhalte werden weder kopiert noch verändert. Der Vertrag und die Übergänge sind in `notes/spectra-project-scenarios.md` beschrieben.
+
 Consumer-Bindungsvertrag pruefen:
 
 ```powershell

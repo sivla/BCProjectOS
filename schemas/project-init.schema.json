@@ -12,6 +12,7 @@
     "project_id": {"type": "string", "pattern": "^PRJ-[A-Z0-9][A-Z0-9-]{2,47}$"},
     "project_name": {"type": "string", "minLength": 3},
     "profile": {"enum": ["implementation", "support-only"]},
+    "project_type": {"enum": ["implementation", "support", "fit-gap", "migration"]},
     "language": {"enum": ["de-DE", "en-US"]},
     "bc_package": {"const": "bc-basic-standard"},
     "processes": {"type": "array", "minItems": 1, "items": {"enum": ["finance", "p2p", "o2c", "cash-bank", "inventory", "closing", "vat-preview"]}},
@@ -20,7 +21,8 @@
     "referenced_spaces": {"type": "array", "items": {"$ref": "#/$defs/referencedSpace"}},
     "ticket_structure": {"$ref": "#/$defs/ticketStructure"},
     "blueprints": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^BPC-[A-Z0-9-]+$"}},
-    "onboarding_source": {"type": ["object", "null"], "additionalProperties": false, "required": ["path", "format"], "properties": {"path": {"type": "string", "minLength": 1}, "format": {"const": "spectra-portable-atlassian-v1"}}}
+    "onboarding_source": {"type": ["object", "null"], "additionalProperties": false, "required": ["path", "format"], "properties": {"path": {"type": "string", "minLength": 1}, "format": {"const": "spectra-portable-atlassian-v1"}}},
+    "predecessor": {"type": ["object", "null"], "additionalProperties": false, "required": ["project_id", "project_type", "relationship", "read_only"], "properties": {"project_id": {"type": "string", "pattern": "^PRJ-[A-Z0-9][A-Z0-9-]{2,47}$"}, "project_type": {"enum": ["implementation", "support", "fit-gap", "migration"]}, "relationship": {"enum": ["continues-as", "migrates-from", "onboards-from"]}, "read_only": {"const": true}}}
   },
   "$defs": {
     "space": {"type": "object", "additionalProperties": false, "required": ["id", "title"], "properties": {"id": {"type": "string", "pattern": "^SPACE-[A-Z0-9-]{3,40}$"}, "title": {"type": "string", "minLength": 3}}},

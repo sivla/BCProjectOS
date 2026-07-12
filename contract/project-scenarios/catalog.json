@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "product_id": "spectra",
+  "catalog_version": "1.0.0",
+  "scenarios": [
+    {
+      "project_type": "implementation",
+      "title": "Business-Central-Einführung",
+      "workspace_profile": "implementation",
+      "recommended_blueprints": ["BPC-CONFLUENCE-PROJECT", "BPC-JIRA-PROJECT", "BPC-BLANK-DOCUMENTS", "BPC-METADATA"],
+      "allowed_predecessor_types": ["fit-gap"],
+      "allowed_relationships": ["continues-as"]
+    },
+    {
+      "project_type": "support",
+      "title": "Support-Onboarding und Betreuung",
+      "workspace_profile": "support-only",
+      "recommended_blueprints": ["BPC-CONFLUENCE-PROJECT", "BPC-JIRA-PROJECT", "BPC-METADATA"],
+      "allowed_predecessor_types": ["implementation", "support", "migration"],
+      "allowed_relationships": ["onboards-from"]
+    },
+    {
+      "project_type": "fit-gap",
+      "title": "Discovery und Fit-to-Standard",
+      "workspace_profile": "implementation",
+      "recommended_blueprints": ["BPC-CONFLUENCE-PROJECT", "BPC-JIRA-PROJECT", "BPC-BLANK-DOCUMENTS", "BPC-METADATA"],
+      "allowed_predecessor_types": [],
+      "allowed_relationships": []
+    },
+    {
+      "project_type": "migration",
+      "title": "Migration auf Business Central",
+      "workspace_profile": "implementation",
+      "recommended_blueprints": ["BPC-CONFLUENCE-PROJECT", "BPC-JIRA-PROJECT", "BPC-BLANK-DOCUMENTS", "BPC-METADATA"],
+      "allowed_predecessor_types": ["fit-gap", "implementation"],
+      "allowed_relationships": ["migrates-from"]
+    }
+  ]
+}

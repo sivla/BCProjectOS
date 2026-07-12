@@ -31,7 +31,12 @@ $catalog=Test-SpectraBlueprintCatalog $productRoot
 $selectedBlueprints=@($config.blueprints)
 if(@($selectedBlueprints|Group-Object|Where-Object Count -gt 1).Count-gt0){throw 'INIT_BLUEPRINT_DUPLICATE'}
 foreach($blueprintId in $selectedBlueprints){if(@($catalog.blueprints|Where-Object id -eq $blueprintId).Count-ne1){throw 'INIT_BLUEPRINT_UNKNOWN'}}
-$recommendedBlueprints=if($config.profile-eq'implementation'){@('BPC-CONFLUENCE-PROJECT','BPC-JIRA-PROJECT','BPC-BLANK-DOCUMENTS','BPC-METADATA')}else{@('BPC-CONFLUENCE-PROJECT','BPC-JIRA-PROJECT','BPC-METADATA')}
+. (Join-Path $PSScriptRoot 'Project.Scenarios.ps1')
+$projectTypeProperty=$config.PSObject.Properties['project_type']
+$projectType=if($null-ne$projectTypeProperty-and-not[string]::IsNullOrWhiteSpace([string]$projectTypeProperty.Value)){[string]$projectTypeProperty.Value}elseif([string]$config.profile-eq'support-only'){'support'}else{'implementation'}
+$predecessorProperty=$config.PSObject.Properties['predecessor'];$predecessor=if($null-ne$predecessorProperty){$predecessorProperty.Value}else{$null}
+$scenario=Test-SpectraProjectScenarioSelection -Root $productRoot -ProjectType $projectType -Profile ([string]$config.profile) -Predecessor $predecessor -ProjectId ([string]$config.project_id)
+$recommendedBlueprints=@($scenario.recommended_blueprints)
 if($config.mode -eq 'onboard' -and $config.collaboration -ne 'existing-atlassian-readonly'){throw 'INIT_ONBOARDING_MODE_INVALID'}
 if($config.mode -ne 'onboard' -and $null -ne $config.onboarding_source){throw 'INIT_ONBOARDING_SOURCE_UNEXPECTED'}
 if(@($config.processes|Group-Object|Where-Object Count -gt 1).Count -gt 0){throw 'INIT_PROCESS_DUPLICATE'}
@@ -80,10 +85,10 @@ if($config.mode -eq 'onboard'){
 }
 
 $plan=[ordered]@{
-  schema_version=1;product_id='spectra';mode=$config.mode;project_id=$config.project_id;profile=$config.profile
+  schema_version=1;product_id='spectra';mode=$config.mode;project_id=$config.project_id;profile=$config.profile;project_type=$projectType
   destination=$destinationFull;project_space=$config.project_space.id;referenced_space_count=@($config.referenced_spaces).Count
   processes=@($config.processes);ticket_strategy=$config.ticket_structure.strategy;mapping_version=$config.ticket_structure.mapping_version
-  selected_blueprints=$selectedBlueprints;recommended_blueprints=$recommendedBlueprints
+  selected_blueprints=$selectedBlueprints;recommended_blueprints=$recommendedBlueprints;predecessor=$predecessor
   writes_performed=$false;status='PLANNED';source_inventory=$inventory
 }
 if(-not$Apply){$plan|ConvertTo-Json -Depth 8 -Compress;return}
@@ -94,9 +99,9 @@ try{
   foreach($dir in @('governance','collaboration','collaboration/pages','collaboration/issues','imports','openspec')){New-Item -ItemType Directory -Path (Join-Path $staging $dir)-Force|Out-Null}
   $contract=[ordered]@{
     schema_version=1;product_id='spectra';mode=$config.mode;project_id=$config.project_id;project_name=$config.project_name
-    profile=$config.profile;language=$config.language;bc_package=$config.bc_package;processes=@($config.processes);collaboration=$config.collaboration
+    profile=$config.profile;project_type=$projectType;language=$config.language;bc_package=$config.bc_package;processes=@($config.processes);collaboration=$config.collaboration
     project_space=$config.project_space;referenced_spaces=@($config.referenced_spaces);ticket_structure=$config.ticket_structure;source_inventory=$inventory
-    blueprints=@($selectedBlueprints);recommended_blueprints=@($recommendedBlueprints)
+    blueprints=@($selectedBlueprints);recommended_blueprints=@($recommendedBlueprints);predecessor=$predecessor
     customer_truth_boundary='workspace-owned';live_write_enabled=$false
   }
   Write-Utf8 (Join-Path $staging 'governance\project-init.json') (($contract|ConvertTo-Json -Depth 12)+"`n")
