@@ -19,3 +19,7 @@ Beide Artefakte sind kundenunabhängige Dateiverträge. Sie liegen in einem Cons
 ## Kompatibilität
 
 Die neuen Dateien sind optional und ändern weder `workspace.schema.json` noch bestehende 0.8-Bindungen. Der vorhandene Backup-/Restore-Vertrag nimmt sie als reguläre allowlisted Dateien auf. Upgrade bleibt für kundeneigene Dateien unverändert fail-closed und überschreibt die neuen Artefakte nicht.
+
+## Candidate-Bindung
+
+Der getrennte `0.9.0-alpha.1`-Candidate wird ausschließlich aus den exakten Git-Blobs des Funktionsstands erzeugt. Das Candidate-Manifest besitzt `manifest_state: candidate` und `source_commit: null`; Tag, finales Manifest und Veröffentlichungsstatus bleiben bis zum separaten Release-Gate ausstehend.

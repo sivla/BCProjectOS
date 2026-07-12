@@ -68,8 +68,8 @@ $manifest = [ordered]@{
     known_limits = @(
         'Candidate is not binding-eligible until promotion, annotated tag and final manifest verification',
         'Operator pilots use isolated synthetic workspaces and provide no customer evidence',
-        'Baseline reconciliation and adapter provenance remain deferred pending commit-bound evidence',
-        'No Project Twin or live external-system integration'
+        'Reconciliation records never assert invoices, postings, payments or productive activity',
+        'Adapter provenance is local and read-only; no live adapter, Project Twin write path or external-system integration'
     )
 }
 

@@ -16,3 +16,10 @@
 - [x] 3.2 Prove upgrade and backup/restore compatibility without overwriting customer-owned files (`automation/Test-Spectra09Compatibility.ps1`, `automation/Test-WorkspaceUpgrade.ps1`).
 - [x] 3.3 Run Product Contract, OpenSpec strict, diff/secret/customer-marker gates and fresh-clone proof.
 - [x] 3.4 Deliver one local function commit without Candidate, manifest, tag or release.
+
+## 4. Candidate 0.9.0-alpha.1
+
+- [x] 4.1 Freeze the implemented scope and record the backward-compatible SemVer rationale.
+- [x] 4.2 Generate deterministic Git-blob manifest and checksums with candidate/PENDING binding.
+- [x] 4.3 Run the complete contract, compatibility, security, OpenSpec and fresh-clone gates.
+- [x] 4.4 Deliver exactly one local Candidate commit without push, PR, tag or release.

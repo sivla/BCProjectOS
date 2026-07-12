@@ -17,8 +17,8 @@ Der veröffentlichte Spectra-Stand `0.8.0-alpha.1` besitzt Operator-, Validierun
 - keine Rechnung, Buchung, Zahlung oder produktive Leistungserfassung;
 - keine Übernahme von Kunden-, Projekt-, ID-, Wert-, Entscheidungs- oder Evidence-Inhalten aus der Anforderungsquelle;
 - kein Live-Adapter, kein Schreiben in Quellsysteme und keine Project-Twin-Aktion;
-- kein Candidate, finales Manifest, Tag oder Release in diesem Change.
+- kein finales Manifest, Tag, Release oder produktiver Fremdsystemzugriff.
 
 ## Releaseeinordnung
 
-Der Change ist ein Funktionsblock auf dem Weg zu Spectra 0.9. Eine konkrete Folgereleaseversion wird erst im getrennten Candidate-Zyklus aus vollständiger Evidence gebunden.
+Der additive, rückwärtskompatible Funktionsumfang gegenüber dem veröffentlichten `0.8.0-alpha.1` rechtfertigt den getrennten Candidate `0.9.0-alpha.1`. Der Candidate bleibt `PENDING_BCPROJECTOS_RELEASE`; `1.0.0` ist wegen noch ausstehender vollständiger Pilot-/RC-Evidence nicht gerechtfertigt.
