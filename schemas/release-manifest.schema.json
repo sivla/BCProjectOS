@@ -5,7 +5,7 @@
   "type": "object",
   "required": ["schema_version","product_id","release_version","release_kind","manifest_state","release_date","expected_tag","source_commit","consumer_mode","installable_blueprint","blueprint_version","payload","binding_requirements","excluded_from_payload","known_limits"],
   "properties": {
-    "schema_version": {"const": 1},
+    "schema_version": {"enum": [1, 2]},
     "product_id": {"const": "spectra"},
     "release_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"},
     "release_kind": {"enum": ["product_contract", "installable_blueprint"]},
@@ -13,6 +13,7 @@
     "release_date": {"type": "string", "format": "date"},
     "expected_tag": {"type": "string", "pattern": "^spectra-v[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"},
     "source_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+    "source_tree": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
     "consumer_mode": {"enum": ["CONTRACT_REFERENCE_ONLY", "INSTALLABLE_BLUEPRINT"]},
     "installable_blueprint": {"type": "boolean"},
     "blueprint_version": {"type": ["string", "null"], "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"},
@@ -47,27 +48,34 @@
   },
   "allOf": [
     {
-      "if": {"properties": {"installable_blueprint": {"const": true}}},
+      "if": {"properties": {"schema_version": {"const": 2}}},
+      "then": {"required": ["source_tree"]}
+    },
+    {
+      "if": {"properties": {"manifest_state": {"const": "candidate"}}},
       "then": {
         "properties": {
+          "schema_version": {"const": 2},
           "release_kind": {"const": "installable_blueprint"},
-          "manifest_state": {"enum": ["candidate", "final"]},
-          "consumer_mode": {"const": "INSTALLABLE_BLUEPRINT"},
-          "source_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
-          "blueprint_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"}
-        }
-      },
-      "else": {
-        "properties": {
-          "release_kind": {"const": "product_contract"},
+          "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "source_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
           "consumer_mode": {"const": "CONTRACT_REFERENCE_ONLY"},
-          "blueprint_version": {"type": "null"}
+          "installable_blueprint": {"const": false},
+          "blueprint_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"}
         }
       }
     },
     {
-      "if": {"properties": {"manifest_state": {"const": "final"}, "installable_blueprint": {"const": true}}},
-      "then": {"properties": {"source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"}}}
+      "if": {"properties": {"manifest_state": {"const": "final"}}},
+      "then": {
+        "properties": {
+          "release_kind": {"const": "installable_blueprint"},
+          "consumer_mode": {"const": "INSTALLABLE_BLUEPRINT"},
+          "installable_blueprint": {"const": true},
+          "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "blueprint_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"}
+        }
+      }
     }
   ],
   "additionalProperties": false

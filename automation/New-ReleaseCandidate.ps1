@@ -6,6 +6,7 @@ param(
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')]
     [string]$ReleaseDate = '2026-07-11',
 
+    [Parameter(Mandatory=$true)]
     [string]$SourceCommit
 )
 
@@ -18,38 +19,31 @@ $env:GIT_OPTIONAL_LOCKS = '0'
 $root = Get-BCProjectOSRoot
 $repoRoot = $root
 $scope = Get-BCProjectOSReleaseScope -Root $root
-$files = @(Get-BCProjectOSPayloadFiles -Root $root -Scope $scope)
-$records = @(Get-BCProjectOSPayloadRecords -Files $files)
-$checksumsText = Get-BCProjectOSChecksumsText -Records $records
-$bundleDigest = Get-BCProjectOSTextSha256 -Text $checksumsText
-$resolvedSourceCommit = $null
-$manifestState = 'candidate'
-
-if (-not [string]::IsNullOrWhiteSpace($SourceCommit)) {
-    $resolvedOutput = @(& git -C $repoRoot rev-parse "$SourceCommit`^{commit}" 2>$null)
-    $resolvedExitCode = $LASTEXITCODE
-    $resolvedSourceCommit = $resolvedOutput | Select-Object -First 1
-    if ($resolvedExitCode -ne 0 -or [string]$resolvedSourceCommit -notmatch '^[0-9a-f]{40}$') {
-        throw "Source commit cannot be resolved: $SourceCommit"
-    }
-    $manifestState = 'final'
-}
-
-$records = if ($null -ne $resolvedSourceCommit) { @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision $resolvedSourceCommit -Scope $scope) } else { @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision 'HEAD' -Scope $scope) }
+$resolvedOutput = @(& git -C $repoRoot rev-parse "$SourceCommit`^{commit}" 2>$null)
+$resolvedSourceCommit = $resolvedOutput | Select-Object -First 1
+if ($LASTEXITCODE -ne 0 -or [string]$resolvedSourceCommit -notmatch '^[0-9a-f]{40}$') { throw "CANDIDATE_SOURCE_COMMIT_INVALID:$SourceCommit" }
+$head = (& git -C $repoRoot rev-parse 'HEAD^{commit}').Trim()
+if ($resolvedSourceCommit -ne $head) { throw 'CANDIDATE_SOURCE_MUST_BE_HEAD' }
+$sourceTree = (& git -C $repoRoot rev-parse "$resolvedSourceCommit`^{tree}").Trim()
+$releaseMetadataPath = "release/versions/$Version/release-manifest.json"
+$savedPreference=$ErrorActionPreference;$ErrorActionPreference='Continue';& git -C $repoRoot cat-file -e "$resolvedSourceCommit`:$releaseMetadataPath" 2>$null;$sourceContainsCandidate=$LASTEXITCODE-eq0;$ErrorActionPreference=$savedPreference
+if ($sourceContainsCandidate) { throw 'CANDIDATE_SOURCE_SELF_REFERENCE' }
+$records = @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision $resolvedSourceCommit -Scope $scope)
 $checksumsText = Get-BCProjectOSChecksumsText -Records $records
 $bundleDigest = Get-BCProjectOSTextSha256 -Text $checksumsText
 
 $manifest = [ordered]@{
-    schema_version = 1
+    schema_version = 2
     product_id = 'spectra'
     release_version = $Version
     release_kind = 'installable_blueprint'
-    manifest_state = $manifestState
+    manifest_state = 'candidate'
     release_date = $ReleaseDate
     expected_tag = "spectra-v$Version"
     source_commit = $resolvedSourceCommit
-    consumer_mode = 'INSTALLABLE_BLUEPRINT'
-    installable_blueprint = $true
+    source_tree = $sourceTree
+    consumer_mode = 'CONTRACT_REFERENCE_ONLY'
+    installable_blueprint = $false
     blueprint_version = $Version
     payload = [ordered]@{
         digest_algorithm = 'SHA-256'
@@ -61,12 +55,12 @@ $manifest = [ordered]@{
     binding_requirements = @(
         'annotated immutable release tag',
         'resolved tag commit',
-        'matching source commit',
+        'matching source commit and source tree',
         'matching payload bundle digest'
     )
     excluded_from_payload = @($scope.excluded_roots)
     known_limits = @(
-        'Candidate is not binding-eligible until promotion, annotated tag and final manifest verification',
+        'Candidate is source-bound but not installable or release-bound until promotion, annotated tag and final manifest verification',
         'Operator pilots use isolated synthetic workspaces and provide no customer evidence',
         'Reconciliation records never assert invoices, postings, payments or productive activity',
         'Adapter provenance is local and read-only; no live adapter, Project Twin write path or external-system integration'
@@ -81,9 +75,9 @@ $manifestJson = ($manifest | ConvertTo-Json -Depth 10) + "`n"
 Write-BCProjectOSUtf8File -Path $checksumsPath -Content $checksumsText
 Write-BCProjectOSUtf8File -Path $manifestPath -Content $manifestJson
 
-Write-Host "PASS: Prepared BCProjectOS $Version $manifestState manifest with $($records.Count) payload files."
+Write-Host "PASS: Prepared BCProjectOS $Version source-bound candidate manifest with $($records.Count) payload files."
 Write-Host "Bundle digest: $bundleDigest"
 Write-Host "Expected tag: spectra-v$Version"
-if ($manifestState -eq 'candidate') {
-    Write-Host 'PENDING: No source commit is recorded; this candidate is not binding-eligible.'
-}
+Write-Host "Source commit: $resolvedSourceCommit"
+Write-Host "Source tree: $sourceTree"
+Write-Host 'PENDING: Candidate is non-installable until separate promotion, tag and release verification.'
