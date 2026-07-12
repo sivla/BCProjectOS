@@ -1,0 +1,4 @@
+- [ ] 1.1 Implement deterministic backup manifest and exclusions.
+- [ ] 1.2 Implement dry-run and atomic restore.
+- [ ] 1.3 Add roundtrip and negative recovery fixtures.
+- [ ] 1.4 Derive SemVer and candidate evidence from actual delta.
