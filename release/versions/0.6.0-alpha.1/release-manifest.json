@@ -12,8 +12,8 @@
     "blueprint_version":  "0.6.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "bdf1063b99b9e67dc4edcd2f58b521af46f7c5383b1837acf57fa49b7215964c",
-                    "file_count":  75,
+                    "bundle_digest":  "b318fef7b79346023b67214d111c9e1a8d188cec636ee8941db0b102923e1983",
+                    "file_count":  76,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
                                   {
@@ -58,8 +58,8 @@
                                   },
                                   {
                                       "path":  "automation/New-SyntheticProjectStoryHardening.ps1",
-                                      "sha256":  "beae6591f846291ef9ff3a5847d50085a38dfa734b5c7d1f838a59a0b028ae28",
-                                      "size_bytes":  2836
+                                      "sha256":  "737b96cbd4b6d85310813c589253b3dbd411236319ef300251e94cd67f8bfe3f",
+                                      "size_bytes":  3570
                                   },
                                   {
                                       "path":  "automation/New-SyntheticWorkspaceControlFixture.ps1",
@@ -127,6 +127,11 @@
                                       "size_bytes":  13661
                                   },
                                   {
+                                      "path":  "automation/Test-ProjectStoryContract.ps1",
+                                      "sha256":  "555fb752128c9e6af18e47cbe35c9315c7a3f207a97b33a58d267d36d457e3ce",
+                                      "size_bytes":  4422
+                                  },
+                                  {
                                       "path":  "automation/Test-PromotionWorkflow.ps1",
                                       "sha256":  "7464a399946c426b8a9d181e76612eddf171ccb33a62c3539a86ba2da49088a0",
                                       "size_bytes":  3173
@@ -168,8 +173,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticProjectStoryHardeningNegative.ps1",
-                                      "sha256":  "5a0ef4189b8ade01bc0644aedff73e6b60abf88d3c61721a98c954fb2e145f28",
-                                      "size_bytes":  940
+                                      "sha256":  "7c977c9782ff5517e6109336e961f4ddd756504c11748cab90fb01e2985f175b",
+                                      "size_bytes":  1984
                                   },
                                   {
                                       "path":  "automation/Test-SyntheticProjectStoryNegative.ps1",
