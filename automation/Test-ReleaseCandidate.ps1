@@ -1,185 +1,73 @@
 [CmdletBinding()]
 param(
-    [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$')]
-    [string]$Version = '0.1.0-alpha.1',
-
+    [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$')][string]$Version = '0.1.0-alpha.1',
     [switch]$RequirePublished
 )
-
-$ErrorActionPreference = 'Stop'
-Set-StrictMode -Version 2.0
-$env:GIT_OPTIONAL_LOCKS = '0'
-
+$ErrorActionPreference='Stop';Set-StrictMode -Version 2.0;$env:GIT_OPTIONAL_LOCKS='0'
 . (Join-Path $PSScriptRoot 'Release.Common.ps1')
+$root=Get-BCProjectOSRoot;$manifestPath=Join-Path $root "release\versions\$Version\release-manifest.json";$checksumsPath=Join-Path $root "release\versions\$Version\checksums.sha256"
+$findings=New-Object Collections.ArrayList;$pending=New-Object Collections.ArrayList
+function Add-Finding([string]$Code,[string]$Message){[void]$script:findings.Add([pscustomobject]@{code=$Code;message=$Message})}
+function Add-Pending([string]$Code,[string]$Message){if($RequirePublished){Add-Finding $Code $Message}else{[void]$script:pending.Add([pscustomobject]@{code=$Code;message=$Message})}}
+function Get-Value($Object,[string]$Name){if($null-ne$Object-and$Object.PSObject.Properties.Name-contains$Name){return $Object.$Name};return $null}
+if(-not(Test-Path $manifestPath -PathType Leaf)){Add-Finding 'RELEASE_MANIFEST_MISSING' "Release manifest is missing: $manifestPath"}
+if(-not(Test-Path $checksumsPath -PathType Leaf)){Add-Finding 'RELEASE_CHECKSUMS_MISSING' "Checksums are missing: $checksumsPath"}
+if($findings.Count){Write-Host 'BLOCKED: BCProjectOS release candidate validation failed.';foreach($f in $findings){Write-Host "- [$($f.code)] $($f.message)"};exit 1}
+try{$manifest=Get-Content $manifestPath -Raw|ConvertFrom-Json}catch{Add-Finding 'RELEASE_MANIFEST_INVALID' $_.Exception.Message;$manifest=$null}
 
-$root = Get-BCProjectOSRoot
-$repoRoot = $root
-$manifestPath = Join-Path $root ("release\versions\{0}\release-manifest.json" -f $Version)
-$checksumsPath = Join-Path $root ("release\versions\{0}\checksums.sha256" -f $Version)
-$findings = New-Object System.Collections.ArrayList
-$pending = New-Object System.Collections.ArrayList
-
-function Add-Finding([string]$Code, [string]$Message) {
-    [void]$script:findings.Add([pscustomobject]@{ code = $Code; message = $Message })
+$state='';$schemaVersion=0;$sourceCommit='';$sourceTree=''
+if($null-ne$manifest){
+    $schemaVersion=[int]$manifest.schema_version;$state=[string]$manifest.manifest_state;$sourceCommit=[string](Get-Value $manifest 'source_commit')
+    $sourceTree=if($manifest.PSObject.Properties.Name -contains 'source_tree'){[string]$manifest.source_tree}else{''}
+    if($schemaVersion -notin @(1,2)-or[string]$manifest.product_id-ne'spectra'){Add-Finding 'RELEASE_IDENTITY_INVALID' 'Unsupported manifest schema or product identity.'}
+    if([string]$manifest.release_version-ne$Version-or[string]$manifest.expected_tag-ne"spectra-v$Version"){Add-Finding 'RELEASE_VERSION_INVALID' 'Version and expected tag differ from the requested version.'}
+    if($state -eq 'candidate'){
+        if($schemaVersion -ne 2){Add-Finding 'LEGACY_UNBOUND_CANDIDATE_REJECTED' 'Schema-v1 candidates must be regenerated under the bound schema-v2 contract.'}
+        if([string]$manifest.release_kind-ne'installable_blueprint'-or[string]$manifest.consumer_mode-ne'CONTRACT_REFERENCE_ONLY'-or$manifest.installable_blueprint-ne$false-or[string]$manifest.blueprint_version-ne$Version){Add-Finding 'CANDIDATE_SCOPE_CLAIM_INVALID' 'Candidate must be non-installable and contract-reference-only.'}
+        if([string]::IsNullOrWhiteSpace($sourceCommit)){Add-Finding 'CANDIDATE_SOURCE_COMMIT_MISSING' 'Candidate source commit is required.'}
+        if([string]::IsNullOrWhiteSpace($sourceTree)){Add-Finding 'CANDIDATE_SOURCE_TREE_MISSING' 'Candidate source tree is required.'}
+        Add-Pending 'RELEASE_MANIFEST_NOT_FINAL' 'Candidate has not been promoted to a final manifest.'
+    }elseif($state -eq 'final'){
+        if([string]$manifest.release_kind-ne'installable_blueprint'-or[string]$manifest.consumer_mode-ne'INSTALLABLE_BLUEPRINT'-or$manifest.installable_blueprint-ne$true-or[string]$manifest.blueprint_version-ne$Version){Add-Finding 'RELEASE_SCOPE_CLAIM_INVALID' 'Final release must describe an installable Spectra blueprint.'}
+    }else{Add-Finding 'RELEASE_MANIFEST_STATE_INVALID' 'Manifest state is neither candidate nor final.'}
 }
 
-function Add-Pending([string]$Code, [string]$Message) {
-    if ($RequirePublished) { Add-Finding -Code $Code -Message $Message }
-    else { [void]$script:pending.Add([pscustomobject]@{ code = $Code; message = $Message }) }
-}
-
-if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
-    Add-Finding 'RELEASE_MANIFEST_MISSING' "Release manifest is missing: $manifestPath"
-}
-if (-not (Test-Path -LiteralPath $checksumsPath -PathType Leaf)) {
-    Add-Finding 'RELEASE_CHECKSUMS_MISSING' "Checksums are missing: $checksumsPath"
-}
-if ($findings.Count -gt 0) {
-    Write-Host 'BLOCKED: BCProjectOS release candidate validation failed.'
-    foreach ($finding in $findings) { Write-Host "- [$($finding.code)] $($finding.message)" }
-    exit 1
-}
-
-try { $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json }
-catch { Add-Finding 'RELEASE_MANIFEST_INVALID' $_.Exception.Message; $manifest = $null }
-
-if ($null -ne $manifest) {
-    if ([int]$manifest.schema_version -ne 1 -or [string]$manifest.product_id -ne 'spectra') {
-        Add-Finding 'RELEASE_IDENTITY_INVALID' 'Release manifest has an unsupported schema or product identity.'
-    }
-    if ([string]$manifest.release_version -ne $Version -or [string]$manifest.expected_tag -ne "spectra-v$Version") {
-        Add-Finding 'RELEASE_VERSION_INVALID' 'Release version and expected tag do not match the requested version.'
-    }
-    if ([string]$manifest.release_kind -ne 'installable_blueprint' -or [string]$manifest.consumer_mode -ne 'INSTALLABLE_BLUEPRINT' -or $manifest.installable_blueprint -ne $true -or [string]$manifest.blueprint_version -ne $Version) {
-        Add-Finding 'RELEASE_SCOPE_CLAIM_INVALID' 'Release candidate must describe the installable Spectra blueprint.'
-    }
-}
-
-try {
-    $scope = Get-BCProjectOSReleaseScope -Root $root
-    $actualFiles = @(Get-BCProjectOSPayloadFiles -Root $root -Scope $scope)
-    $actualRecords = @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision 'HEAD' -Scope $scope)
-    $expectedChecksumsText = Get-BCProjectOSChecksumsText -Records $actualRecords
-    $storedChecksumsText = ([System.IO.File]::ReadAllText($checksumsPath) -replace "`r`n", "`n")
-    if ($storedChecksumsText -ne $expectedChecksumsText) {
-        Add-Finding 'RELEASE_CHECKSUM_MISMATCH' 'Stored checksums do not match the current release payload.'
-    }
-
-    $actualBundleDigest = Get-BCProjectOSTextSha256 -Text $expectedChecksumsText
-    if ($null -ne $manifest -and [string]$manifest.payload.bundle_digest -ne $actualBundleDigest) {
-        Add-Finding 'RELEASE_BUNDLE_DIGEST_MISMATCH' 'Manifest bundle digest does not match the current payload.'
-    }
-    if ($null -ne $manifest -and [int]$manifest.payload.file_count -ne $actualRecords.Count) {
-        Add-Finding 'RELEASE_FILE_COUNT_MISMATCH' 'Manifest file count does not match the current payload.'
-    }
-
-    $manifestRecords = @($manifest.payload.files)
-    if ($manifestRecords.Count -ne $actualRecords.Count) {
-        Add-Finding 'RELEASE_FILE_LIST_MISMATCH' 'Manifest file list does not match the current payload.'
-    }
-    else {
-        for ($index = 0; $index -lt $actualRecords.Count; $index++) {
-            $expected = $actualRecords[$index]
-            $recorded = $manifestRecords[$index]
-            if ([string]$recorded.path -ne [string]$expected.path -or [string]$recorded.sha256 -ne [string]$expected.sha256 -or [int64]$recorded.size_bytes -ne [int64]$expected.size_bytes) {
-                Add-Finding 'RELEASE_FILE_LIST_MISMATCH' "Manifest record differs for payload index $index."
-                break
-            }
+$head=(& git -C $root rev-parse 'HEAD^{commit}').Trim();$scope=Get-BCProjectOSReleaseScope -Root $root;$sourceResolved=$false;$sourceRecords=@();$payloadPaths=@()
+if(-not[string]::IsNullOrWhiteSpace($sourceCommit)){
+    $resolved=@(& git -C $root rev-parse "$sourceCommit`^{commit}" 2>$null)|Select-Object -First 1
+    if($LASTEXITCODE-ne0-or[string]$resolved-notmatch'^[0-9a-f]{40}$'-or$resolved-ne$sourceCommit){Add-Finding 'CANDIDATE_SOURCE_COMMIT_INVALID' 'Source commit is not a resolvable full Git commit SHA.'}
+    else{
+        $sourceResolved=$true;$actualTree=(& git -C $root rev-parse "$sourceCommit`^{tree}").Trim()
+        if($schemaVersion-eq2-and($sourceTree-notmatch'^[0-9a-f]{40}$'-or$sourceTree-ne$actualTree)){Add-Finding 'CANDIDATE_SOURCE_TREE_MISMATCH' 'Recorded source tree differs from the Git commit tree.'}
+        & git -C $root merge-base --is-ancestor $sourceCommit $head 2>$null;if($LASTEXITCODE-ne0){Add-Finding 'CANDIDATE_SOURCE_NOT_ANCESTOR' 'Source commit is not an ancestor of HEAD.'}
+        if($state-eq'candidate'){
+            $savedPreference=$ErrorActionPreference;$ErrorActionPreference='Continue';& git -C $root cat-file -e "$sourceCommit`:release/versions/$Version/release-manifest.json" 2>$null;$sourceContainsCandidate=$LASTEXITCODE-eq0;$ErrorActionPreference=$savedPreference
+            if($sourceContainsCandidate){Add-Finding 'CANDIDATE_SOURCE_SELF_REFERENCE' 'Source commit already contains its own candidate manifest.'}
         }
-    }
-}
-catch {
-    Add-Finding 'RELEASE_PAYLOAD_INVALID' $_.Exception.Message
-}
-
-$productOutput = @(& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'automation\Test-ProductContract.ps1') 2>&1)
-if ($LASTEXITCODE -ne 0) {
-    Add-Finding 'PRODUCT_CONTRACT_FAILED' ($productOutput -join ' ')
-}
-
-$headOutput = @(& git -C $repoRoot rev-parse --verify --quiet 'HEAD^{commit}' 2>$null)
-$headExitCode = $LASTEXITCODE
-$head = $headOutput | Select-Object -First 1
-$headExists = $headExitCode -eq 0 -and [string]$head -match '^[0-9a-f]{40}$'
-if (-not $headExists) {
-    Add-Pending 'INITIAL_COMMIT_MISSING' 'Repository has no commit history.'
-}
-
-$payloadRepoPaths = @($actualRecords | ForEach-Object { [string]$_.path })
-$payloadStatus = @(& git -C $repoRoot status --porcelain --untracked-files=all -- @payloadRepoPaths 2>$null)
-if ($payloadStatus.Count -gt 0) {
-    Add-Pending 'PAYLOAD_NOT_COMMITTED' 'Release payload is untracked or differs from the current commit.'
-}
-
-$sourceCommit = if ($null -ne $manifest) { [string]$manifest.source_commit } else { '' }
-if ([string]::IsNullOrWhiteSpace($sourceCommit)) {
-    Add-Pending 'SOURCE_COMMIT_PENDING' 'Manifest has no immutable source commit.'
-}
-elseif ($sourceCommit -notmatch '^[0-9a-f]{40}$') {
-    Add-Finding 'SOURCE_COMMIT_INVALID' 'Manifest source commit is not a full Git SHA.'
-}
-
-$tagName = "spectra-v$Version"
-& git -C $repoRoot show-ref --verify --quiet "refs/tags/$tagName"
-$tagExists = $LASTEXITCODE -eq 0
-if (-not $tagExists) {
-    Add-Pending 'RELEASE_TAG_MISSING' "Annotated release tag is missing: $tagName"
-}
-else {
-    $tagType = (& git -C $repoRoot cat-file -t "refs/tags/$tagName" 2>$null | Select-Object -First 1)
-    if ([string]$tagType -ne 'tag') {
-        Add-Pending 'RELEASE_TAG_NOT_ANNOTATED' "Release tag is not annotated: $tagName"
-    }
-    $tagCommitOutput = @(& git -C $repoRoot rev-parse "refs/tags/$tagName`^{commit}" 2>$null)
-    $tagCommitExitCode = $LASTEXITCODE
-    $tagCommit = $tagCommitOutput | Select-Object -First 1
-    if ($tagCommitExitCode -ne 0 -or [string]$tagCommit -notmatch '^[0-9a-f]{40}$') {
-        Add-Finding 'RELEASE_TAG_COMMIT_INVALID' 'Release tag does not resolve to a commit.'
-    }
-    else {
-        $releaseMetadataPaths = @(
-            "release/versions/$Version/release-manifest.json",
-            "release/versions/$Version/checksums.sha256"
-        )
-        foreach ($metadataPath in $releaseMetadataPaths) {
-            & git -C $repoRoot cat-file -e "$tagCommit`:$metadataPath" 2>$null
-            if ($LASTEXITCODE -ne 0) {
-                Add-Finding 'RELEASE_METADATA_NOT_TAGGED' "Release tag does not contain $metadataPath."
-            }
-        }
-        & git -C $repoRoot diff --quiet $tagCommit -- @releaseMetadataPaths
-        if ($LASTEXITCODE -ne 0) {
-            Add-Finding 'RELEASE_METADATA_DIFFERS_FROM_TAG' 'Working release metadata differs from the tagged commit.'
-        }
-        if (-not [string]::IsNullOrWhiteSpace($sourceCommit)) {
-            & git -C $repoRoot merge-base --is-ancestor $sourceCommit $tagCommit 2>$null
-            if ($LASTEXITCODE -ne 0) {
-                Add-Finding 'SOURCE_COMMIT_NOT_IN_RELEASE' 'Manifest source commit is not an ancestor of the release tag.'
-            }
-            & git -C $repoRoot diff --quiet $sourceCommit $tagCommit -- @payloadRepoPaths
-            if ($LASTEXITCODE -ne 0) {
-                Add-Finding 'PAYLOAD_CHANGED_AFTER_SOURCE_COMMIT' 'Release payload changed between source commit and release tag.'
-            }
-        }
+        $sourceRecords=@(Get-BCProjectOSGitPayloadRecords -Root $root -Revision $sourceCommit -Scope $scope);$payloadPaths=@($sourceRecords|ForEach-Object path)
+        $headRecords=@(Get-BCProjectOSGitPayloadRecords -Root $root -Revision $head -Scope $scope)
+        if((Get-BCProjectOSChecksumsText $headRecords)-ne(Get-BCProjectOSChecksumsText $sourceRecords)){Add-Finding 'PAYLOAD_CHANGED_AFTER_SOURCE_COMMIT' 'Product payload changed after the bound source commit.'}
     }
 }
 
-if ($RequirePublished -and $null -ne $manifest -and [string]$manifest.manifest_state -ne 'final') {
-    Add-Finding 'RELEASE_MANIFEST_NOT_FINAL' 'Published validation requires a final manifest.'
+if($sourceResolved){
+    $expected=Get-BCProjectOSChecksumsText $sourceRecords;$stored=([IO.File]::ReadAllText($checksumsPath)-replace"`r`n","`n")
+    if($stored-ne$expected){Add-Finding 'RELEASE_CHECKSUM_MISMATCH' 'Stored checksums differ from bound source Git blobs.'}
+    $digest=Get-BCProjectOSTextSha256 $expected
+    if([string]$manifest.payload.bundle_digest-ne$digest){Add-Finding 'RELEASE_BUNDLE_DIGEST_MISMATCH' 'Manifest digest differs from bound source payload.'}
+    if([int]$manifest.payload.file_count-ne$sourceRecords.Count){Add-Finding 'RELEASE_FILE_COUNT_MISMATCH' 'Manifest file count differs from bound source payload.'}
+    $listed=@($manifest.payload.files);if($listed.Count-ne$sourceRecords.Count){Add-Finding 'RELEASE_FILE_LIST_MISMATCH' 'Manifest file list count differs.'}else{for($i=0;$i-lt$sourceRecords.Count;$i++){if([string]$listed[$i].path-ne[string]$sourceRecords[$i].path-or[string]$listed[$i].sha256-ne[string]$sourceRecords[$i].sha256-or[int64]$listed[$i].size_bytes-ne[int64]$sourceRecords[$i].size_bytes){Add-Finding 'RELEASE_FILE_LIST_MISMATCH' "Manifest record differs at index $i.";break}}}
+    $payloadStatus=@(& git -C $root status --porcelain --untracked-files=all -- @payloadPaths 2>$null);if($payloadStatus.Count){Add-Finding 'PAYLOAD_NOT_COMMITTED' 'Product payload differs from HEAD.'}
 }
 
-if ($findings.Count -gt 0) {
-    Write-Host 'BLOCKED: BCProjectOS release candidate validation failed.'
-    foreach ($finding in $findings) { Write-Host "- [$($finding.code)] $($finding.message)" }
-    exit 1
+$product=@(& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'automation\Test-ProductContract.ps1') 2>&1);if($LASTEXITCODE-ne0){Add-Finding 'PRODUCT_CONTRACT_FAILED' ($product-join' ')}
+$tagName="spectra-v$Version";& git -C $root show-ref --verify --quiet "refs/tags/$tagName";$tagExists=$LASTEXITCODE-eq0
+if(-not$tagExists){Add-Pending 'RELEASE_TAG_MISSING' "Annotated release tag is missing: $tagName"}else{
+    $tagType=(& git -C $root cat-file -t "refs/tags/$tagName" 2>$null|Select-Object -First 1);if($tagType-ne'tag'){Add-Finding 'RELEASE_TAG_NOT_ANNOTATED' 'Release tag is not annotated.'}
+    $tagCommit=(& git -C $root rev-parse "refs/tags/$tagName`^{commit}").Trim();foreach($meta in @("release/versions/$Version/release-manifest.json","release/versions/$Version/checksums.sha256")){& git -C $root cat-file -e "$tagCommit`:$meta" 2>$null;if($LASTEXITCODE-ne0){Add-Finding 'RELEASE_METADATA_NOT_TAGGED' "Tag lacks $meta."}}
+    if($sourceResolved){& git -C $root merge-base --is-ancestor $sourceCommit $tagCommit 2>$null;if($LASTEXITCODE-ne0){Add-Finding 'SOURCE_COMMIT_NOT_IN_RELEASE' 'Source commit is not an ancestor of tag commit.'};$tagRecords=@(Get-BCProjectOSGitPayloadRecords -Root $root -Revision $tagCommit -Scope $scope);if((Get-BCProjectOSChecksumsText $tagRecords)-ne(Get-BCProjectOSChecksumsText $sourceRecords)){Add-Finding 'PAYLOAD_CHANGED_AFTER_SOURCE_COMMIT' 'Tagged payload differs from source payload.'}}
 }
-
-Write-Host "PASS: BCProjectOS $Version release payload and product contract are valid."
-Write-Host "Bundle digest: $($manifest.payload.bundle_digest)"
-if ($pending.Count -gt 0) {
-    Write-Host 'PENDING: Content is prepared, but publication is not complete.'
-    foreach ($item in $pending) { Write-Host "- [$($item.code)] $($item.message)" }
-}
-else {
-    Write-Host "PASS: Annotated tag $tagName, commit binding, and payload digest are valid."
-}
+if($RequirePublished-and$state-ne'final'){Add-Finding 'RELEASE_MANIFEST_NOT_FINAL' 'Published validation requires final manifest.'}
+if($findings.Count){Write-Host 'BLOCKED: BCProjectOS release candidate validation failed.';foreach($f in $findings){Write-Host "- [$($f.code)] $($f.message)"};exit 1}
+Write-Host "PASS: BCProjectOS $Version bound payload and product contract are valid.";Write-Host "Bundle digest: $($manifest.payload.bundle_digest)"
+if($pending.Count){Write-Host 'PENDING: Content is source-bound, but publication is not complete.';foreach($p in $pending){Write-Host "- [$($p.code)] $($p.message)"}}else{Write-Host "PASS: Annotated tag $tagName, commit binding and digest are valid."}

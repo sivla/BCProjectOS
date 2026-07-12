@@ -1,0 +1,27 @@
+[CmdletBinding()]param()
+$ErrorActionPreference='Stop';Set-StrictMode -Version 2.0
+$root=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'));$temp=Join-Path ([IO.Path]::GetTempPath()) ('spectra-candidate-binding-'+[guid]::NewGuid().ToString('N'));$base=Join-Path $temp 'base';$version='9.8.7-alpha.1';$utf8=New-Object Text.UTF8Encoding($false)
+function Copy-Product([string]$Destination){New-Item -ItemType Directory -Force $Destination|Out-Null;foreach($rel in @('AGENTS.md','README.md','automation','catalogs','contract','examples\minimal-contract','schemas','tests\invalid','release')){$src=Join-Path $root $rel;$dst=Join-Path $Destination $rel;$parent=Split-Path -Parent $dst;if(-not(Test-Path $parent)){New-Item -ItemType Directory -Force $parent|Out-Null};Copy-Item $src $dst -Recurse -Force}}
+function Write-Manifest([string]$Repo,$Value){[IO.File]::WriteAllText((Join-Path $Repo "release\versions\$version\release-manifest.json"),(($Value|ConvertTo-Json -Depth 30)+"`n"),$utf8)}
+function Invoke-Validation([string]$Repo){$start=[Diagnostics.ProcessStartInfo]::new();$start.FileName='powershell.exe';$start.Arguments="-NoProfile -ExecutionPolicy Bypass -File `"$Repo\automation\Test-ReleaseCandidate.ps1`" -Version $version";$start.UseShellExecute=$false;$start.RedirectStandardOutput=$true;$start.RedirectStandardError=$true;$p=[Diagnostics.Process]::Start($start);$out=$p.StandardOutput.ReadToEnd();$err=$p.StandardError.ReadToEnd();$p.WaitForExit();[pscustomobject]@{Exit=$p.ExitCode;Output=$out;Error=$err}}
+function Mutate-Manifest([string]$Repo,[scriptblock]$Mutation){$path=Join-Path $Repo "release\versions\$version\release-manifest.json";$m=Get-Content $path -Raw|ConvertFrom-Json;&$Mutation $m;Write-Manifest $Repo $m}
+try{
+  Copy-Product $base;&git -C $base init -b main|Out-Null;&git -C $base config core.autocrlf false;&git -C $base config user.email candidate@example.invalid;&git -C $base config user.name 'Spectra Candidate';&git -C $base add -A;&git -C $base commit -m source|Out-Null
+  $source=(&git -C $base rev-parse HEAD).Trim();$tree=(&git -C $base rev-parse 'HEAD^{tree}').Trim();&powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $base 'automation\New-ReleaseCandidate.ps1') -Version $version -ReleaseDate 2026-07-12 -SourceCommit $source|Out-Null
+  $manifest=Get-Content (Join-Path $base "release\versions\$version\release-manifest.json") -Raw|ConvertFrom-Json
+  if([int]$manifest.schema_version-ne2-or$manifest.manifest_state-ne'candidate'-or$manifest.installable_blueprint-ne$false-or$manifest.consumer_mode-ne'CONTRACT_REFERENCE_ONLY'-or$manifest.source_commit-ne$source-or$manifest.source_tree-ne$tree){throw 'BOUND_CANDIDATE_GENERATION_FAILED'}
+  &git -C $base add release/versions/$version;&git -C $base commit -m candidate|Out-Null;$positive=Invoke-Validation $base;if($positive.Exit-ne0){throw "BOUND_CANDIDATE_POSITIVE_FAILED:$($positive.Output):$($positive.Error)"}
+  $cases=@(
+    @{name='null-source';code='CANDIDATE_SOURCE_COMMIT_MISSING';mutate={param($r)Mutate-Manifest $r {param($m)$m.source_commit=$null}}},
+    @{name='missing-source';code='CANDIDATE_SOURCE_COMMIT_MISSING';mutate={param($r)Mutate-Manifest $r {param($m)$m.PSObject.Properties.Remove('source_commit')}}},
+    @{name='wrong-tree';code='CANDIDATE_SOURCE_TREE_MISMATCH';mutate={param($r)Mutate-Manifest $r {param($m)$m.source_tree=('0'*40)}}},
+    @{name='installable';code='CANDIDATE_SCOPE_CLAIM_INVALID';mutate={param($r)Mutate-Manifest $r {param($m)$m.installable_blueprint=$true;$m.consumer_mode='INSTALLABLE_BLUEPRINT'}}},
+    @{name='digest';code='RELEASE_BUNDLE_DIGEST_MISMATCH';mutate={param($r)Mutate-Manifest $r {param($m)$m.payload.bundle_digest=('0'*64)}}},
+    @{name='payload';code='PAYLOAD_CHANGED_AFTER_SOURCE_COMMIT';mutate={param($r)[IO.File]::AppendAllText((Join-Path $r 'README.md'),'changed');&git -C $r add README.md;&git -C $r commit -m payload-change|Out-Null}},
+    @{name='self-reference';code='CANDIDATE_SOURCE_SELF_REFERENCE';mutate={param($r)$candidate=(&git -C $r rev-parse HEAD).Trim();$candidateTree=(&git -C $r rev-parse 'HEAD^{tree}').Trim();Mutate-Manifest $r {param($m)$m.source_commit=$candidate;$m.source_tree=$candidateTree}}},
+    @{name='legacy';code='LEGACY_UNBOUND_CANDIDATE_REJECTED';mutate={param($r)Mutate-Manifest $r {param($m)$m.schema_version=1;$m.source_commit=$null;$m.PSObject.Properties.Remove('source_tree');$m.installable_blueprint=$true;$m.consumer_mode='INSTALLABLE_BLUEPRINT'}}}
+  )
+  foreach($case in $cases){$repo=Join-Path $temp $case.name;&git clone --no-local --quiet $base $repo;&$case.mutate $repo;$result=Invoke-Validation $repo;if($result.Exit-ne1-or$result.Output-notmatch("\["+[regex]::Escape($case.code)+"\]")){throw "CANDIDATE_NEGATIVE_FAILED:$($case.name):$($result.Exit):$($result.Output):$($result.Error)"}}
+  $legacyFinal=Join-Path $temp 'legacy-final';&git clone --no-local --quiet $base $legacyFinal;Mutate-Manifest $legacyFinal {param($m)$m.schema_version=1;$m.manifest_state='final';$m.installable_blueprint=$true;$m.consumer_mode='INSTALLABLE_BLUEPRINT';$m.PSObject.Properties.Remove('source_tree')};$legacyResult=Invoke-Validation $legacyFinal;if($legacyResult.Exit-ne0){throw "LEGACY_FINAL_COMPATIBILITY_FAILED:$($legacyResult.Output):$($legacyResult.Error)"}
+  Write-Host "PASS: Gebundener nicht installierbarer Candidate, $($cases.Count) negative Fälle und Schema-v1-Finalkompatibilität."
+}finally{if(Test-Path $temp){Remove-Item $temp -Recurse -Force -ErrorAction SilentlyContinue}}

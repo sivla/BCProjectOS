@@ -28,6 +28,10 @@ Spectra unterscheidet den versionierten Produktvertrag vom installierbaren Kunde
 
 Der Manifestinhalt speichert keinen `release_commit`, weil ein Commit seine eigene noch nicht erzeugte SHA nicht widerspruchsfrei enthalten kann. Die massgebliche Release-Bindung ist der extern gepruefte, annotierte Tag-Commit. Der `source_commit` muss dessen Vorfahr sein; der Produktumfang darf sich zwischen Source- und Tag-Commit nicht veraendern. Version, Tag, Manifest, Produktumfang und Digest muessen gemeinsam uebereinstimmen.
 
+Neue Candidates verwenden Manifest-Schema v2. Sie binden einen bereits existierenden vollständigen `source_commit` und dessen `source_tree`, werden ausschließlich aus dessen Git-Blobs berechnet und erzwingen `installable_blueprint: false` sowie `consumer_mode: CONTRACT_REFERENCE_ONLY`. Der Source-Commit darf die eigene versionierte Candidate-Evidence noch nicht enthalten; damit bleibt die Bindung zirkularitätsfrei. Erst die getrennte Promotion erzeugt ein finales, installierbares Manifest.
+
+Bereits veröffentlichte Schema-v1-Finalmanifeste bleiben unverändert prüfbar. Schema-v1-Candidates, Candidates ohne Source-Commit/Tree und frühere Candidates mit `installable_blueprint: true` sind nicht migrationsfähig und müssen unter dem Schema-v2-Vertrag neu erzeugt werden.
+
 ## Synthetische Vorab-Fixtures
 
 Eine Vorab-Fixture ist kein Kundenworkspace und wird nicht gegen `workspace.schema.json` ausgegeben. Sie besitzt kein `workspace.yaml`, keine Kundenidentitaet und keine Produktversion. Ihre ausschliesslich testlokale Metadatei `synthetic-fixture.yaml` folgt `schemas/synthetic-workspace-fixture.schema.json` und belegt konstant `synthetic: true`, `installable: false` sowie `PENDING_BCPROJECTOS_RELEASE`. Erst echte Release-Evidence erlaubt die Erzeugung eines schema-validen Kundenworkspace mit releasegebundenen Versionsfeldern.
