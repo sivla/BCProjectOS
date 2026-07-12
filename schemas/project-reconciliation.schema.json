@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.bcprojectos.invalid/schemas/project-reconciliation.schema.json",
+  "title": "Spectra Project Reconciliation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","contract_version","record_type","reconciliation_id","product_id","profile","classification","synthetic","baseline","offer","actual","variance","truth_boundary"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+    "record_type": {"const": "project-reconciliation"},
+    "reconciliation_id": {"type": "string", "pattern": "^REC-[A-Z0-9][A-Z0-9-]{2,63}$"},
+    "product_id": {"const": "spectra"},
+    "profile": {"enum": ["implementation","support-only"]},
+    "classification": {"enum": ["synthetic-fixture","customer-workspace"]},
+    "synthetic": {"type": "boolean"},
+    "baseline": {"$ref": "#/$defs/financial_state"},
+    "offer": {"$ref": "#/$defs/financial_state"},
+    "actual": {"$ref": "#/$defs/financial_state"},
+    "variance": {"$ref": "#/$defs/variance"},
+    "truth_boundary": {"$ref": "#/$defs/truth_boundary"}
+  },
+  "$defs": {
+    "financial_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version","hours","rate","amount","currency"],
+      "properties": {
+        "version": {"type": "integer", "minimum": 1},
+        "hours": {"type": "number", "minimum": 0},
+        "rate": {"type": "number", "minimum": 0},
+        "amount": {"type": "number", "minimum": 0},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"}
+      }
+    },
+    "variance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hours","rate","amount","reason_code","reason"],
+      "properties": {
+        "hours": {"type": "number"},
+        "rate": {"type": "number"},
+        "amount": {"type": "number"},
+        "reason_code": {"enum": ["none","scope-change","efficiency","rate-change","timing","other-reviewed"]},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "truth_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner","source_of_truth","invoice_claim","productive_activity_claim","billing_status"],
+      "properties": {
+        "owner": {"enum": ["synthetic-fixture","customer"]},
+        "source_of_truth": {"enum": ["synthetic-fixture","customer-workspace"]},
+        "invoice_claim": {"type": "boolean"},
+        "productive_activity_claim": {"type": "boolean"},
+        "billing_status": {"enum": ["not-applicable","unverified"]}
+      }
+    }
+  }
+}
