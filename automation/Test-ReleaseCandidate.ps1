@@ -15,20 +15,24 @@ if(-not(Test-Path $checksumsPath -PathType Leaf)){Add-Finding 'RELEASE_CHECKSUMS
 if($findings.Count){Write-Host 'BLOCKED: BCProjectOS release candidate validation failed.';foreach($f in $findings){Write-Host "- [$($f.code)] $($f.message)"};exit 1}
 try{$manifest=Get-Content $manifestPath -Raw|ConvertFrom-Json}catch{Add-Finding 'RELEASE_MANIFEST_INVALID' $_.Exception.Message;$manifest=$null}
 
-$state='';$schemaVersion=0;$sourceCommit='';$sourceTree=''
+$state='';$schemaVersion=0;$sourceCommit='';$sourceTree='';$candidateSourceCommit='';$candidateSourceTree=''
 if($null-ne$manifest){
     $schemaVersion=[int]$manifest.schema_version;$state=[string]$manifest.manifest_state;$sourceCommit=[string](Get-Value $manifest 'source_commit')
     $sourceTree=if($manifest.PSObject.Properties.Name -contains 'source_tree'){[string]$manifest.source_tree}else{''}
-    if($schemaVersion -notin @(1,2)-or[string]$manifest.product_id-ne'spectra'){Add-Finding 'RELEASE_IDENTITY_INVALID' 'Unsupported manifest schema or product identity.'}
+    $candidateSourceCommit=[string](Get-Value $manifest 'candidate_source_commit');$candidateSourceTree=[string](Get-Value $manifest 'candidate_source_tree')
+    if($schemaVersion -notin @(1,2,3)-or[string]$manifest.product_id-ne'spectra'){Add-Finding 'RELEASE_IDENTITY_INVALID' 'Unsupported manifest schema or product identity.'}
     if([string]$manifest.release_version-ne$Version-or[string]$manifest.expected_tag-ne"spectra-v$Version"){Add-Finding 'RELEASE_VERSION_INVALID' 'Version and expected tag differ from the requested version.'}
     if($state -eq 'candidate'){
-        if($schemaVersion -ne 2){Add-Finding 'LEGACY_UNBOUND_CANDIDATE_REJECTED' 'Schema-v1 candidates must be regenerated under the bound schema-v2 contract.'}
+        if($schemaVersion -ne 3){Add-Finding 'LEGACY_UNBOUND_CANDIDATE_REJECTED' 'Legacy candidates must be regenerated under the schema-v3 provenance contract.'}
         if([string]$manifest.release_kind-ne'installable_blueprint'-or[string]$manifest.consumer_mode-ne'CONTRACT_REFERENCE_ONLY'-or$manifest.installable_blueprint-ne$false-or[string]$manifest.blueprint_version-ne$Version){Add-Finding 'CANDIDATE_SCOPE_CLAIM_INVALID' 'Candidate must be non-installable and contract-reference-only.'}
-        if([string]::IsNullOrWhiteSpace($sourceCommit)){Add-Finding 'CANDIDATE_SOURCE_COMMIT_MISSING' 'Candidate source commit is required.'}
-        if([string]::IsNullOrWhiteSpace($sourceTree)){Add-Finding 'CANDIDATE_SOURCE_TREE_MISSING' 'Candidate source tree is required.'}
+        if(-not[string]::IsNullOrWhiteSpace($sourceCommit)-or-not[string]::IsNullOrWhiteSpace($sourceTree)){Add-Finding 'CANDIDATE_FINAL_SOURCE_PRESENT' 'Final source fields must remain null until promotion.'}
+        if([string]::IsNullOrWhiteSpace($candidateSourceCommit)){Add-Finding 'CANDIDATE_SOURCE_COMMIT_MISSING' 'Candidate provenance commit is required.'}
+        if([string]::IsNullOrWhiteSpace($candidateSourceTree)){Add-Finding 'CANDIDATE_SOURCE_TREE_MISSING' 'Candidate provenance tree is required.'}
+        $sourceCommit=$candidateSourceCommit;$sourceTree=$candidateSourceTree
         Add-Pending 'RELEASE_MANIFEST_NOT_FINAL' 'Candidate has not been promoted to a final manifest.'
     }elseif($state -eq 'final'){
         if([string]$manifest.release_kind-ne'installable_blueprint'-or[string]$manifest.consumer_mode-ne'INSTALLABLE_BLUEPRINT'-or$manifest.installable_blueprint-ne$true-or[string]$manifest.blueprint_version-ne$Version){Add-Finding 'RELEASE_SCOPE_CLAIM_INVALID' 'Final release must describe an installable Spectra blueprint.'}
+        if(-not[string]::IsNullOrWhiteSpace($candidateSourceCommit)-or-not[string]::IsNullOrWhiteSpace($candidateSourceTree)){Add-Finding 'FINAL_CANDIDATE_PROVENANCE_PRESENT' 'Final manifest must not retain candidate provenance values.'}
     }else{Add-Finding 'RELEASE_MANIFEST_STATE_INVALID' 'Manifest state is neither candidate nor final.'}
 }
 
@@ -38,7 +42,7 @@ if(-not[string]::IsNullOrWhiteSpace($sourceCommit)){
     if($LASTEXITCODE-ne0-or[string]$resolved-notmatch'^[0-9a-f]{40}$'-or$resolved-ne$sourceCommit){Add-Finding 'CANDIDATE_SOURCE_COMMIT_INVALID' 'Source commit is not a resolvable full Git commit SHA.'}
     else{
         $sourceResolved=$true;$actualTree=(& git -C $root rev-parse "$sourceCommit`^{tree}").Trim()
-        if($schemaVersion-eq2-and($sourceTree-notmatch'^[0-9a-f]{40}$'-or$sourceTree-ne$actualTree)){Add-Finding 'CANDIDATE_SOURCE_TREE_MISMATCH' 'Recorded source tree differs from the Git commit tree.'}
+        if($schemaVersion-ge2-and($sourceTree-notmatch'^[0-9a-f]{40}$'-or$sourceTree-ne$actualTree)){Add-Finding 'CANDIDATE_SOURCE_TREE_MISMATCH' 'Recorded source tree differs from the Git commit tree.'}
         & git -C $root merge-base --is-ancestor $sourceCommit $head 2>$null;if($LASTEXITCODE-ne0){Add-Finding 'CANDIDATE_SOURCE_NOT_ANCESTOR' 'Source commit is not an ancestor of HEAD.'}
         if($state-eq'candidate'){
             $savedPreference=$ErrorActionPreference;$ErrorActionPreference='Continue';& git -C $root cat-file -e "$sourceCommit`:release/versions/$Version/release-manifest.json" 2>$null;$sourceContainsCandidate=$LASTEXITCODE-eq0;$ErrorActionPreference=$savedPreference
