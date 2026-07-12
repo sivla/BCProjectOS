@@ -7,6 +7,7 @@ param(
   [string]$Version,
   [string]$ProductRoot,
   [string]$CustomerAlias,
+  [string]$ConfigPath,
   [switch]$SyntheticPilot,
   [switch]$Apply,
   [switch]$Approve
@@ -30,6 +31,14 @@ $result=[ordered]@{product_id='spectra';command=$Command;mode=$mode;status='PLAN
 try{
   switch($Command){
     'init' {
+      if($ConfigPath){
+        $result.delegate='Initialize-SpectraProject.ps1'
+        $args=@{ConfigPath=$ConfigPath;Destination=$workspacePath}
+        if($Apply){$args.Apply=$true}
+        $initResult=& (Join-Path $PSScriptRoot 'Initialize-SpectraProject.ps1') @args|ConvertFrom-Json
+        $result.status=$initResult.status;$result.writes_performed=[bool]$initResult.writes_performed
+        break
+      }
       $result.delegate='New-CustomerWorkspace.ps1'
       if(-not $Apply){break}
       $global:LASTEXITCODE=0
