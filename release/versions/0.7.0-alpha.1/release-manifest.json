@@ -12,8 +12,8 @@
     "blueprint_version":  "0.7.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "c9fc53c1d828e0712c0bd05f7f876b3c1393dcb387beafeb08a656ea3616b3b9",
-                    "file_count":  81,
+                    "bundle_digest":  "a5d06fad96d28fbaf10db1df18cffa9b3d12033a92f0b553ae02ef932f7e6a07",
+                    "file_count":  84,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
                                   {
@@ -30,6 +30,11 @@
                                       "path":  "automation/Backup-Workspace.ps1",
                                       "sha256":  "077e18ff0f84c5e37234a000ed9029e11079c088eb6509e45ca48302460dbffe",
                                       "size_bytes":  1800
+                                  },
+                                  {
+                                      "path":  "automation/Invoke-PortableSchemaValidation.ps1",
+                                      "sha256":  "8dd3b979369ac17d6bf11e586c5822dfab98ac9e40fedc608f34d6b79142d489",
+                                      "size_bytes":  3083
                                   },
                                   {
                                       "path":  "automation/New-CustomerWorkspace.ps1",
@@ -133,13 +138,23 @@
                                   },
                                   {
                                       "path":  "automation/Test-PortableProjectStoryConformance.ps1",
-                                      "sha256":  "73362162629db28b8919a0edc1e5fdb0fafc2e335da460fce53b03eaab4fbb63",
-                                      "size_bytes":  4239
+                                      "sha256":  "a137ef545dbfd504946ac789552bbaa72f11fe7189294551c4576103e2afa060",
+                                      "size_bytes":  4445
                                   },
                                   {
                                       "path":  "automation/Test-PortableProjectStoryConformanceNegative.ps1",
-                                      "sha256":  "d295312b4de38eac0b81a1577b14c0c1549a2f9fd0c8a9a5e52999b4234cc681",
-                                      "size_bytes":  6160
+                                      "sha256":  "cedb17c0012d94563fbae9b73619e2c9e85296bae2d5b32c9eaaf06c64495727",
+                                      "size_bytes":  6167
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableSchema.ps1",
+                                      "sha256":  "4bd82865f8792452a338f7500482c8cede0272c67155f865c68bb53a06fb1ccf",
+                                      "size_bytes":  690
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableSchemaNodeTypes.ps1",
+                                      "sha256":  "f99d52c1b8a5cb108c9230ad26d52af7c9802ad3f01e00d3d9cf1f8a0a4a0959",
+                                      "size_bytes":  433
                                   },
                                   {
                                       "path":  "automation/Test-ProductContract.ps1",
@@ -368,8 +383,8 @@
                                   },
                                   {
                                       "path":  "schemas/portable-project-story.schema.json",
-                                      "sha256":  "20910803a8372d314d5ea3faaf0139d51c188e94fd5e36bfb1b5e026cde88c90",
-                                      "size_bytes":  3906
+                                      "sha256":  "235662222c19f2a4763bd6e854ad09715feb7463b219524ca9d3d24738645fd0",
+                                      "size_bytes":  3655
                                   },
                                   {
                                       "path":  "schemas/project-story.schema.json",
