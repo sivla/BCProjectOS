@@ -12,7 +12,7 @@
     "blueprint_version":  "0.7.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "6863e8c41cf1e930dee2939669d04bda0fe523913fb41713761c257ede916727",
+                    "bundle_digest":  "49b2cdf978f5962977c6ef2e26e3bea2f266371ee512d8e02caa5535d342b1cb",
                     "file_count":  79,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
@@ -38,8 +38,8 @@
                                   },
                                   {
                                       "path":  "automation/New-PortableProjectStoryFixture.ps1",
-                                      "sha256":  "8742ea46abe5c87468f14aa94cdb448d1ee85ef7bb42fd72b13841a8adb52924",
-                                      "size_bytes":  2293
+                                      "sha256":  "257cdfe3af523f6b0b756302c3429894494557ad7cffe578989ba690f9e486f6",
+                                      "size_bytes":  2756
                                   },
                                   {
                                       "path":  "automation/New-ReleaseCandidate.ps1",
@@ -128,8 +128,8 @@
                                   },
                                   {
                                       "path":  "automation/Test-PortableProjectStoryConformance.ps1",
-                                      "sha256":  "475b6361ee252646c78769adc5420ca725e07641aa8081eb357c5fae37b64cae",
-                                      "size_bytes":  1653
+                                      "sha256":  "a57943d53e95607f573f95323fe65202eb0e7555cb53862f5231e8d326843775",
+                                      "size_bytes":  3825
                                   },
                                   {
                                       "path":  "automation/Test-PortableProjectStoryConformanceNegative.ps1",
