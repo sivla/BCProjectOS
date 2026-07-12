@@ -1,0 +1,28 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://local.bcprojectos.invalid/schemas/v1-pilot-evidence.schema.json",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["schema_version","product_id","release_version","release_tag","tag_commit","simulation_boundary","implementation","support_only","upgrade","recovery","documentation","open_product_p1","open_product_p2","rc_decision","known_limits"],
+  "properties":{
+    "schema_version":{"const":1},
+    "product_id":{"const":"spectra"},
+    "release_version":{"const":"0.14.0-alpha.1"},
+    "release_tag":{"const":"spectra-v0.14.0-alpha.1"},
+    "tag_commit":{"type":"string","pattern":"^[a-f0-9]{40}$"},
+    "simulation_boundary":{"const":"synthetic_non_production"},
+    "implementation":{"$ref":"#/$defs/pilot"},
+    "support_only":{"$ref":"#/$defs/pilot"},
+    "upgrade":{"$ref":"#/$defs/gate"},
+    "recovery":{"$ref":"#/$defs/gate"},
+    "documentation":{"type":"object","additionalProperties":false,"required":["status","files_checked","language"],"properties":{"status":{"const":"PASS"},"files_checked":{"type":"integer","minimum":6},"language":{"const":"de"}}},
+    "open_product_p1":{"const":0},
+    "open_product_p2":{"const":0},
+    "rc_decision":{"enum":["GO","NO_GO"]},
+    "known_limits":{"type":"array","minItems":2,"items":{"type":"string","minLength":1}}
+  },
+  "$defs":{
+    "pilot":{"type":"object","additionalProperties":false,"required":["profile","install","domain_flow","backup_restore","read_only_validation","status"],"properties":{"profile":{"enum":["implementation","support-only"]},"install":{"const":"PASS"},"domain_flow":{"const":"PASS"},"backup_restore":{"const":"PASS"},"read_only_validation":{"const":"PASS"},"status":{"const":"PASS"}}},
+    "gate":{"type":"object","additionalProperties":false,"required":["status","negative_cases"],"properties":{"status":{"const":"PASS"},"negative_cases":{"type":"integer","minimum":1}}}
+  }
+}
