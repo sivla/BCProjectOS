@@ -5,7 +5,7 @@ function Invoke-V([string]$d){$s=[Diagnostics.ProcessStartInfo]::new();$s.FileNa
 function Remove-Prop($o,$n){$o.PSObject.Properties.Remove($n)};function Unknown-Ref($x,$domain){$x.timeline[0].references=@("UNKNOWN-$domain")};function Drop-Edge($x){$x.graph=@($x.graph|Select-Object -First 1)}
 function Invoke-V([string]$d){$s=[Diagnostics.ProcessStartInfo]::new();$s.FileName='powershell.exe';$s.Arguments="-NoProfile -ExecutionPolicy Bypass -File `"$root\automation\Run-PortableConformanceExact.ps1`" -Path `"$d`"";$s.UseShellExecute=$false;$s.RedirectStandardOutput=$true;$s.RedirectStandardError=$true;$p=[Diagnostics.Process]::Start($s);$o=$p.StandardOutput.ReadToEnd().Trim();$e=$p.StandardError.ReadToEnd().Trim();$p.WaitForExit();[pscustomobject]@{Exit=$p.ExitCode;Raw=$o;Err=$e}}
 $cases=@(
- @{code='PORTABLE_IDENTITY_INVALID';m={param($x)Remove-Prop $x 'project_id'}},
+ @{code='PORTABLE_SCHEMA_REQUIRED';m={param($x)Remove-Prop $x 'project_id'}},
  @{code='PORTABLE_IDENTITY_INVALID';m={param($x)$x.story_id=42}},
  @{code='PORTABLE_SCHEMA_ADDITIONAL_PROPERTY';m={param($x)Add-Member -InputObject $x.offer -NotePropertyName extra -NotePropertyValue x}},
  @{code='PORTABLE_TIMELINE_RANGE';m={param($x)$x.offer.end_time='2020-01-01T00:00:00Z'}},
@@ -32,6 +32,7 @@ $cases=@(
  @{code='PORTABLE_HYPERCARE_EXIT';m={param($x)$x.hypercare[0].daily_page='UNKNOWN'}},
  @{code='PORTABLE_HYPERCARE_OPEN_HIGH_PRIORITY';m={param($x)$x.tickets[0].priority='P1';$x.tickets[0].status='open';$x.tickets[0].status_history=@([ordered]@{status='open';time='2026-02-01T09:00:00Z'})}},
  @{code='PORTABLE_GRAPH_ORPHAN';m={param($x)$x.graph[0].from='UNKNOWN'}},
+ @{code='PORTABLE_GRAPH_INVERSE';m={param($x)$x.graph=@($x.graph+([ordered]@{from='PAGE-PORT-01';to='TKT-PORT-01';type='page-ticket'}))}},
  @{code='PORTABLE_GRAPH_INVERSE';m={param($x)Drop-Edge $x}},
  @{code='PORTABLE_GRAPH_INVERSE';m={param($x)$x.graph[1].type='page-ticket'}},
  @{code='PORTABLE_UNSAFE_PATH';m={param($x)$x.pages[0].sourcePath='../secret.txt'}}
