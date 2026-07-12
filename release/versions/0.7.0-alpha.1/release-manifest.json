@@ -12,7 +12,7 @@
     "blueprint_version":  "0.7.0-alpha.1",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
-                    "bundle_digest":  "49b2cdf978f5962977c6ef2e26e3bea2f266371ee512d8e02caa5535d342b1cb",
+                    "bundle_digest":  "38475bd595385da6d06db79d4328f08adcc1ac8feebf72f60ee6824d49b608c6",
                     "file_count":  79,
                     "checksums_file":  "checksums.sha256",
                     "files":  [
@@ -128,13 +128,13 @@
                                   },
                                   {
                                       "path":  "automation/Test-PortableProjectStoryConformance.ps1",
-                                      "sha256":  "a57943d53e95607f573f95323fe65202eb0e7555cb53862f5231e8d326843775",
-                                      "size_bytes":  3825
+                                      "sha256":  "b9f8d0298b8f0da061d9bf6a3d9f58a4487712fab5757b927d3a275d379c1c8e",
+                                      "size_bytes":  5488
                                   },
                                   {
                                       "path":  "automation/Test-PortableProjectStoryConformanceNegative.ps1",
-                                      "sha256":  "27bba52fdb2d7cf713c44285b6d576446fd87790f9cbc4dc722b8458941606d8",
-                                      "size_bytes":  2548
+                                      "sha256":  "b39c6626a929e692a5ab813187cd39a30594196bd522cdd13334e9ddbca8210e",
+                                      "size_bytes":  4996
                                   },
                                   {
                                       "path":  "automation/Test-ProductContract.ps1",
