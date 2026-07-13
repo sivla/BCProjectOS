@@ -78,6 +78,15 @@ Die Candidate-WIP-Abnahme MUST unter `windows-latest` und `macos-14` aus einem f
 - **WHEN** der Workflow mit Branch, SHA ohne annotierten Tag oder ungültigem Tagnamen gestartet wird
 - **THEN** endet er fail-closed vor der Installation
 
+### Requirement: Gemeinsame PowerShell-Laufzeit bleibt plattformneutral
+
+Spectra MUST von PowerShell deserialisierte `DateTime`- und `DateTimeOffset`-Werte vor der gemeinsamen Schemaprüfung deterministisch als UTC-ISO-8601-Strings behandeln. Temporäre Testpfade MUST über die Plattform-API bestimmt werden. Kindprozesse MUST denselben aktuellen PowerShell-Host verwenden. Link-Negativtests MUST unter Windows Junctions und unter macOS symbolische Links fail-closed prüfen.
+
+#### Scenario: Echter macOS-Runner ohne TEMP
+
+- **WHEN** der Portabilitätsvertrag unter PowerShell 7 auf macOS ohne gesetztes `TEMP` ausgeführt wird
+- **THEN** verwenden Tests den System-Temppfad, Kindprozesse `pwsh` und der SymbolicLink-Negativfall bleibt wirksam
+
 ### Requirement: Registry ist lokal, relativ und idempotent
 
 Das Projektregister MUST Workspacepfade relativ zu seinem Root speichern und wiederholte identische Registrierung ohne Dateiveränderung akzeptieren. Absolute, traversierende, plattformgebundene oder root-externe Pfade MUST fail-closed sein.

@@ -6,6 +6,7 @@ Set-StrictMode -Version 2.0
 $root = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $temp = Join-Path ([IO.Path]::GetTempPath()) ('spectra-adoption-positive-' + [guid]::NewGuid().ToString('N'))
 . (Join-Path $PSScriptRoot 'ExistingProject.Adoption.ps1')
+. (Join-Path $PSScriptRoot 'Spectra.PowerShellHost.ps1')
 
 function Assert-Equal([object]$Actual, [object]$Expected, [string]$Code) {
   if ([string]$Actual -cne [string]$Expected) { throw $Code }
@@ -41,7 +42,8 @@ try {
     if ([string]$config.product_binding.release_status -cne 'PENDING_BCPROJECTOS_RELEASE' -or $config.product_binding.installable_blueprint -or $null -ne $config.product_binding.commit -or $null -ne $config.product_binding.digest) { throw "ADOPTION_FIXTURE_RELEASE_CLAIM_INVALID:$profile" }
     $passed++
 
-    $cliInspection = (& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Invoke-ExistingProjectAdoption.ps1') -Command inspect -DiscoveryPath $discoveryPath | Out-String) | ConvertFrom-Json
+    $powerShellHost = Get-SpectraPowerShellHostPath
+    $cliInspection = (& $powerShellHost -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Invoke-ExistingProjectAdoption.ps1') -Command inspect -DiscoveryPath $discoveryPath | Out-String) | ConvertFrom-Json
     Assert-Equal $cliInspection.discovery_id $discovery.discovery_id "ADOPTION_CLI_INSPECTION_INVALID:$profile"
     Assert-Equal $cliInspection.writes_performed $false "ADOPTION_CLI_INSPECTION_WROTE:$profile"
     $passed++

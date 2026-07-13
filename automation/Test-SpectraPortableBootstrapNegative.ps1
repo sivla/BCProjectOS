@@ -2,7 +2,7 @@
 $ErrorActionPreference='Stop';Set-StrictMode -Version 2.0
 . (Join-Path $PSScriptRoot 'Spectra.Bootstrap.ps1')
 . (Join-Path $PSScriptRoot 'PortableSnapshot.Catalog.ps1')
-$root=Get-SpectraBootstrapProductRoot;$temp=Join-Path $env:TEMP ('spectra-bootstrap-neg-'+[guid]::NewGuid().ToString('N'));$passed=0
+$root=Get-SpectraBootstrapProductRoot;$temp=Join-Path ([IO.Path]::GetTempPath()) ('spectra-bootstrap-neg-'+[guid]::NewGuid().ToString('N'));$passed=0
 function Expect([string]$Code,[scriptblock]$Action){try{&$Action;throw "NEGATIVE_ACCEPTED:$Code"}catch{if($_.Exception.Message-cne$Code){throw "NEGATIVE_WRONG:${Code}:$($_.Exception.Message)"}};$script:passed++}
 try{
   New-Item -ItemType Directory -Path $temp|Out-Null;$registry=Join-Path $temp 'projects';Initialize-SpectraProjectRegistry $registry '2031-01-01T00:00:00Z' -Apply|Out-Null;$binding=Get-SpectraReleaseBinding $root '1.1.0-alpha.1';$workspace=Join-Path $registry 'one';& (Join-Path $PSScriptRoot 'New-CustomerWorkspace.ps1') -Destination $workspace -Profile implementation -ExpectedBlueprintVersion '1.1.0-alpha.1' -CustomerAlias 'SYNTHETIC-ONE' -ProductRoot $root|Out-Null
@@ -17,6 +17,7 @@ try{
   $secretConfig=Join-Path $temp 'secret.json';[IO.File]::WriteAllText($secretConfig,'{"customer_alias":"SYN","token":"not-allowed"}',[Text.UTF8Encoding]::new($false));Expect 'BOOTSTRAP_SECRET_LEAK' {Assert-SpectraPortableConfigFile $secretConfig|Out-Null}
   $badReference=Join-Path $temp 'bad-reference.json';[IO.File]::WriteAllText($badReference,'{"runtime_secret_keys":["ATLASSIAN_TOKEN"]}',[Text.UTF8Encoding]::new($false));Expect 'BOOTSTRAP_SECRET_REFERENCE_INVALID' {Assert-SpectraPortableConfigFile $badReference|Out-Null}
   $target=Join-Path $temp 'link-target';$link=Join-Path $registry 'linked-workspace';New-Item -ItemType Directory -Path $target|Out-Null
-  try { New-Item -ItemType Junction -Path $link -Target $target -ErrorAction Stop|Out-Null;Expect 'BOOTSTRAP_REPARSE_PATH_FORBIDDEN' {Assert-SpectraNoLinkPath $registry $link} } catch { if($_.Exception.Message -notlike 'NEGATIVE_*' -and $_.Exception.Message -ne 'BOOTSTRAP_REPARSE_PATH_FORBIDDEN'){throw} }
+  $linkType=if($env:OS -eq 'Windows_NT'){'Junction'}else{'SymbolicLink'}
+  try { New-Item -ItemType $linkType -Path $link -Target $target -ErrorAction Stop|Out-Null;Expect 'BOOTSTRAP_REPARSE_PATH_FORBIDDEN' {Assert-SpectraNoLinkPath $registry $link} } catch { if($_.Exception.Message -notlike 'NEGATIVE_*' -and $_.Exception.Message -ne 'BOOTSTRAP_REPARSE_PATH_FORBIDDEN'){throw} }
   if($passed-ne10){throw 'BOOTSTRAP_NEGATIVE_COUNT_INVALID'};Write-Host "PASS: $passed isolierte Bootstrap-/macOS-Negativfaelle."
 }finally{if(Test-Path $temp){Remove-Item $temp -Recurse -Force -ErrorAction SilentlyContinue}}
