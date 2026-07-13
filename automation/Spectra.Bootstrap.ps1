@@ -64,6 +64,8 @@ function Initialize-SpectraProjectRegistry([string]$RegistryRoot,[string]$Observ
 function Initialize-SpectraBootstrapRoots([string]$ConfigRoot,[string]$RegistryRoot,[string]$ObservedAt,[switch]$Apply){
   $config=[IO.Path]::GetFullPath($ConfigRoot);$registry=[IO.Path]::GetFullPath($RegistryRoot)
   if(-not(Test-Path $config)){if(-not$Apply){return [ordered]@{status='PLANNED';writes_performed=$false}};$parent=Split-Path -Parent $config;if(-not(Test-Path $parent)){New-Item -ItemType Directory -Path $parent -Force|Out-Null};New-Item -ItemType Directory -Path $config|Out-Null}
+  $registryParent=Split-Path -Parent $registry
+  if($Apply-and-not(Test-Path $registryParent -PathType Container)){New-Item -ItemType Directory -Path $registryParent -Force|Out-Null}
   $r=Initialize-SpectraProjectRegistry -RegistryRoot $registry -ObservedAt $ObservedAt -Apply:$Apply
   [ordered]@{status=$r.status;writes_performed=$r.writes_performed;config_root_ready=(Test-Path $config -PathType Container);registry_root_ready=(Test-Path $registry -PathType Container)}
 }

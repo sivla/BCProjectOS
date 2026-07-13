@@ -28,3 +28,4 @@
 - [ ] 3.7 Git-Blob-basierte Installation gegen Arbeitsbaum-Normalisierung absichern und die Matrix mit `1.2.0-alpha.4` schließen
 - [ ] 3.8 BSD-chmod und relative Evidence-Ausgabe absichern und die Matrix mit `1.2.0-alpha.5` schließen
 - [ ] 3.9 macOS-Fresh-Clone-Fixture kanonisch binden und die Matrix mit `1.2.0-alpha.6` schließen
+- [ ] 3.10 macOS-XDG-First-Run fuer Config und Registry schliessen und die Matrix mit `1.2.0-alpha.7` abschliessen

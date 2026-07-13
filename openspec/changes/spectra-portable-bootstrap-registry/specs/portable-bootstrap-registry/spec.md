@@ -90,6 +90,8 @@ Die Moduswiederherstellung MUST mit BSD-`chmod` auf macOS funktionieren. Evidenc
 
 Eine lokal erzeugte macOS-Fresh-Clone-Prüfkopie MUST vor der Releaseprüfung explizit auf den kanonischen Repository-Remote gebunden werden. Ein lokaler Quellpfad darf niemals als veröffentlichte Repository-Identität akzeptiert werden.
 
+`bootstrap -Apply` MUST bei einem sauberen macOS-XDG-First-Run sowohl den Config- als auch den Registry-Parent sicher erzeugen. Der nachfolgende Doctor MUST deshalb ohne manuelle Voranlage der XDG-Unterverzeichnisse starten können.
+
 #### Scenario: Echter macOS-Runner ohne TEMP
 
 - **WHEN** der Portabilitätsvertrag unter PowerShell 7 auf macOS ohne gesetztes `TEMP` ausgeführt wird

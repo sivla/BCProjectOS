@@ -64,5 +64,14 @@ $macAcceptance=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'Test-SpectraMa
 if($macAcceptance -notmatch 'remote set-url origin https://github\.com/sivla/BCProjectOS'){throw 'PORTABILITY_MACOS_CLONE_REMOTE_REBIND_MISSING'}
 $passed++
 
-if($passed -ne 7){throw "PORTABILITY_REGRESSION_COUNT_INVALID:$passed"}
-Write-Host "PASS: $passed Portabilitaetsregressionen fuer Zeitwerte, Temp, Kindprozess, Links, Remotes, Evidence und macOS-Clonebindung."
+$xdgRoot=Join-Path ([IO.Path]::GetTempPath()) ('spectra-xdg-first-run-'+[guid]::NewGuid().ToString('N'))
+try{
+  New-Item -ItemType Directory -Path $xdgRoot|Out-Null
+  $roots=Get-SpectraDefaultRoots -HomePath (Join-Path $xdgRoot 'home') -XdgConfigHome (Join-Path $xdgRoot 'config parent') -XdgDataHome (Join-Path $xdgRoot 'data parent') -Platform macos
+  $initialized=Initialize-SpectraBootstrapRoots -ConfigRoot $roots.config_root -RegistryRoot $roots.registry_root -ObservedAt '2031-01-01T00:00:00Z' -Apply
+  if($initialized.status-cne'INITIALIZED'-or-not(Test-Path $roots.config_root -PathType Container)-or-not(Test-Path $roots.registry_root -PathType Container)){throw 'PORTABILITY_XDG_FIRST_RUN_FAILED'}
+}finally{if(Test-Path $xdgRoot){Remove-Item -LiteralPath $xdgRoot -Recurse -Force}}
+$passed++
+
+if($passed -ne 8){throw "PORTABILITY_REGRESSION_COUNT_INVALID:$passed"}
+Write-Host "PASS: $passed Portabilitaetsregressionen einschliesslich macOS-Clonebindung und XDG-First-Run."
