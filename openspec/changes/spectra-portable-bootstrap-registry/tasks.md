@@ -25,3 +25,4 @@
 - [ ] 3.4 Fresh Clone, Marker-/Secret-Scan, Diffcheck und sauberen Commit belegen
 - [ ] 3.5 Portabilitätsfehler aus `spectra-v1.2.0-alpha.1` mit echter Windows-/macOS-Matrix für `1.2.0-alpha.2` schließen
 - [ ] 3.6 Kanonische Actions-Checkout-Remoteform aus `spectra-v1.2.0-alpha.2` korrigieren und die Matrix mit `1.2.0-alpha.3` schließen
+- [ ] 3.7 Git-Blob-basierte Installation gegen Arbeitsbaum-Normalisierung absichern und die Matrix mit `1.2.0-alpha.4` schließen

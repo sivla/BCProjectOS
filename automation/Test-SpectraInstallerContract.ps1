@@ -9,6 +9,10 @@ Require ($installer -match "ValidateSet\('install','doctor','init','adopt','regi
 Require ($installer -match 'Get-SpectraReleaseBinding') 'INSTALL_RELEASE_BINDING_MISSING'
 Require ($installer -match 'INSTALL_SOURCE_NOT_EXACT_RELEASE_TAG') 'INSTALL_BRANCH_GUARD_MISSING'
 Require ($installer -match 'INSTALL_PAYLOAD_DIGEST_MISMATCH') 'INSTALL_DIGEST_GUARD_MISSING'
+Require ($installer -match 'Copy-BCProjectOSGitBlob') 'INSTALL_GIT_BLOB_SOURCE_MISSING'
+Require ($installer -match 'INSTALL_PAYLOAD_MODE_FAILED') 'INSTALL_MODE_RESTORE_MISSING'
+Require ($installer -match 'release-manifest\.json.*checksums\.sha256') 'INSTALL_RELEASE_METADATA_MISSING'
+Require ($installer -match 'UNINSTALL_CHECKSUMS_MISSING') 'UNINSTALL_RELEASE_METADATA_GUARD_MISSING'
 Require ($installer -match 'INSTALL_DESTINATION_INSIDE_PROJECT_REPOSITORY') 'INSTALL_PROJECT_REPOSITORY_GUARD_MISSING'
 Require ($installer -match 'preserves_registry=\$true;preserves_config=\$true') 'UNINSTALL_PRESERVATION_MISSING'
 Require ($shell -match 'exec pwsh -NoProfile') 'INSTALL_SH_NOT_THIN_PWSH_STARTER'
@@ -20,5 +24,5 @@ Require ($installer -match '\[Parameter\(Mandatory\)\]\[string\]\$Version') 'INS
 Require ($cli.Contains("'register'{") -and $cli.Contains("if(-not`$Apply)")) 'REGISTER_DRY_RUN_GATE_MISSING'
 Require ($installer -match 'UNINSTALL_PAYLOAD_DRIFT') 'UNINSTALL_DRIFT_GUARD_MISSING'
 Require ($installer -match '\.spectra-install-stage-') 'INSTALL_ATOMIC_STAGE_MISSING'
-if($passed-ne15){throw 'INSTALL_CONTRACT_COUNT_INVALID'}
+if($passed-ne19){throw 'INSTALL_CONTRACT_COUNT_INVALID'}
 Write-Host "PASS: $passed portable Installer-/Uninstall-Vertragspruefungen."

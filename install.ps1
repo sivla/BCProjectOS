@@ -42,8 +42,12 @@ function Assert-InstallDestination([string]$Path) {
   $parent = Split-Path -Parent $Path
   if (-not (Test-Path $parent -PathType Container)) { throw 'INSTALL_PARENT_MISSING' }
   Assert-SpectraNoLinkPath -Root $parent -Path $parent
-  $gitOwner = & git -C $parent rev-parse --show-toplevel 2>$null
-  if ($LASTEXITCODE -eq 0) { throw 'INSTALL_DESTINATION_INSIDE_PROJECT_REPOSITORY' }
+  $savedPreference=$ErrorActionPreference
+  $ErrorActionPreference='Continue'
+  $gitOwner = @(& git -C $parent rev-parse --show-toplevel 2>$null)
+  $gitExit=$LASTEXITCODE
+  $ErrorActionPreference=$savedPreference
+  if ($gitExit -eq 0) { throw 'INSTALL_DESTINATION_INSIDE_PROJECT_REPOSITORY' }
 }
 function Invoke-Install {
   $binding = Get-SpectraReleaseBinding -ProductRoot $SourceRoot -Version $Version
@@ -51,6 +55,7 @@ function Invoke-Install {
   if ($LASTEXITCODE -ne 0 -or $head -cne $binding.commit) { throw 'INSTALL_SOURCE_NOT_EXACT_RELEASE_TAG' }
   Assert-InstallDestination $InstallRoot
   $manifest = Read-SpectraBootstrapJson (Join-Path $SourceRoot "release/versions/$Version/release-manifest.json")
+  . (Join-Path $SourceRoot 'automation/Release.Common.ps1')
   $planned = @($manifest.payload.files).Count
   if (-not $Apply) { return [ordered]@{status='PLANNED';writes_performed=$false;version=$Version;file_count=$planned} }
   if (-not $Approve) { throw 'INSTALL_APPROVAL_REQUIRED' }
@@ -71,13 +76,21 @@ function Invoke-Install {
     foreach ($file in @($manifest.payload.files)) {
       $relative = [string]$file.path
       if ($relative -match '(^|/)[.][.](/|$)' -or [IO.Path]::IsPathRooted($relative) -or $relative.Contains('\')) { throw 'INSTALL_PAYLOAD_PATH_UNSAFE' }
-      $source = Join-Path $SourceRoot ($relative -replace '/', [IO.Path]::DirectorySeparatorChar)
-      if (-not (Test-Path $source -PathType Leaf)) { throw 'INSTALL_PAYLOAD_MISSING' }
-      if ((Get-SpectraBootstrapSha $source) -cne [string]$file.sha256) { throw 'INSTALL_PAYLOAD_DIGEST_MISMATCH' }
       $destination = Join-Path $stage ($relative -replace '/', [IO.Path]::DirectorySeparatorChar)
       $directory = Split-Path -Parent $destination
       New-Item -ItemType Directory -Path $directory -Force | Out-Null
-      Copy-Item -LiteralPath $source -Destination $destination -Force
+      Copy-BCProjectOSGitBlob -Root $SourceRoot -Revision ([string]$manifest.source_commit) -RelativePath $relative -Destination $destination
+      if ((Get-SpectraBootstrapSha $destination) -cne [string]$file.sha256) { throw 'INSTALL_PAYLOAD_DIGEST_MISMATCH' }
+      if ((Get-SpectraPlatform) -ne 'windows') {
+        $permission = if ([string]$file.mode -ceq '100755') { '755' } else { '644' }
+        & chmod $permission -- $destination
+        if ($LASTEXITCODE -ne 0) { throw 'INSTALL_PAYLOAD_MODE_FAILED' }
+      }
+    }
+    foreach ($metadataRelative in @("release/versions/$Version/release-manifest.json","release/versions/$Version/checksums.sha256")) {
+      $metadataDestination=Join-Path $stage ($metadataRelative-replace'/',[IO.Path]::DirectorySeparatorChar)
+      New-Item -ItemType Directory -Path (Split-Path -Parent $metadataDestination) -Force|Out-Null
+      Copy-BCProjectOSGitBlob -Root $SourceRoot -Revision $binding.commit -RelativePath $metadataRelative -Destination $metadataDestination
     }
     $marker = [ordered]@{schema_version=1;product_id='spectra';version=$Version;release_commit=$binding.commit;release_tree=$binding.tree;bundle_digest=$binding.digest;file_count=$planned}
     Write-SpectraBootstrapJson -Path (Join-Path $stage '.spectra-install.json') -Value $marker
@@ -93,7 +106,9 @@ function Invoke-Uninstall {
   Assert-SpectraNoLinkPath -Root $InstallRoot -Path $InstallRoot;$marker = Read-SpectraBootstrapJson $markerPath
   if([int]$marker.schema_version-ne1-or[string]$marker.product_id-cne'spectra'-or[string]$marker.release_commit-notmatch'^[a-f0-9]{40}$'-or[string]$marker.release_tree-notmatch'^[a-f0-9]{40}$'-or[string]$marker.bundle_digest-notmatch'^[a-f0-9]{64}$'){throw 'UNINSTALL_MARKER_INVALID'}
   $manifestPath = Join-Path $InstallRoot "release/versions/$($marker.version)/release-manifest.json"
+  $checksumsPath = Join-Path $InstallRoot "release/versions/$($marker.version)/checksums.sha256"
   $manifest = Read-SpectraBootstrapJson $manifestPath
+  if(-not(Test-Path $checksumsPath -PathType Leaf)){throw 'UNINSTALL_CHECKSUMS_MISSING'}
   if([string]$manifest.payload.bundle_digest-cne[string]$marker.bundle_digest-or[int]$manifest.payload.file_count-ne[int]$marker.file_count){throw 'UNINSTALL_MANIFEST_MISMATCH'}
   if (-not $Apply) { return [ordered]@{status='PLANNED';writes_performed=$false;preserves_registry=$true;preserves_config=$true} }
   if (-not $Approve) { throw 'UNINSTALL_APPROVAL_REQUIRED' }
@@ -102,6 +117,7 @@ function Invoke-Uninstall {
     $path = Join-Path $InstallRoot (([string]$file.path) -replace '/', [IO.Path]::DirectorySeparatorChar)
     if (Test-Path $path -PathType Leaf) { Remove-Item -LiteralPath $path -Force }
   }
+  Remove-Item -LiteralPath $manifestPath,$checksumsPath -Force
   Remove-Item -LiteralPath $markerPath -Force
   [ordered]@{status='UNINSTALLED';writes_performed=$true;preserves_registry=$true;preserves_config=$true}
 }
