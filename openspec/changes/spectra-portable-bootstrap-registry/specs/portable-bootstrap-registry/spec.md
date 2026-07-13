@@ -82,10 +82,17 @@ Die Candidate-WIP-Abnahme MUST unter `windows-latest` und `macos-14` aus einem f
 
 Spectra MUST von PowerShell deserialisierte `DateTime`- und `DateTimeOffset`-Werte vor der gemeinsamen Schemaprüfung deterministisch als UTC-ISO-8601-Strings behandeln. Temporäre Testpfade MUST über die Plattform-API bestimmt werden. Kindprozesse MUST denselben aktuellen PowerShell-Host verwenden. Link-Negativtests MUST unter Windows Junctions und unter macOS symbolische Links fail-closed prüfen.
 
+Die Releasebindung MUST die beiden semantisch identischen kanonischen HTTPS-Remoteformen `https://github.com/sivla/BCProjectOS` und `https://github.com/sivla/BCProjectOS.git` akzeptieren. Benutzerinformationen, SSH-Remotes, andere Repositories und bloße Präfixtreffer MUST fail-closed bleiben.
+
 #### Scenario: Echter macOS-Runner ohne TEMP
 
 - **WHEN** der Portabilitätsvertrag unter PowerShell 7 auf macOS ohne gesetztes `TEMP` ausgeführt wird
 - **THEN** verwenden Tests den System-Temppfad, Kindprozesse `pwsh` und der SymbolicLink-Negativfall bleibt wirksam
+
+#### Scenario: Actions-Checkout verwendet den kanonischen Remote ohne Suffix
+
+- **WHEN** ein unveränderlicher Release-Tag durch `actions/checkout` mit `https://github.com/sivla/BCProjectOS` ausgecheckt wird
+- **THEN** bleibt die Releasebindung gültig, während jede nicht exakt kanonische Repository-Identität blockiert wird
 
 ### Requirement: Registry ist lokal, relativ und idempotent
 

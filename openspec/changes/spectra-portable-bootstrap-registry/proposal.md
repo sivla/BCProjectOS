@@ -37,4 +37,4 @@ Der portable Bootstrap umfasst außerdem den releasegebundenen Windows-/macOS-In
 
 ## SemVer
 
-Gegenüber `1.1.0-alpha.1` ist der Block additiv und rückwärtskompatibel. `spectra-v1.2.0-alpha.1` wurde unveränderlich veröffentlicht, scheiterte jedoch im echten Windows-/macOS-Portabilitätsgate. Die kleinste rückwärtskompatible Korrekturversion ist deshalb ausschließlich `1.2.0-alpha.2`. Der bestehende Tag und seine rote Portabilitätsevidence bleiben unverändert; dieser Change erzeugt noch keinen Candidate oder Release.
+Gegenüber `1.1.0-alpha.1` ist der Block additiv und rückwärtskompatibel. `spectra-v1.2.0-alpha.1` und `spectra-v1.2.0-alpha.2` wurden unveränderlich veröffentlicht; `alpha.2` schloss die Fokusfehler, scheiterte danach aber an der kanonischen `actions/checkout`-Remoteform ohne `.git`. Die kleinste rückwärtskompatible Korrekturversion ist deshalb ausschließlich `1.2.0-alpha.3`. Bestehende Tags und ihre rote Portabilitätsevidence bleiben unverändert; dieser Change erzeugt noch keinen Candidate oder Release.
