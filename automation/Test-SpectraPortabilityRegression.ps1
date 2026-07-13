@@ -79,7 +79,7 @@ if($bootstrapTest -notmatch "param\(\[string\]\`$Version="-or$adoptionTest -notm
 if($macAcceptance -notmatch 'Test-SpectraPortableBootstrap\.ps1.*-Version \$Version'-or$macAcceptance -notmatch 'Test-ExistingProjectAdoption\.ps1.*-ReleaseVersion \$Version'){throw 'PORTABILITY_MACOS_INSTALLED_VERSION_FORWARDING_MISSING'}
 $passed++
 
-if($macAcceptance -notmatch 'realpath \(\[IO\.Path\]::GetTempPath\(\)\)'-or$macAcceptance -notmatch '\$env:TMPDIR=\$physicalTemp'){throw 'PORTABILITY_MACOS_PHYSICAL_TEMP_MISSING'}
+if($macAcceptance -notmatch '/usr/bin/realpath \(\[IO\.Path\]::GetTempPath\(\)\)'-or$macAcceptance -notmatch '\$env:TMPDIR=\$physicalTemp'){throw 'PORTABILITY_MACOS_PHYSICAL_TEMP_MISSING'}
 $passed++
 
 if($passed -ne 10){throw "PORTABILITY_REGRESSION_COUNT_INVALID:$passed"}
