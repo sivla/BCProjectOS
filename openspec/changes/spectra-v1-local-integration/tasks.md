@@ -6,14 +6,14 @@
 
 ## 2. Lokale Integration
 
-- [ ] 2.1 Beide Historien normal ohne Rebase oder Force zusammenfuehren
+- [x] 2.1 Beide Historien normal ohne Rebase oder Force zusammenfuehren
 - [x] 2.2 Doppelte Archividentitaet und Blueprint-Spec fachlich aufloesen
-- [ ] 2.3 Manipulationsgates fuer jede Konfliktentscheidung implementieren und ausfuehren
+- [x] 2.3 Manipulationsgates fuer jede Konfliktentscheidung implementieren und ausfuehren
 
 ## 3. Evidence
 
-- [ ] 3.1 Fokus-Suites beider Linien ausfuehren
-- [ ] 3.2 Product Contract, Workspace, Upgrade, Backup/Restore und OpenSpec strict ausfuehren
-- [ ] 3.3 Marker-, Kunden-, Secret-, Absolutpfad- und Releaseclaim-Scan ausfuehren
-- [ ] 3.4 Exakten Integrationscommit in einer No-Hardlinks-Fresh-Clone-Kopie pruefen
-- [ ] 3.5 REVIEW/Arbeitsbaum und `PENDING_BCPROJECTOS_RELEASE` bestaetigen
+- [x] 3.1 Fokus-Suites beider Linien ausfuehren
+- [x] 3.2 Product Contract, Workspace, Upgrade, Backup/Restore und OpenSpec strict ausfuehren
+- [x] 3.3 Marker-, Kunden-, Secret-, Absolutpfad- und Releaseclaim-Scan ausfuehren
+- [x] 3.4 Exakten Integrationscommit in einer No-Hardlinks-Fresh-Clone-Kopie pruefen
+- [x] 3.5 REVIEW/Arbeitsbaum und `PENDING_BCPROJECTOS_RELEASE` bestaetigen

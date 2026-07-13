@@ -5,6 +5,6 @@
 - Pflichtbindung: customer, environment, company, profile, project/support scope und Source-Revision.
 - Bestehende Inhalte: nie still überschreiben; Konflikte als Plan melden.
 - Evidence: Dry-run-Ergebnis, erzeugte Pfade, Validatorstatus und Produktbindung.
-- Blueprint-Autoritaet: Blueprint-Katalog V2 und dessen Proposal-only-Vorschau; `BPC-*`-Pakete sind ausschließlich der kompatible Blanko-Materializer bestehender Init-Eingaben.
+- Blueprint-Autoritaet: `blueprint-catalog-v2` und dessen Proposal-only-Vorschau; `BPC-*`-Pakete sind ausschließlich der kompatible Blanko-Materializer bestehender Init-Eingaben.
 - Stop-Codes: `INIT_TARGET_UNSAFE`, `INIT_CONFLICT`, `INIT_SOURCE_UNBOUND`, `INIT_CUSTOMER_FACT_UNKNOWN`.
 - Reset/Rollback: unfertiges Staging entfernen; bestehendes Ziel unverändert lassen.
