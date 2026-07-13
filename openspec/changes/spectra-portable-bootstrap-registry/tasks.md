@@ -27,3 +27,4 @@
 - [ ] 3.6 Kanonische Actions-Checkout-Remoteform aus `spectra-v1.2.0-alpha.2` korrigieren und die Matrix mit `1.2.0-alpha.3` schließen
 - [ ] 3.7 Git-Blob-basierte Installation gegen Arbeitsbaum-Normalisierung absichern und die Matrix mit `1.2.0-alpha.4` schließen
 - [ ] 3.8 BSD-chmod und relative Evidence-Ausgabe absichern und die Matrix mit `1.2.0-alpha.5` schließen
+- [ ] 3.9 macOS-Fresh-Clone-Fixture kanonisch binden und die Matrix mit `1.2.0-alpha.6` schließen

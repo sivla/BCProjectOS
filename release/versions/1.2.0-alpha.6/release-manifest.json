@@ -1,0 +1,1978 @@
+{
+    "schema_version":  4,
+    "product_id":  "spectra",
+    "release_version":  "1.2.0-alpha.6",
+    "release_kind":  "installable_blueprint",
+    "manifest_state":  "candidate",
+    "release_date":  "2026-07-13",
+    "expected_tag":  "spectra-v1.2.0-alpha.6",
+    "source_commit":  null,
+    "source_tree":  null,
+    "candidate_source_commit":  "710720d8357b7297f727dd6ea9a437291e81a4ae",
+    "candidate_source_tree":  "3388b271070a43b6c6774cac3fe1067f1bfb9373",
+    "consumer_mode":  "CONTRACT_REFERENCE_ONLY",
+    "installable_blueprint":  false,
+    "blueprint_version":  "1.2.0-alpha.6",
+    "payload":  {
+                    "digest_algorithm":  "SHA-256",
+                    "bundle_digest":  "14d28842f524d3c6ba903ecd2c2394c956faa2609272f2e951ce11770c980867",
+                    "file_count":  323,
+                    "checksums_file":  "checksums.sha256",
+                    "files":  [
+                                  {
+                                      "path":  "AGENTS.md",
+                                      "sha256":  "64422422c4ce528a7ed747fa5474fa98162846cef42a312e890a4441436c1937",
+                                      "size_bytes":  5307,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "README.md",
+                                      "sha256":  "bb6cf366842f3cbafd7b8cde96b4325d50a621da4cd9984e056732df57a94c0b",
+                                      "size_bytes":  7329,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Backup-Workspace.ps1",
+                                      "sha256":  "96fc2c7308fe76ba64148a6623f26ada30361fb35c6c47eeab5970b3446b74d2",
+                                      "size_bytes":  2401,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Blueprint.Catalog.ps1",
+                                      "sha256":  "de9622360ccebdd26c4ff7a63c489bc8cba860c0c75f8d469e61f2d7b2d2d782",
+                                      "size_bytes":  4097,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/BusinessCentral.Knowledge.ps1",
+                                      "sha256":  "bc0c38c1a57819a40724da7bea7f655459946da2ae7b0696dc8f1880a60b072a",
+                                      "size_bytes":  19656,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/ExistingProject.Adoption.ps1",
+                                      "sha256":  "68ee8ae6a4ede9264df7f06e8ee67526641e369c8142018576dcb489824658e5",
+                                      "size_bytes":  23991,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Inbox.Compatibility.ps1",
+                                      "sha256":  "26d22cb2f0675fc8cb2787d2db2eb2b4679eb9b8d68b375cc2fc68b2fb32ba6b",
+                                      "size_bytes":  1979,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Initialize-SpectraProject.ps1",
+                                      "sha256":  "817a9aefc0ee7579eb807b027f4614a1d5c35d722a016a766b642423d8c8bbe9",
+                                      "size_bytes":  10504,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Invoke-BusinessCentralKnowledge.ps1",
+                                      "sha256":  "22ea293e101e9383492c8fcb99fbad9f5012183623a1d96f703465f32b606b79",
+                                      "size_bytes":  3650,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Invoke-ExistingProjectAdoption.ps1",
+                                      "sha256":  "a8e784de99ed34aafc0edf58c3b63fa8123c221d2851d82c62e6f8379acbf17b",
+                                      "size_bytes":  2758,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Invoke-PortableFullConformance.ps1",
+                                      "sha256":  "1b09dddddf28f0acfcaf285420da44f23432dfe4d6182ba7217411b7ed3c0758",
+                                      "size_bytes":  484,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Invoke-PortableSchemaValidation.ps1",
+                                      "sha256":  "28428e36377c33d9ae384fc59d38841eb80bdccacdc4db31de516555a357d479",
+                                      "size_bytes":  4195,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Invoke-Spectra.ps1",
+                                      "sha256":  "c46ec515e728e7f2af2ecaa809441c6ab87d0d731ce87f3e24a1df58e76d278e",
+                                      "size_bytes":  12037,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Invoke-SpectraBootstrap.ps1",
+                                      "sha256":  "fa6a735eca7406dedd82fe5099443eb85f209ba73df0ed8afa719a0684121470",
+                                      "size_bytes":  4910,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-BlueprintPreview.ps1",
+                                      "sha256":  "b6cc5d293a531b2e4b8b2d9f05c66aa2770db12719eb012030f01d5ef50c6879",
+                                      "size_bytes":  2535,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-CustomerWorkspace.ps1",
+                                      "sha256":  "53c0e44ce08da2070387af20ff4446274da44ad4a49b47eb1df0a8c48f97ac47",
+                                      "size_bytes":  9320,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-PortableProjectStoryFixture.ps1",
+                                      "sha256":  "58958966fe9d0bb7985c6dba794bb83742f85c21437e91d3cf90510e20f0461d",
+                                      "size_bytes":  4312,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-ReleaseBoundProjectWorkspace.ps1",
+                                      "sha256":  "6572e96ec8039c39332491733c28fd4a2e77ae297675c3d6472fafee463a8234",
+                                      "size_bytes":  2687,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-ReleaseCandidate.ps1",
+                                      "sha256":  "2768863020208c19026f319d3ec8dfdd1f91783d4016419b4175d38944148fc8",
+                                      "size_bytes":  4092,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SpectraInitConfiguration.ps1",
+                                      "sha256":  "afd71b3185167b273c44c0556743e825b79b760c24ea04febb00bc34dfdba02b",
+                                      "size_bytes":  6932,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticBCBasicFixture.ps1",
+                                      "sha256":  "d0ced425713f8cb56bf0bcd4af2ae9bfc5da26c80d37537ebc1240845661c9f0",
+                                      "size_bytes":  1856,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticBCConsultantKnowledge.ps1",
+                                      "sha256":  "3bd3fc0a1724d8e0c392ab6362c14bca8faec52206a8b9ac15fa454f68e962f0",
+                                      "size_bytes":  5939,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticBusinessCentralKnowledgeFixture.ps1",
+                                      "sha256":  "b08fbaeb6fea59370344620c29b54b16fcfd7405fcd83c5a7766ea65d72c2a90",
+                                      "size_bytes":  4780,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticCustomerKnowledgeWorkspace.ps1",
+                                      "sha256":  "1e22e5900bd0ffb8823f7c6cada330467cf6ccf8721addd51105ef55c2f8b320",
+                                      "size_bytes":  12701,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticCutoverOperationsHandover.ps1",
+                                      "sha256":  "7f9010acb96b85c14db8e43b72182c6079faad89fee0f6e9dcdd6eb727b8028f",
+                                      "size_bytes":  4529,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticDocumentProjection.ps1",
+                                      "sha256":  "ce42eadcbd6aae611df8047cc7b5abbb882d7be3abb809c7ec48b176985cf539",
+                                      "size_bytes":  2941,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticEngagementFitStandard.ps1",
+                                      "sha256":  "1e0c10c17ee98f3c510a96fcc563f879391c5d03d47c9a0da70f530fc46a8f65",
+                                      "size_bytes":  12611,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticExistingProjectAdoption.ps1",
+                                      "sha256":  "e505fb5ca8e4aebafa04940137a2a7c79a833baa894293bbf7c3b4523ca2f858",
+                                      "size_bytes":  7123,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticFileIntake.ps1",
+                                      "sha256":  "9eb6c023c39eb8700e4c0e6186a50c8becdde6fc6e553a2b5e40a0e20c5af591",
+                                      "size_bytes":  1214,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticInformationInbox.ps1",
+                                      "sha256":  "a72b887c1c3b9301659645de98437aec52827551e299819f30bb651f31c6bc7a",
+                                      "size_bytes":  4375,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticPortableSnapshotCatalog.ps1",
+                                      "sha256":  "45ebcfa8956db6a48fd708d754f1fcb1cb35d0804b13e2b3b33bc6522eb9365b",
+                                      "size_bytes":  7035,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticProjectStory.ps1",
+                                      "sha256":  "85bfb5b30cefaeec82607b0f26e924f4171c95cb3fba9cb74c132683b98be310",
+                                      "size_bytes":  2251,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticProjectStoryHardening.ps1",
+                                      "sha256":  "9e55027e053f04903932c044d2c41e26e926bd65352a9456aa6f8cc6da583d3d",
+                                      "size_bytes":  3741,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticReferenceGraphCoverage.ps1",
+                                      "sha256":  "ed1e38c8be3d45dd2f7acf9678313934aec2b7aefbfb4f6d5f1aa5c2525d2428",
+                                      "size_bytes":  4335,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticSetupPermissionsData.ps1",
+                                      "sha256":  "d4ddb07b9cae50db5b9ffda08e93e439d40901c4078db04c28362a331876d14a",
+                                      "size_bytes":  5635,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticSpectra09Profile.ps1",
+                                      "sha256":  "5f3a5d7dea2a85eaf83471c08059a7f617d31f84d9a161e688812d0efa69cc0c",
+                                      "size_bytes":  3426,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticUatTrainingDefects.ps1",
+                                      "sha256":  "ee54389cb383f23ea7952f868f668b4fe3f642c9ddef63e21d32d7605e83416d",
+                                      "size_bytes":  6421,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/New-SyntheticWorkspaceControlFixture.ps1",
+                                      "sha256":  "cc509004c944f7b4ad3109561c92c1f20be705bdca37839e1fab7ec650477a77",
+                                      "size_bytes":  2322,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Plan-WorkspaceUpgrade.ps1",
+                                      "sha256":  "1486d4324928914f0e504afd12041e50edd80f74e70ac648bee7360668a52f29",
+                                      "size_bytes":  5341,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/PortableSnapshot.Catalog.ps1",
+                                      "sha256":  "6c8a61282ffc859ffd58870abf455c56bbdd274929e1ae2b9aecffde46487b34",
+                                      "size_bytes":  8521,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Project.Scenarios.ps1",
+                                      "sha256":  "3f184b2236a4bf5dabe53155ed1efdd230ab6484aa36e26d2c5c09b60a40e60b",
+                                      "size_bytes":  3138,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Promote-ReleaseCandidate.ps1",
+                                      "sha256":  "05ace65d44159073bd80862ac6a15e979ea8ef25953d2123c3b5cfd6b5dd9ecf",
+                                      "size_bytes":  4733,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Release.Common.ps1",
+                                      "sha256":  "29b4332b3aea87f1457607aad910c38a07f1eb605ca9a1bd2c8c2f1d67de6367",
+                                      "size_bytes":  10654,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Render-DocumentProjection.ps1",
+                                      "sha256":  "30a7476a7358d82392181958affbf6a71c98c01a44f6734211433e1a6403db7d",
+                                      "size_bytes":  1830,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Restore-Workspace.ps1",
+                                      "sha256":  "e67d3ada967ef6479a40d15292558d6193774c1e9406a880e98b1501e3bc43b1",
+                                      "size_bytes":  1624,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-BCConsultantKnowledgeExact.ps1",
+                                      "sha256":  "426423e39a50cbfa9bd8f9b376db49c61939ea26415f080ef701fd2d05ce5732",
+                                      "size_bytes":  243,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-BlueprintCatalogV2Exact.ps1",
+                                      "sha256":  "a307ea2ab8007a6023e004b7cca21ba47548be34e9982c71e246ad8f117ffd91",
+                                      "size_bytes":  314,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-BusinessCentralKnowledgeExact.ps1",
+                                      "sha256":  "7a7d13f46320daae1bdb4ffdcda638caaae3bff1a3ac59ada5669f420c93331a",
+                                      "size_bytes":  1019,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-CustomerKnowledgeWorkspaceExact.ps1",
+                                      "sha256":  "833f53728aec56ad2cf169be929d17c02fdc1713217209fe860a5a342bdf8500",
+                                      "size_bytes":  236,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-CutoverOperationsExact.ps1",
+                                      "sha256":  "fadd8e3cf0afadf494f23e69914a4027bee165831d871f74235b407982df69e8",
+                                      "size_bytes":  231,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-DocumentProjectionExact.ps1",
+                                      "sha256":  "2b5c891dad91ec574c42a4bba51791201eb0c289f908217abd5c4160551a00a5",
+                                      "size_bytes":  287,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-EngagementFitStandardExact.ps1",
+                                      "sha256":  "1bdb0f507ad3ad629737243bec1f9c667232bf113477ec4e833575e78de82b7a",
+                                      "size_bytes":  305,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-InformationInboxExact.ps1",
+                                      "sha256":  "311d909a78e6ad71daa454519bf94fc7777be8fa28268a49adee60985b2a4ba9",
+                                      "size_bytes":  321,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-PortableConformanceExact.ps1",
+                                      "sha256":  "dda6d02f83180e5b34971d426ffff3daeb50bd59af477a940a923c8d61f7d488",
+                                      "size_bytes":  314,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-ReferenceGraphCoverageExact.ps1",
+                                      "sha256":  "0fc37e6da664f867a998537f29c2bcfc22c44c87896dd96fd22d5dc9b9b0322b",
+                                      "size_bytes":  305,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-SetupPermissionsDataExact.ps1",
+                                      "sha256":  "cffdcdaf9dfa7a7ff4584bcf01def9b01c029fefeb2ca49cf780f2ec00548e20",
+                                      "size_bytes":  289,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-Spectra09ValidationExact.ps1",
+                                      "sha256":  "4cf32ee420368313689c07492cd0b4867812d52b480de247f1efca8410da5efe",
+                                      "size_bytes":  633,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-SpectraSkillCatalogExact.ps1",
+                                      "sha256":  "c296d28b80512f9d992a4debd8bff35e5ae85d735db5c5560dcb123af5ca7124",
+                                      "size_bytes":  288,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-SpectraV1IntegratedInitEvidenceExact.ps1",
+                                      "sha256":  "53c6e03caa675b4e63622b8234c1cc9a7ee25f3a930fd9ec96c96224556495c3",
+                                      "size_bytes":  325,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-SpectraV1PilotEvidenceExact.ps1",
+                                      "sha256":  "06a90c3e397e97feb1ff0457c6ec919c4aa01f3593a8159196c31150d129c715",
+                                      "size_bytes":  275,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Run-UatTrainingDefectsExact.ps1",
+                                      "sha256":  "87aafc98325155d9988d5b7fa3a70e721e8b41bccf56925758db2aceb12701ce",
+                                      "size_bytes":  287,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/SemVer.Common.ps1",
+                                      "sha256":  "716dca7475c547a0c61cdd114d5f3b08493befe9d9b06b846830271cf4a7ed77",
+                                      "size_bytes":  1601,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Spectra.Bootstrap.ps1",
+                                      "sha256":  "2626decf79e41a1d05e6221260781f1154d4b60e83637c964ca1d33d72c179c3",
+                                      "size_bytes":  22046,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Spectra.JsonSchema.ps1",
+                                      "sha256":  "dbf4bf5ca9dba500bb2b77dd344aebd05e4cfa03736dcfcedbf673eb635e7fc6",
+                                      "size_bytes":  4999,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Spectra.PowerShellHost.ps1",
+                                      "sha256":  "3998bfd1727aaeff78fa6415df9fe4df42cb98c82cfb712cbe3ec66113872724",
+                                      "size_bytes":  286,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-AdapterProvenance.ps1",
+                                      "sha256":  "9dc95221b2d03f81c9dd18e2448deeacb5d9e4472dca3d5fded5f75ceddf5651",
+                                      "size_bytes":  2949,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BCConsultantKnowledge.ps1",
+                                      "sha256":  "0b70c0404f8d28bd14a192a1761bc55ec19e75f0ddbdf0a2b532aaf9f621366e",
+                                      "size_bytes":  5397,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BCConsultantKnowledgeNegative.ps1",
+                                      "sha256":  "6d6355fa5e1a8029024526ef46a6fc2e73aad0aed4fa62196a1f866586968bb1",
+                                      "size_bytes":  4144,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BCConsultantKnowledgePositive.ps1",
+                                      "sha256":  "ab52d2cb5e39b7ab84bd4524773552cd2f4b0c8958c9bb203dbca591f38ad1a5",
+                                      "size_bytes":  865,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BCReferenceFoundationImport.ps1",
+                                      "sha256":  "e832299b876438d6146409d0c7b7eec666bc3eaecc04ae02e952e026f841c6f8",
+                                      "size_bytes":  1351,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BCReferenceFoundationImportNegative.ps1",
+                                      "sha256":  "29aae51e1b81a826c4a17e9652e3c1a0f1e9af0aa6432d72f132396c5600799e",
+                                      "size_bytes":  1229,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BackupRestore.ps1",
+                                      "sha256":  "beab21201cd0464b6f894e3f7445dbbc2e0d5c125ddf62780f60286912081179",
+                                      "size_bytes":  1267,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BlueprintCatalogV2.ps1",
+                                      "sha256":  "d83956c119c64f06ed0503fe4af7495eb76f8e14a81a4ce54249f99c3fad5071",
+                                      "size_bytes":  7109,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BlueprintCatalogV2Negative.ps1",
+                                      "sha256":  "d9de0ce3e63a4f13674f0c9248556a628bd515d41e575d6cdf338faaf059f844",
+                                      "size_bytes":  4236,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BlueprintCatalogV2Positive.ps1",
+                                      "sha256":  "97ac6511a0130274156e942951cf0772722833ac28b4d1ca2198c8dfbda8b3b9",
+                                      "size_bytes":  1167,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BusinessCentralKnowledgeCli.ps1",
+                                      "sha256":  "3c3754b1e1787fdb538c027cebf53acc794e6323381edd3d196e47d3539009b8",
+                                      "size_bytes":  1617,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BusinessCentralKnowledgeContract.ps1",
+                                      "sha256":  "25c3bbd91e25e98fda426ee5b747fb0a76fed9c03490534e5d47e87a80fbf91f",
+                                      "size_bytes":  1472,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-BusinessCentralKnowledgeNegative.ps1",
+                                      "sha256":  "a9ea2cddaf6e34c01cfa20267bdc8965cdbf2089ae1054c4620bf49c6e8e98cf",
+                                      "size_bytes":  7678,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-CandidateReleaseBinding.ps1",
+                                      "sha256":  "7e61efd21bd653d976ce59f6099c906ce7d37e253392e98edfc28b20608a12b3",
+                                      "size_bytes":  10026,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ConsumerBinding.ps1",
+                                      "sha256":  "3d4ab810490c1384c39d8c65b5ec415badcd4eb8b5b2609e558b71d48ed36895",
+                                      "size_bytes":  9704,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ConsumerBindingFixtures.ps1",
+                                      "sha256":  "b9e0a082abcb7552bc697010086fe4fedc89043d4508281a5d8e9860f36c2881",
+                                      "size_bytes":  923,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-CustomerKnowledgeWorkspace.ps1",
+                                      "sha256":  "98aaead585e3158730e971f3e21f88adf99121208071865a1c1b86e22fedd824",
+                                      "size_bytes":  13598,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-CustomerKnowledgeWorkspaceCli.ps1",
+                                      "sha256":  "26f0e8fc588378ac75b384037e9b6eb158fa1ede047291335eb1765c839f65ac",
+                                      "size_bytes":  1363,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-CustomerKnowledgeWorkspaceContract.ps1",
+                                      "sha256":  "b409fc1c5bfa95bc5c037cca4944275ae7811ebb018f00aa66f60b8e2b641fa8",
+                                      "size_bytes":  2214,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-CustomerKnowledgeWorkspaceNegative.ps1",
+                                      "sha256":  "6ae3f0e755b3e6370a5d7789eacb64935e76f76400266cdaa6bd16fb5dc74a40",
+                                      "size_bytes":  6749,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-CustomerKnowledgeWorkspaceRecovery.ps1",
+                                      "sha256":  "c3c6b6f57ca63e563b5177082d66970d55bf72b9054acdd4625a79810f9eca03",
+                                      "size_bytes":  2007,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-CustomerWorkspace.ps1",
+                                      "sha256":  "66ff0fa92245d046f5aecafe3c31188aadf9e86f6af8974930516aa5e380076e",
+                                      "size_bytes":  7153,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-CutoverOperationsHandover.ps1",
+                                      "sha256":  "3b11f2c62dfdb9268d0086342f90cc15b382fc3f6f67019642dcd2579e1e1ba8",
+                                      "size_bytes":  3728,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-CutoverOperationsHandoverContract.ps1",
+                                      "sha256":  "ac627dc5dbe2da41f11a7757df88bb1be04cce11bce5e4047e3d9e1b6f86bff2",
+                                      "size_bytes":  1108,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-CutoverOperationsHandoverNegative.ps1",
+                                      "sha256":  "0e6bce9ea3f41cf70e09c3e982aafdb0f35f616e8a169a1a5b1a664697ca2712",
+                                      "size_bytes":  2563,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-DocumentProjection.ps1",
+                                      "sha256":  "302b54fb70805c154ade171a3fb26038879a2020f772dabb70d5d380e75c7f36",
+                                      "size_bytes":  4504,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-DocumentProjectionCli.ps1",
+                                      "sha256":  "c164d45b8a0c422826d39446c93bc23d4c5085e14a2437b319fab39ab30964d9",
+                                      "size_bytes":  1059,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-DocumentProjectionContract.ps1",
+                                      "sha256":  "bc0f7f5a197f78870f636e9738fce5b11bbfdbf3e04b43ff39f87d665a1b1bca",
+                                      "size_bytes":  1585,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-DocumentProjectionNegative.ps1",
+                                      "sha256":  "9758e0bcdea4d9fbdaa82beec03aea8484d3c918998927054c2f16bb02ba9276",
+                                      "size_bytes":  2876,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-EngagementFitStandard.ps1",
+                                      "sha256":  "45ea9b4f69316d6742e51dc12f6b4bc5d5fff20ebef1364f53d2edc8e9147289",
+                                      "size_bytes":  9689,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-EngagementFitStandardContract.ps1",
+                                      "sha256":  "252f2b6b2738dfb382f9c307d7927d65d22aae27c7efefcc13f0895ef58fa4d1",
+                                      "size_bytes":  1582,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-EngagementFitStandardNegative.ps1",
+                                      "sha256":  "a5ae5eedf618d9f48216a5d68b91543381dc4465fff10deff06e8e558bfe13f5",
+                                      "size_bytes":  4661,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ExistingProjectAdoption.ps1",
+                                      "sha256":  "06b84cd0cb9f3c46e0f4ca562af01061b2335e8ed5b8ceb7644ec2e596f3f978",
+                                      "size_bytes":  6403,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ExistingProjectAdoptionNegative.ps1",
+                                      "sha256":  "7a323eb9dbac24d5803e8f47b45ed1c8f88e51308ed96c1dbbffe8f9817823ac",
+                                      "size_bytes":  8292,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-InformationInbox.ps1",
+                                      "sha256":  "8bae01c56468f20de60940911c06b2795925856c298af329c68c1efdbea963c1",
+                                      "size_bytes":  7386,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-InformationInboxNegative.ps1",
+                                      "sha256":  "29fb81d14eb06d96ea31186b2930b0092e7ff4ebfa8ff10c6ab65d68b78db76c",
+                                      "size_bytes":  3482,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-InformationInboxPositive.ps1",
+                                      "sha256":  "21a9d26b4930410159b71b21d5d79b90e7ae00316c113c62eb8f2609c4b2fd77",
+                                      "size_bytes":  1162,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-InstallableWorkspaceGates.ps1",
+                                      "sha256":  "6c219bfd27c5948876a44a59a57fa9d532e3f6239a2d9f064b5a4eee05dd63b9",
+                                      "size_bytes":  4675,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-PayloadDigest.ps1",
+                                      "sha256":  "8453149bbf4ad645d1a12be70aed637cb06946d84daa8036601a01cb76a71589",
+                                      "size_bytes":  2677,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableConsumerWorkspace.ps1",
+                                      "sha256":  "efdba9300a96f6673410df06855c2a977aad9c248d3629490f56b8f74b672ef0",
+                                      "size_bytes":  1137,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableProjectStoryCardinality.ps1",
+                                      "sha256":  "2f3f4b05f96f782f18ad4bf2413abd77be8d76f3f59214d7f247d357d8f69f1b",
+                                      "size_bytes":  4451,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableProjectStoryConformance.ps1",
+                                      "sha256":  "48e3e2be46f6ac13791a06db22f0649177487daf80f058da88214698d9abd31c",
+                                      "size_bytes":  4039,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableProjectStoryConformanceNegative.ps1",
+                                      "sha256":  "4c618b15dbfff8a51a3ecbcfbdd9d8e74f6244759537e6b2ae609954995043be",
+                                      "size_bytes":  5335,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableSchema.ps1",
+                                      "sha256":  "4bd82865f8792452a338f7500482c8cede0272c67155f865c68bb53a06fb1ccf",
+                                      "size_bytes":  690,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableSchemaNodeTypes.ps1",
+                                      "sha256":  "f99d52c1b8a5cb108c9230ad26d52af7c9802ad3f01e00d3d9cf1f8a0a4a0959",
+                                      "size_bytes":  433,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableSnapshotCatalog.ps1",
+                                      "sha256":  "9f5d8392d5ac7363fdb4b12d36738afc845201ef6a2866ec2dba605b81d170bf",
+                                      "size_bytes":  1741,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableSnapshotCatalogNegative.ps1",
+                                      "sha256":  "09412cb9eb373ff6e9589f5a398e3345dbb620f4a40bfd03806d7d2382502ea9",
+                                      "size_bytes":  4958,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-PortableStructuralGates.ps1",
+                                      "sha256":  "f9af1c01d7f77389e1b607c276ffd95e5a3ab0c6273e4d4cc589b5ad05449fc8",
+                                      "size_bytes":  1965,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ProductContract.ps1",
+                                      "sha256":  "0da31593bdc15cf676f816d614c9c3860919b0fcc8e89b38955eced9cc49a21e",
+                                      "size_bytes":  13755,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ProjectReconciliation.ps1",
+                                      "sha256":  "fa538ef2d41ccb1a0a13773b4a9a3b02028166f833d32edbc6a7ccd8c055210c",
+                                      "size_bytes":  2630,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ProjectStoryContract.ps1",
+                                      "sha256":  "5bb6900d976338dbb8d8159d363fe919ff871de2e256a24b79e6afd69a05ae13",
+                                      "size_bytes":  8647,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-PromotionWorkflow.ps1",
+                                      "sha256":  "be9cf551ad919f63a53333ef24ac593b3f8aebd56441991fd26728a683f4ae25",
+                                      "size_bytes":  3735,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ReferenceGraphCoverage.ps1",
+                                      "sha256":  "01fbc92b8e85c767efe9c50a07d5a80be0d57e338bad994e9f4ae071ebd057af",
+                                      "size_bytes":  7041,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ReferenceGraphCoverageContract.ps1",
+                                      "sha256":  "21d030d79d5837d7964efba63cc6d5d3d352bdacc9ca140c7785b9231ffbca87",
+                                      "size_bytes":  1175,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ReferenceGraphCoverageNegative.ps1",
+                                      "sha256":  "3fef3911ba14f05fa1027cd0d452eef437779d4bcafee74513bfb253ae084e9c",
+                                      "size_bytes":  3535,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ReleaseBoundProjectInit.ps1",
+                                      "sha256":  "15f7d77be686872ab471bc24bc7ce50088068b75e17b7c4a54259976b40a2320",
+                                      "size_bytes":  5988,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-ReleaseCandidate.ps1",
+                                      "sha256":  "c42935f90d4038678259f9eb071fe6e092235a172e0bd2027870d9225fdbab1d",
+                                      "size_bytes":  10734,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SetupPermissionsData.ps1",
+                                      "sha256":  "571586ec7c7f0929565e88d7e9e10719b17dffaebb639772cac728d13593fa6f",
+                                      "size_bytes":  3026,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SetupPermissionsDataContract.ps1",
+                                      "sha256":  "a643ac6030fe5760630777b26b9a445844a1f674cb4c1ebb4a6a4af9049db23b",
+                                      "size_bytes":  1763,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SetupPermissionsDataNegative.ps1",
+                                      "sha256":  "8b7f2ecb734b63199bb7721b01a4744ec3621cb548ae64b6e832c0404b67cc37",
+                                      "size_bytes":  2484,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-Spectra09Compatibility.ps1",
+                                      "sha256":  "eb7d8f2e2ff0c009f29a2c21642292be5b23dc412748d196d12c2556a39dd344",
+                                      "size_bytes":  1894,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-Spectra09Contracts.ps1",
+                                      "sha256":  "5db287f009341d7018c02a362c5e5bc9519af434aa65e035a9234b2eab7b0646",
+                                      "size_bytes":  1295,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-Spectra09ContractsNegative.ps1",
+                                      "sha256":  "502750768c9f9204789d5e717a08a44a5b3550ae75ef258556e0b66d9a422617",
+                                      "size_bytes":  6898,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-Spectra09SchemaParity.ps1",
+                                      "sha256":  "158a287e92e5021c4acbc9fa4201cf8d33f3d8b893ef86e05e7ea0b624180199",
+                                      "size_bytes":  2637,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraBlueprintCatalog.ps1",
+                                      "sha256":  "79c83ed74b53853f5e47f35663fec976c938cf95ec9b0579f5742624e28bc9ac",
+                                      "size_bytes":  649,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraBlueprintCatalogNegative.ps1",
+                                      "sha256":  "e36662d67d80ccff8dbf766e39a0de99ac200d9ccbe75c2cb1c2e5138f260b1a",
+                                      "size_bytes":  3184,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraGuidedInit.ps1",
+                                      "sha256":  "ec7786afac24642a0271ef593484abde2a8ea8b3a930d572030cb0eabdef4f51",
+                                      "size_bytes":  3350,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraGuidedInitNegative.ps1",
+                                      "sha256":  "3fffc98c349d3d0a1abb7cc9c80e1078fcc4c7055d6e82766ff82a35287956dd",
+                                      "size_bytes":  3075,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraInstallerContract.ps1",
+                                      "sha256":  "2624a444e85758a9e85055fce015aabb46659c8987ef5c537a4efe04bf7fbd41",
+                                      "size_bytes":  2651,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraMacOSOnboarding.ps1",
+                                      "sha256":  "33e2e76cfa002722d5b107ffae18cdd2ea42b111ea1dff9d4773adbba33868f8",
+                                      "size_bytes":  5448,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraOperatorCli.ps1",
+                                      "sha256":  "2c87c9de81a5ef176774665d8b8ba8cda4ce80267772842951d4c85bec7a3be2",
+                                      "size_bytes":  2732,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraOperatorCliNegative.ps1",
+                                      "sha256":  "3048d7b5fb98a3444dd3643b64dfac3bc4080e1a8cc16988167bae3341cc698a",
+                                      "size_bytes":  3003,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraPortabilityRegression.ps1",
+                                      "sha256":  "10072b7e99733f737c6c9f3f52f583c7ac969975ff65e205f0d105f1039db489",
+                                      "size_bytes":  3794,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraPortableBootstrap.ps1",
+                                      "sha256":  "4b646502d6db3bee0b39c76ae11c022f202b99be4af2b08c3901fb7a54ca4132",
+                                      "size_bytes":  5786,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraPortableBootstrapNegative.ps1",
+                                      "sha256":  "956bc66fa332c95455a96ebf05f07627e8cb44c5f273eb66311ff6eca2e57d75",
+                                      "size_bytes":  4483,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraProjectInit.ps1",
+                                      "sha256":  "fcd64d57440f72541d3cd1a30fd64106c6ac3c97c20e9a2c169299fc1db23e1e",
+                                      "size_bytes":  5680,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraProjectInitNegative.ps1",
+                                      "sha256":  "e5b66a4a9dc582ff51654012d6aa8187ca528503c24b2218114781714614e5af",
+                                      "size_bytes":  5280,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraProjectScenarios.ps1",
+                                      "sha256":  "4bf7e5141164d0880540218e9c7c6739d37c086d838bf44801f4e90ea5dfdc84",
+                                      "size_bytes":  5085,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraProjectScenariosNegative.ps1",
+                                      "sha256":  "2ba7e2e80b34164e217e884c135dc27181997c6144e7741ef8faea5ece8b81de",
+                                      "size_bytes":  4708,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraSemVer.ps1",
+                                      "sha256":  "98d72154905a058fa3f41ce9bda88eae19242b837256ddf57965c47cde05db8b",
+                                      "size_bytes":  787,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraSkillCatalog.ps1",
+                                      "sha256":  "d24321ee0afcb540bc6eb4854b2264343357639c470a8f582bd9bcc8c8312c6d",
+                                      "size_bytes":  4946,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraSkillCatalogNegative.ps1",
+                                      "sha256":  "9b0b688d839c4a386a649a302ef5cd3a31dead5602d6b6435316b22888b3d10a",
+                                      "size_bytes":  4302,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraSkillForwardScenarios.ps1",
+                                      "sha256":  "cfe779398c0c155a0af443db50b02e813e5fb75ecfcaa5b58858e930254d14d6",
+                                      "size_bytes":  2150,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraV1IntegratedInitEvidence.ps1",
+                                      "sha256":  "8a456f05882d0287453df68e3ca9643e41e5c5518cea37b75757c746bf1c8a40",
+                                      "size_bytes":  3253,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraV1IntegratedInitEvidenceNegative.ps1",
+                                      "sha256":  "400b7406b68d3a3743067c2e9bd7abf968b2713f8b16d1b99515c24990c06f37",
+                                      "size_bytes":  4290,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraV1IntegratedInitPilots.ps1",
+                                      "sha256":  "a998c7a027b89db4fb7ed147e6fb7b3d336e5a9448767dc36bc7a8aa8be6ae4a",
+                                      "size_bytes":  10303,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraV1LocalIntegration.ps1",
+                                      "sha256":  "52900f5a3d37b056d38cd81731175c8628482d89f62d1e63e33e38ec299dedbc",
+                                      "size_bytes":  6916,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraV1LocalIntegrationNegative.ps1",
+                                      "sha256":  "ddd0ee3c5004ba82f6154f2902114531010461ca8642b7d6f74da9ede678d371",
+                                      "size_bytes":  7869,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraV1PilotEvidence.ps1",
+                                      "sha256":  "ef6e0dd759c2c509749ea53f806c2568b191a4310e7f569cda7edca4efd4b53e",
+                                      "size_bytes":  2166,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraV1PilotEvidenceNegative.ps1",
+                                      "sha256":  "6c8182f19272b66c6ef672fa97505ba2a0ce85e6bc1bd1ffd683ef02278f3898",
+                                      "size_bytes":  3152,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SpectraV1Pilots.ps1",
+                                      "sha256":  "1b8a75e2230f5f8713b45730918b43259a68dc1729e19d07f8808dbaef49540c",
+                                      "size_bytes":  7237,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticBCBasicWorkspace.ps1",
+                                      "sha256":  "74796bcab99dff60b53601b1b164ea5a56a39277d466e0ef7c2be7e029798a55",
+                                      "size_bytes":  1722,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticControlGraph.ps1",
+                                      "sha256":  "27efcad7b6628f794d588d381f17c28672072f2b56f6a089c4aa8ac21d7f4dfd",
+                                      "size_bytes":  922,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticFileIntake.ps1",
+                                      "sha256":  "985489a0437f8ea6292ccef0fe29ccecdc34f5925d215368a6c89a619385a309",
+                                      "size_bytes":  956,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticFileIntakeNegative.ps1",
+                                      "sha256":  "fd9b08b77bf0eba8e1436dfef04b6ed14d9934cb8d9224e60d2ef6bca35da8d2",
+                                      "size_bytes":  876,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticProjectStory.ps1",
+                                      "sha256":  "55b5a774fea663898772c372549921a6ef4e47cd308f9dc1d783570c313b8316",
+                                      "size_bytes":  1097,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticProjectStoryHardening.ps1",
+                                      "sha256":  "88e19c8e32730f68154b8501123aa3818bed2df9bcf464c9037faa284696da08",
+                                      "size_bytes":  2941,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticProjectStoryHardeningNegative.ps1",
+                                      "sha256":  "03ecb8959f0ae55b8c3a4f5f74fae9ab09e9709122b1270ed8e3631bed378e70",
+                                      "size_bytes":  3903,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticProjectStoryNegative.ps1",
+                                      "sha256":  "5426b1bed19893b21ba43fc8fc31ca9a96e5313dea164912f2dcd2c561e4b2d3",
+                                      "size_bytes":  877,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticSpectra09Profile.ps1",
+                                      "sha256":  "a7c1eda4b0e8db1a85f06484bf690c0f8ffcaba6f571036b7960e7647dffb8c9",
+                                      "size_bytes":  1451,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticWorkspaceControlFixture.ps1",
+                                      "sha256":  "589ff9556020f1af30d35bd88c707623a9194c6fc5b860895084f7f138522f0d",
+                                      "size_bytes":  1150,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticWorkspaceControlNegative.ps1",
+                                      "sha256":  "9d12dbfd3442f251944a8e5a968cf1f1c878388476439d435b6c02b004008c4c",
+                                      "size_bytes":  928,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticWorkspaceFixture.ps1",
+                                      "sha256":  "4a6d204f9e955f3f5c81c69b02767ebd79463f73fe57288a9185e1ed63847f56",
+                                      "size_bytes":  6155,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-SyntheticWorkspaceFixtureGates.ps1",
+                                      "sha256":  "de993b9e4baca829dd43c28a73f3cd6862ef7b626bf64e351809df29a272392f",
+                                      "size_bytes":  2458,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-UatTrainingDefects.ps1",
+                                      "sha256":  "719d0c62f1b4deb4d0ea8fa73c1a2940b527ea55e67e05f7b6685886d1c0e247",
+                                      "size_bytes":  4030,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-UatTrainingDefectsContract.ps1",
+                                      "sha256":  "8ab6998d3f987a7eb9e984844e2d0abe9940ae1dbcd0bcbef411a0e87c7a7b68",
+                                      "size_bytes":  1670,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-UatTrainingDefectsNegative.ps1",
+                                      "sha256":  "34eff96079fd05e2b9be4a8ca43adafa853550bf04229941307e24d042c732c6",
+                                      "size_bytes":  3415,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-WorkspaceSchemaParity.ps1",
+                                      "sha256":  "0f460ba089a5952b1a6ebc39bd7a6b8cf81a01445bc6199d786f57c4d9204307",
+                                      "size_bytes":  1839,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-WorkspaceUpgrade.ps1",
+                                      "sha256":  "dedaecad5e5318f9d14d38169050027cb9d9750aa02f1e25afb6b85e15043dff",
+                                      "size_bytes":  4047,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/Test-WorkspaceValidator.ps1",
+                                      "sha256":  "4310b314c3f79aa70096777f0336f616684ddfc3d9eb94e8a11b663b41368e29",
+                                      "size_bytes":  4637,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "automation/V1.Integration.Release.ps1",
+                                      "sha256":  "b032bef1bf5c135121f3b863847b0f0c629cf4ae7175822f97fe46a5f0b05307",
+                                      "size_bytes":  3525,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "catalogs/bc-consultant-knowledge.json",
+                                      "sha256":  "d7c3f138415dda41e160c3680d7c3254a970697b8565856d8e9e24231781490d",
+                                      "size_bytes":  1280,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "catalogs/blueprint-catalog-v2.json",
+                                      "sha256":  "cc1d03d6d8649a046195c30dee89e98aa885f6e6b2b741ae93034d218b3b7788",
+                                      "size_bytes":  18813,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "catalogs/business-central-sources.json",
+                                      "sha256":  "a84726c32687a38a9d8413ffb0a3f110e35d2c910894f3331c78e519f65633f0",
+                                      "size_bytes":  1278,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "catalogs/document-types.yaml",
+                                      "sha256":  "6dd48aceed2515729fafefe5143ae0bd979d6d92feda81cbbc24bd75fbf79a88",
+                                      "size_bytes":  375,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "catalogs/relation-types.yaml",
+                                      "sha256":  "4bb476e6e271b0323d9a925429cf1d74ea8e0659ddeb0855f087b713af3141ad",
+                                      "size_bytes":  1988,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "catalogs/statuses.yaml",
+                                      "sha256":  "08172102e9939a8cf9bcac0257deba479d2e8bd24bc65c2a1e860b4492e8792a",
+                                      "size_bytes":  695,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "catalogs/tags.yaml",
+                                      "sha256":  "9a04bc229a3b2f001fd4ce3513b72c8fa93be78167cf030a64773d34c0e6ce38",
+                                      "size_bytes":  612,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/bc-consultant-playthrough.md",
+                                      "sha256":  "e4fddf85077ea0f9ee734262c784377aca7fe8196afd2604b467a09f2c75e6e5",
+                                      "size_bytes":  1031,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprint-catalog-v2.md",
+                                      "sha256":  "22dd1147ee0ce7b9d67c2c10f05d0405b30d875e8f6fc20ab6ad2c906d61e50b",
+                                      "size_bytes":  750,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprint-versioning.md",
+                                      "sha256":  "f74edd1b3f6691b631c64e0aaa3585fcd949da631a3cb7113a1a5c655a066ce5",
+                                      "size_bytes":  6159,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/catalog.json",
+                                      "sha256":  "b8dce3553e463f16f8032f994af9d6badd94cce47a0daaeae9eacccb5d0f3ac2",
+                                      "size_bytes":  13926,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/confluence/00-support.md",
+                                      "sha256":  "1aa4029c49fa3ba3db3b0b954ae30eaac9fcb24838524c28d6965e423a07d35a",
+                                      "size_bytes":  271,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/confluence/01-unternehmen.md",
+                                      "sha256":  "e2fce4ea68adf21d4a2b49ae7fe13cb04e16d0e291b6c93976e6191a6fcff3f6",
+                                      "size_bytes":  269,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/confluence/02-business-central.md",
+                                      "sha256":  "334a4585dd7d05555c22b2d8f395d9f537fd22950b80b7d6b12fea3b0c9e7be4",
+                                      "size_bytes":  256,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/confluence/03-projekte.md",
+                                      "sha256":  "60f363205309437deec32859b7e2c52d2e18692df7828abd2de8ab802b44128c",
+                                      "size_bytes":  205,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/confluence/04-handbuecher.md",
+                                      "sha256":  "28ac8906d7f96fd895f63be2ff3a76273c67e255fb7f3582f82bb8c4c3752c23",
+                                      "size_bytes":  207,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/confluence/99-archiv.md",
+                                      "sha256":  "79598e99f715902b01542db6daae409761c61d24f64a7bd27bf57ad2fa77c2d0",
+                                      "size_bytes":  242,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/documents/customer-manual.md",
+                                      "sha256":  "b9b936fe2e9115d714442e0629828348472039c334fa517b3f6268762c0ba945",
+                                      "size_bytes":  170,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/documents/decision.md",
+                                      "sha256":  "a262c1dd74e61eba11be8f8fa4b06597a09771e436521062b721e0c71eeb1fcf",
+                                      "size_bytes":  176,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/documents/deliverable-evidence.md",
+                                      "sha256":  "4e68fc10a2415e1ac4a5432dd0670ba7bde5d32a746b19161bbcff464f6c04d0",
+                                      "size_bytes":  179,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/documents/discovery-fit-gap.md",
+                                      "sha256":  "819a9876b9646a187d5e55ac15245549a4b1dad6f415afa52752ec685541c072",
+                                      "size_bytes":  196,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/documents/handover-hypercare.md",
+                                      "sha256":  "b6acf6cd8d2e86f6f2de408c513210c50501829eb75b4fb018d4ed1dc8ab6781",
+                                      "size_bytes":  181,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/documents/meeting-transcript.md",
+                                      "sha256":  "f8512a1e869de4aa32edb4bfa66e7fe8eb183126177a8e20363e027575cb022a",
+                                      "size_bytes":  174,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/documents/project-overview-scope.md",
+                                      "sha256":  "883aab7d17f9436f071888eeb7787265a6e5ab5857c28358610b86cf64b42571",
+                                      "size_bytes":  167,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/documents/solution-design.md",
+                                      "sha256":  "9d6854e6ef6d7a21852d8937ff7a0c6393f0a6a95da713c1b4a85d6ad06934fa",
+                                      "size_bytes":  165,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/documents/support-overview.md",
+                                      "sha256":  "c81064fb20a4adbb48cf9b8ef6fa214a0b83ca43d97fa88ec104feb210c9985d",
+                                      "size_bytes":  203,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/documents/test-uat.md",
+                                      "sha256":  "74430038e5f9870130d2601c8edb9f97c5859f8460d3be31c6f391612c88493c",
+                                      "size_bytes":  154,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/documents/training.md",
+                                      "sha256":  "94ad34e77bdf7e25a384df7eebcdc2371849405f03eacdf32ea687c476e0bfbf",
+                                      "size_bytes":  155,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/jira/project-structure.json",
+                                      "sha256":  "9f673c67fcea6fc336569e08299b059b497969808ce36b0c48a1dc7e6cb151ad",
+                                      "size_bytes":  279,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/metadata/document.json",
+                                      "sha256":  "79e2c81fadbe00f9a123e58a049394c8f045451799405d1b593500037597536d",
+                                      "size_bytes":  200,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/metadata/reference.json",
+                                      "sha256":  "2218a6af72a4f46879bc1ac42d626f3999a5b7c61ec1f197b795734c0c563a6a",
+                                      "size_bytes":  194,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/blueprints/templates/metadata/snapshot.json",
+                                      "sha256":  "1e7b29cc48c92edafdc50730244e7190fe6281667c99a48f31a2304ded3c3256",
+                                      "size_bytes":  215,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/business-central-reference-library.md",
+                                      "sha256":  "577c6c7398b4e0eabee688ff65611036e7e6159b6ae69f06678467f50b3e124a",
+                                      "size_bytes":  1083,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/customer-workspace-knowledge-inbox.md",
+                                      "sha256":  "93050d6127abe41b46534b02b451a059c6d0b1ea4dce313e83bffa926363fd15",
+                                      "size_bytes":  2564,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/cutover-operations-handover.md",
+                                      "sha256":  "0b1cafb69c7e00dd2c7511c6afc75bcb64d0df2d5348c710e2470bd018228011",
+                                      "size_bytes":  832,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/decisions/ADR-0001-customer-workspace-boundary.md",
+                                      "sha256":  "2dcfc3b2d7f9af3c59e4f54af3a1d39f252477b08de6336b323b8f80e64bbce7",
+                                      "size_bytes":  397,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/decisions/ADR-0002-file-based-canonical-model.md",
+                                      "sha256":  "41bcee2226877b29a14dc978fe714066335383fe1891f8a577494195ce7ec6ab",
+                                      "size_bytes":  418,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/decisions/ADR-0003-original-binary-storage.md",
+                                      "sha256":  "2116b7b15364a6c38f325bc3c1ec884aed3cedb3493743792f54e9b2444eddd8",
+                                      "size_bytes":  434,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/decisions/ADR-0004-blueprint-upgrades.md",
+                                      "sha256":  "c26041c32a3ddfad10df65e8bbf411acb0330354abbc73dbb7bf23d7a3369f51",
+                                      "size_bytes":  394,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/document-projection.md",
+                                      "sha256":  "9c8a79c53b54fab42eefb8db3aeb3f50420eccab5c9a164e507ba543b2115c64",
+                                      "size_bytes":  1078,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/engagement-fit-to-standard.md",
+                                      "sha256":  "dac97838610b3b8f024bc4fcfd9a22f7a55d8dc90accbef51606398322a8be7e",
+                                      "size_bytes":  1530,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/entity-model.md",
+                                      "sha256":  "6a7469822a14d56df1fb494688681a0282cd634e38f10f915dea6a39d10c5698",
+                                      "size_bytes":  2795,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/existing-project-adoption.md",
+                                      "sha256":  "206a2f8913f6cb261b3598245bb72b13cbc19012ccd003585560240c0d455175",
+                                      "size_bytes":  3339,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/external-system-boundaries.md",
+                                      "sha256":  "462cc069d84f9046dd1b49373c6fdd995fcf7671d0e31ed89a6296147c09ad0b",
+                                      "size_bytes":  1055,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/foundation-imports/bc-reference-library.json",
+                                      "sha256":  "299ebe1a5a54db52bd06865e7592a124a5b2ad86b8dc0ae8416263800a3728fd",
+                                      "size_bytes":  1884,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/information-inbox.md",
+                                      "sha256":  "376cd027691246f53a5b7a86b1e88b6055c2205415a2f604397a9c64532debfb",
+                                      "size_bytes":  793,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/lifecycle-and-approval.md",
+                                      "sha256":  "88ccbbe3cfcb9c378723cf42fee59bc44d6810f14b02f4a599c7c9301ec52072",
+                                      "size_bytes":  1538,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/mvp1-readiness.md",
+                                      "sha256":  "d0bac87e06c7d053ae3fd9d98ad013ae886f5f2bf12e741c1fe8c5abeff34a12",
+                                      "size_bytes":  3971,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/openspec-promotion.md",
+                                      "sha256":  "b5d38e5e9abb32b2cf8846ed78411ee0506557d4e226366eae699b2ddff3fecd",
+                                      "size_bytes":  1099,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/portable-bootstrap-project-registry.md",
+                                      "sha256":  "6c4640faa06143efcba5a4a1d066474ebbb7f168c88f20bd942128e089514608",
+                                      "size_bytes":  4663,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/portable-snapshot-multi-customer.md",
+                                      "sha256":  "167e8b39f17cc26a4d53665f8652726d7683fdff50927c0581a472b4fa336f28",
+                                      "size_bytes":  1630,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/privacy-retention-backup.md",
+                                      "sha256":  "aeb22c57b8e0437c20d6a5dbe39eb4f8c37157cea33654cf3afef645818a926a",
+                                      "size_bytes":  1974,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/product-boundary.md",
+                                      "sha256":  "7ead2f31b1000721c847cc8ecfa04c827d7ca5ad81feee4626b60833bad6f772",
+                                      "size_bytes":  1068,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/project-initialization.md",
+                                      "sha256":  "d64a9cf8250e1ffae4c483c923bad9d69641a52e2f42fb7f0ed559131b213a3b",
+                                      "size_bytes":  1823,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/project-scenarios/catalog.json",
+                                      "sha256":  "9786a0b670ac554e6e42eb7209e3c745daf8574278de1ce36c01f3197eb20888",
+                                      "size_bytes":  1535,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/project-truth-and-adapter-provenance.md",
+                                      "sha256":  "1f21fd6049991624e39395edf49d57a9c4651e39cffe82938def617ccf6551c8",
+                                      "size_bytes":  1631,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/reference-graph-projection-coverage.md",
+                                      "sha256":  "b0b4b5ac794eb274aaaf8bc27ea9c5339a6b79802da5ce729c511071f3fe3f92",
+                                      "size_bytes":  1265,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/setup-permissions-data.md",
+                                      "sha256":  "90e91f76ca7f0e890cc86e3b2f7803965d70b3dc9e968f7b3493eb8262176601",
+                                      "size_bytes":  2079,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/skill-catalog.md",
+                                      "sha256":  "c64c88dbef27712f8ddbed08d05785cecdcbc3e434940cc36762049cdb30ba71",
+                                      "size_bytes":  820,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/skills/catalog.json",
+                                      "sha256":  "8fbfe2a29eec0cf007642c5b491585e947f8a57bf88e193649f64b1486cac9bc",
+                                      "size_bytes":  3725,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/source-of-truth.md",
+                                      "sha256":  "0f257368a0495ec6543206bae284d9c514deddd7cc65152d3825fabd5ed80a01",
+                                      "size_bytes":  1324,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/storage-and-integrity.md",
+                                      "sha256":  "2c6e20686f2ce25a5e2c5125b134ff7e752ca1580b1183074cac205418774b5f",
+                                      "size_bytes":  1252,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/uat-training-defects.md",
+                                      "sha256":  "7bd945c378c781ab3db15e0338edc947a267cdc9eda7f16ef148664d4766eb8b",
+                                      "size_bytes":  2066,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "contract/workspace-architecture.md",
+                                      "sha256":  "570921e643d93a767c69fb05adac89c39ab499f18da2e8d14974e2a6a61ca3cc",
+                                      "size_bytes":  1624,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "examples/minimal-contract/contract-fixture.json",
+                                      "sha256":  "76ecccbf8d85c2c4f6ea104f105d560ed0a94b5142458d330420eb5356e12f06",
+                                      "size_bytes":  5376,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "release/release-scope.json",
+                                      "sha256":  "e1c49a3a5ff82778ffa6eaa8869ba412ce2bd0900b2d33aa319f14d62f165b71",
+                                      "size_bytes":  368,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/adapter-provenance.schema.json",
+                                      "sha256":  "272e39ad3e246e07fce8f05f111e7d1853e43d0b36a40558477b55fcb385bb1d",
+                                      "size_bytes":  3138,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/bc-consultant-knowledge.schema.json",
+                                      "sha256":  "fa0fe613d0597474f278a295b2856487d4265cb0fe8579783e9573e1522a3872",
+                                      "size_bytes":  3972,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/blueprint-catalog-v2.schema.json",
+                                      "sha256":  "660df4745d71c1fb3f10b8ac60befe110f4d41acae72b5ca84c9aec4dac08771",
+                                      "size_bytes":  6060,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/blueprint-catalog.schema.json",
+                                      "sha256":  "41e8d10053003ffc6c4ddb94f03496126c77e3143275f48e308ee972d55f6d30",
+                                      "size_bytes":  2468,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/business-central-object-catalog.schema.json",
+                                      "sha256":  "a99916d273b26740abb9d821b4b1a6eb72d66a3f51e1e18d1c14718e68bc2dba",
+                                      "size_bytes":  2703,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/business-central-search-index.schema.json",
+                                      "sha256":  "05f86060c818d83625b48df445d6a5fb5e2b45e771c52636d4ace123318be882",
+                                      "size_bytes":  1332,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/business-central-source-lock.schema.json",
+                                      "sha256":  "322cd6646652d822694576194be084b84fb653862f710ab3d855b2d41bb60e78",
+                                      "size_bytes":  3551,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/catalogs.schema.json",
+                                      "sha256":  "8d6395ddccbe36621d7cadb17519d3271890fc19b2a0e23cca4839726b84f749",
+                                      "size_bytes":  319,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/consumer-binding.schema.json",
+                                      "sha256":  "14ba3678662e69ba128525097f514e6f00abd2ae2aa5689e2b52cdff6b7bd093",
+                                      "size_bytes":  2520,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/customer-workspace-foundation.schema.json",
+                                      "sha256":  "6a5f7be3a8f8ce8020a230f8ae316e34976c05086fa5677149ebb124124c1faa",
+                                      "size_bytes":  8942,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/cutover-operations-handover.schema.json",
+                                      "sha256":  "0b02c03fa502e78b899e37bc3797bff32e623a366b796e71ae8313561392b65d",
+                                      "size_bytes":  6901,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/document-projection.schema.json",
+                                      "sha256":  "79d6c9e96b0a2796ce47c56e5cb43e7510c93cdc89c181958f22db4a7f3c0683",
+                                      "size_bytes":  6870,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/engagement-fit-standard.schema.json",
+                                      "sha256":  "b177b2df6c36f3a19a5d5d7f792fe6451baed89f5d31d0143a69294e6d64f30f",
+                                      "size_bytes":  15136,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/entity.schema.json",
+                                      "sha256":  "b2b0593a0767e37208990ef6473c8898f0186ec8859a51a86a6377b67b506cd9",
+                                      "size_bytes":  1907,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/evidence.schema.json",
+                                      "sha256":  "f44030807d2cb639749eb7cfefd7b31181d40f149462c86eb45000d707527b9a",
+                                      "size_bytes":  423,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/existing-project-adoption-config.schema.json",
+                                      "sha256":  "a10c5028870f180b5dca067e8bd4870cd1b2b2deb73cf2e202b71176e97ca0b3",
+                                      "size_bytes":  4839,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/existing-project-adoption-plan.schema.json",
+                                      "sha256":  "5c10ac5101f1e429da7a8ccfb590f87b6f63fc698a4091a9346868eb5d46c8bb",
+                                      "size_bytes":  1709,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/existing-project-discovery.schema.json",
+                                      "sha256":  "177113746af6f54eae105517b21a2d7d26231a15cfec74b923a54a2c8b9c60d0",
+                                      "size_bytes":  3775,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/external-file.schema.json",
+                                      "sha256":  "6a3dd361b52c0d64509b1db0bfec35a49b5fa60c099dccad4319decca06b742f",
+                                      "size_bytes":  470,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/information-inbox.schema.json",
+                                      "sha256":  "3ede93f179be1deb5b057c6340eb110c1d4743aac8a9aa8703f97d8f52711d79",
+                                      "size_bytes":  6468,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/knowledge-inbox.schema.json",
+                                      "sha256":  "003be7fbd39841e722389da6a39632b32984ab56505e936f537eb2fdf22d2fb4",
+                                      "size_bytes":  6899,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/portable-project-snapshot.schema.json",
+                                      "sha256":  "8ea95721a0fdd486af9e65083e61eea5bc96a0c133fbff52a235523ccc0c45dc",
+                                      "size_bytes":  6206,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/portable-project-story.schema.json",
+                                      "sha256":  "b1b4e498ef550b9081167358e1fbdde58ff3fe17a679881ec7378a37605b9b2a",
+                                      "size_bytes":  3799,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/portable-snapshot-release.schema.json",
+                                      "sha256":  "df81fb433088cf29000de0264440832c73b77fc2e26e1155b9f1244550954d75",
+                                      "size_bytes":  1485,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/project-init.schema.json",
+                                      "sha256":  "b9e220fb649b0bb587c15dadc14411440f00ad468431324b992e9649440f5286",
+                                      "size_bytes":  4211,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/project-reconciliation.schema.json",
+                                      "sha256":  "3515165e8dc53e38d215f78630f76304b72caca79db8241e42dc06c5c02e3185",
+                                      "size_bytes":  2677,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/project-scenario-catalog.schema.json",
+                                      "sha256":  "4d5c05df658033a8ad9481c944e8cc3061181f9814d4b93591a6fb3150460b1f",
+                                      "size_bytes":  1584,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/project-story.schema.json",
+                                      "sha256":  "b82c591141dfef277a555be95d41b60b60e557b3c99649753da7553e523fb3f7",
+                                      "size_bytes":  6445,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/reference-graph-coverage.schema.json",
+                                      "sha256":  "f4692e91ed3da131a121fea60d14756787e86f08c1ac32463ba940ffe64565c1",
+                                      "size_bytes":  4373,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/release-manifest.schema.json",
+                                      "sha256":  "07c7cfbc14d0a12e06f2d111585a2fdf518b4475dd44ab979a4218160cc1e440",
+                                      "size_bytes":  4989,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/setup-permissions-data.schema.json",
+                                      "sha256":  "94f863e5e93f29f05b2467200e362c65b493653fb1df64bcf010c3728089c249",
+                                      "size_bytes":  4856,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/skill-catalog.schema.json",
+                                      "sha256":  "f4b70cf54e322662e5aaf2e33f1bd8ceef5418bfbc5124cb140d976af95aafb2",
+                                      "size_bytes":  1575,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/spectra-macos-onboarding-evidence.schema.json",
+                                      "sha256":  "15f3e9d99e2ad27898164d5859e583d84334f459f2b7a8a18d0d9d64496be00b",
+                                      "size_bytes":  1396,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/spectra-multi-customer-catalog.schema.json",
+                                      "sha256":  "255074dd3a90f97afe006693cb3f5d65f5724b47d5ac35bc75958ee145d90374",
+                                      "size_bytes":  1295,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/spectra-project-registry.schema.json",
+                                      "sha256":  "9747f05287c05d8d8a96e84a1452ebdcbb02dea8ee531b168c0980800ed69d72",
+                                      "size_bytes":  1890,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/spectra-twin-handoff.schema.json",
+                                      "sha256":  "1e1b7dcaddf7cfa50e3b2b4b2caa4d063e2ed368070282126bc28d0cb765d8a3",
+                                      "size_bytes":  1354,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/synthetic-workspace-fixture.schema.json",
+                                      "sha256":  "0633f2f877e663bbb0f1906a381c78a5717e6cc82d78ab089457ab3957b81685",
+                                      "size_bytes":  991,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/uat-training-defects.schema.json",
+                                      "sha256":  "2d5595974693d3cb37e7b05be6befc2fcf81b45417677837ec75bf518b581ef8",
+                                      "size_bytes":  6758,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/v1-integrated-init-pilot-evidence.schema.json",
+                                      "sha256":  "c9ce713188bcda6681268ce0c22be912dc17b7df5585e529c98484b9d3f69e4c",
+                                      "size_bytes":  2469,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/v1-pilot-evidence.schema.json",
+                                      "sha256":  "1c18572bd8cddf94860434e963a5f5032a349170cdb8a7ed9e4710faf040e21e",
+                                      "size_bytes":  1959,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/workspace-upgrade-plan.schema.json",
+                                      "sha256":  "27f48705570dd812262443948ee9dc82b654187ac90f0392f2a8fd2ed3ddfbba",
+                                      "size_bytes":  1937,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "schemas/workspace.schema.json",
+                                      "sha256":  "0ee1766cc7e0c105a0f5885d4b40ae6b94b5041f2cff9cf4ad9da66a4878f283",
+                                      "size_bytes":  1265,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/_shared/safety-and-evidence.md",
+                                      "sha256":  "d33059c31dafc0673e7ecade59bde9e1fd5570e7443fddef0a3ce26bdb53cec9",
+                                      "size_bytes":  899,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/capture-bc-click-guide/SKILL.md",
+                                      "sha256":  "fc96267f7895c14540833f894b37edd3550ba7036a5a9dfe60665ca5479b5d68",
+                                      "size_bytes":  845,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/capture-bc-click-guide/agents/openai.yaml",
+                                      "sha256":  "aafc6c47e05b1e39ca50698e36ff253c294f8573f0d15f6e096fcc2ad1695cec",
+                                      "size_bytes":  226,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/capture-bc-click-guide/references/contract.md",
+                                      "sha256":  "0f89a64d149aa194dac280a8f38e4fd852b50e5236563b0d975817a0620ab821",
+                                      "size_bytes":  698,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/index-project-repository/SKILL.md",
+                                      "sha256":  "6c16c7e19e396e129b641922280dad495076fbb6813acf10e01158d1d6e23778",
+                                      "size_bytes":  839,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/index-project-repository/agents/openai.yaml",
+                                      "sha256":  "0818b5ccd00fc205b60d99a791343619863486481aa1cfd6617f9d13904bb895",
+                                      "size_bytes":  245,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/index-project-repository/references/contract.md",
+                                      "sha256":  "cd0fcc2bfbb2649329b55d66c076c84a665f49b3ccf45fa92c652c91be7a7740",
+                                      "size_bytes":  511,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/initialize-customer-workspace/SKILL.md",
+                                      "sha256":  "03b81755fbf34ddd79ef318f2249d81cbe6e0720d0ebd4ac5948ea1c2036c622",
+                                      "size_bytes":  861,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/initialize-customer-workspace/agents/openai.yaml",
+                                      "sha256":  "2b0e5b00e0335b3dc759d85890ecc00a4ec8ce67b765b0e000c50831b85ac192",
+                                      "size_bytes":  248,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/initialize-customer-workspace/references/contract.md",
+                                      "sha256":  "97430ea86012a1e0c33abb799a838cdc61f2aa3320893a68587502f4cb56b497",
+                                      "size_bytes":  823,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/manage-project-status-budget/SKILL.md",
+                                      "sha256":  "48b736ebfbddc7f2863dddfd1f14d230c7983159340e2eed2dc710fef009e8aa",
+                                      "size_bytes":  801,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/manage-project-status-budget/agents/openai.yaml",
+                                      "sha256":  "11674e9182d1ec9ee87bcf6c125248763aba7482a2eab4f973eee60f215a80ce",
+                                      "size_bytes":  253,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/manage-project-status-budget/references/contract.md",
+                                      "sha256":  "fd0709872f2d279fce003f6bfce758fa60e19de5c100ea677aed4aea45cf17ba",
+                                      "size_bytes":  521,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/materialize-atlassian-project/SKILL.md",
+                                      "sha256":  "40d7584841ce572e61dd267d2a7cdc1ee8bb915ba13091d28a4848945fe88e36",
+                                      "size_bytes":  845,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/materialize-atlassian-project/agents/openai.yaml",
+                                      "sha256":  "4a7f1ddb36708ad6dc62137c8068271fb37b6b54a4c9b8c34dd721bcb2ea299e",
+                                      "size_bytes":  284,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/materialize-atlassian-project/references/contract.md",
+                                      "sha256":  "47453cea62e0d1a3ded17f1cd7623bbe3cd691fa4350f727df6874d82ee08308",
+                                      "size_bytes":  706,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/operate-bc-pilot-sandbox/SKILL.md",
+                                      "sha256":  "e956de2f9b2ac3add24288ed6ab3df3fbf0549d1da804695686b2615dd2c1288",
+                                      "size_bytes":  925,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/operate-bc-pilot-sandbox/agents/openai.yaml",
+                                      "sha256":  "90d532cfc34c929cbb11589d15d61357fba4f6bb31c42302b3fe4ef17c360653",
+                                      "size_bytes":  278,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/operate-bc-pilot-sandbox/references/contract.md",
+                                      "sha256":  "e2828a4f30295b8ac5a7ef76517aab64585183b20536ffec1ee0e9ac91a5d458",
+                                      "size_bytes":  712,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/process-project-intake/SKILL.md",
+                                      "sha256":  "13510857fce9a7ade7f54d3cfc467ecb4214f04ff58bd3c140edd77bf8dba304",
+                                      "size_bytes":  800,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/process-project-intake/agents/openai.yaml",
+                                      "sha256":  "f07c0a824b407831fce437445ac5bd85a4953ad0a4ad2ab12071c048f3e2dba8",
+                                      "size_bytes":  240,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/process-project-intake/references/contract.md",
+                                      "sha256":  "bba41224a8cdb21c738077afb26bf3c0a2438c663114c88a12e51cac4dd25c19",
+                                      "size_bytes":  750,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/render-project-documentation/SKILL.md",
+                                      "sha256":  "9d443fa16c7ec1e873e8de33f0f960cadc12b1b3bf2b0b7994c8476a4f19ee68",
+                                      "size_bytes":  757,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/render-project-documentation/agents/openai.yaml",
+                                      "sha256":  "68669542adb2e737b6406958c71936f128b4269d550fc03b53b899374dddc147",
+                                      "size_bytes":  246,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/render-project-documentation/references/contract.md",
+                                      "sha256":  "dafcddb51cef9c9708d0fd400edfcce3218144de0f137ffaa1c7332e73ba25b8",
+                                      "size_bytes":  513,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/research-business-central/SKILL.md",
+                                      "sha256":  "c54975cb5bcddccc041061e48cb43a65446728ab9d5fb4666850278bbd6e2b1e",
+                                      "size_bytes":  880,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/research-business-central/agents/openai.yaml",
+                                      "sha256":  "dc5ddf7f9de85002d27ca2e9999ab610a4a6c1118976cc12403a8fef207ad3e9",
+                                      "size_bytes":  253,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/research-business-central/references/contract.md",
+                                      "sha256":  "d77fa5264235b32638aeac5b8cac135c75b1121e3c285d87b9d33514f1ca19b5",
+                                      "size_bytes":  806,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/run-bc-uat-training-handover/SKILL.md",
+                                      "sha256":  "cfa2e3237ea28b7b969b367ccb6094ca9fb931082d94ce7478d99d6761d30464",
+                                      "size_bytes":  864,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/run-bc-uat-training-handover/agents/openai.yaml",
+                                      "sha256":  "985a57eb5f63ed34d2c844a44687d69cf309adafb256aa9762bb4d3fe4e6cb0f",
+                                      "size_bytes":  242,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/run-bc-uat-training-handover/references/contract.md",
+                                      "sha256":  "06f2ae1ff51703e921afecba2399275ed481a22d6d16d67effc77bdcf64f1e49",
+                                      "size_bytes":  565,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/validate-project-snapshot/SKILL.md",
+                                      "sha256":  "78aa618801353b21ceb75e2b2d4d9a5f029834ca6aaa97c937b23bb6d0144da4",
+                                      "size_bytes":  843,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/validate-project-snapshot/agents/openai.yaml",
+                                      "sha256":  "cb2464e5a0fa096b8ec52c4f8fc65a465068f97e795bc89e66ddc142b8168c12",
+                                      "size_bytes":  233,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "skills/validate-project-snapshot/references/contract.md",
+                                      "sha256":  "556700d0a24ca93955aa3f7a88f7940631ceb987d8996a9fed495cfc243eb12f",
+                                      "size_bytes":  542,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "tests/invalid/cross-customer-reference.json",
+                                      "sha256":  "47250fde5fc7e0545d67d5d77bf360d545329f42db24bb6c3c50fd3efd5ab5f3",
+                                      "size_bytes":  178,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "tests/invalid/invalid-id.json",
+                                      "sha256":  "4fc052f77ce43c3df28349440e48510de03a2d97282cdc450c6cde44ae3fe2e6",
+                                      "size_bytes":  119,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "tests/invalid/missing-original-hash.json",
+                                      "sha256":  "9928b41bf5cc32e33cf599213e4d40a75640c36ef13afc8713bf062f56213de2",
+                                      "size_bytes":  130,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "tests/invalid/unbacked-approval.json",
+                                      "sha256":  "5aa3542b204c0b29bb1d34b4c7f734c18208a99d0c544e285deda5c5f86b286c",
+                                      "size_bytes":  151,
+                                      "mode":  "100644"
+                                  },
+                                  {
+                                      "path":  "tests/invalid/unknown-relation.json",
+                                      "sha256":  "3c4d82bff2bb11deeed99aeed6321107998aea3b5b7f6fa100697141156cab5a",
+                                      "size_bytes":  164,
+                                      "mode":  "100644"
+                                  }
+                              ]
+                },
+    "binding_requirements":  [
+                                 "annotated immutable release tag",
+                                 "resolved tag commit",
+                                 "matching source commit and source tree",
+                                 "matching payload bundle digest"
+                             ],
+    "excluded_from_payload":  [
+                                  "pilots",
+                                  "release/versions"
+                              ],
+    "known_limits":  [
+                         "Candidate provenance is bound but final source fields remain unset until promotion; candidate is not installable or published",
+                         "All profiles, pilots and forward tests are synthetic and provide no customer evidence",
+                         "The candidate is contract-reference-only until separate promotion, annotated tag and publication verification",
+                         "Live Business Central, Atlassian and customer-system mutations remain outside this candidate evidence"
+                     ]
+}
