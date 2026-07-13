@@ -1,37 +1,41 @@
-# Spectra 1.0.0 Gap-Matrix nach 0.14.0-alpha.1
+# Spectra 1.0.0 Gap-Matrix nach RC.1 und lokaler Vertragsintegration
 
-Bewertungsbasis ist der veröffentlichte und gebundene Release `0.14.0-alpha.1`. Statuswerte sind `vorhanden`, `teilweise`, `fehlend` oder `unbewiesen`. Synthetische Evidence ist keine reale Kunden-, BC-, Steuer- oder Rechtsaktivität.
+## Statusgrenze
 
-## Produkt- und Betriebsfähigkeit
+Einzig veroeffentlichte Basis ist `spectra-v1.0.0-rc.1` auf Commit `0c4542f8e69c3a7d52807b96b9bdd50a54309371`. Alle nachfolgenden Init-, Workspace-, Dokument-, Wissens-, Skill-, Inbox- und Blueprint-Bloecke sind lokale Produktstaende. Der lokale `1.0.0`-Candidate ist vollstaendig geprueft, aber keine veroeffentlichte Version und bleibt `PENDING_BCPROJECTOS_RELEASE`.
 
-| Pflichtbereich | Status | Evidence | Verbleibende Hauptlücke |
+## Integrierter lokaler Stand
+
+| Bereich | Veroeffentlicht in RC.1 | Lokal integriert | Noch unbewiesen / spaeteres Gate |
 |---|---|---|---|
-| Produktkern/Schemas | teilweise | Engagement, Setup/Daten, UAT/Training/Defects und lokaler Betriebsdurchstich | unabhängige Pilotevidence fehlt |
-| Implementation-Profil | vorhanden | isolierter Release-Pilot von Engagement bis Handover einschließlich Recovery | unabhängige RC-Kontrolle ausstehend |
-| Support-only-Profil | vorhanden | isolierter Supportpilot mit Evidence, Recovery und Handover | unabhängige RC-Kontrolle ausstehend |
-| Engagement/Fit-to-Standard | vorhanden | Scope, E2E-Prozesse, Fit/Gap und Entscheidungen | reale Kundenparameter bleiben Kundenevidence |
-| Setup/Berechtigungen/Daten | vorhanden | 14 Setupbereiche, SoD-Proben, acht Vorlagen und drei Wellen | reale Pilotevidence bleibt unbewiesen |
-| UAT/Training/Defects | vorhanden | sieben Kernprozesse, vier Testpfade, Rollenbefähigung, Defect-/Exit-Gates | unabhängige Pilotevidence bleibt unbewiesen |
-| Cutover/Betriebsübergabe | vorhanden | veröffentlichter Vertrag für Mock-Cutover, Go/No-Go, Hypercare, Restart, Support und Handover | unabhängiger Pilot fehlt |
-| Validatorplattform | vorhanden | Schema, referenzielle Regeln, stabile Fehlercodes und Negativmatrizen | neue Fachtypen je Release integrieren |
-| Upgrade | vorhanden | Dry-run, Konflikte, Apply, Wiederholung, Kundeninhaltschutz und Alpha/Beta/RC/Final-SemVer | RC-Candidate noch unveröffentlicht |
-| Backup/Restore | vorhanden | beide Profil-Roundtrips und Recoverygates im isolierten Pilot | unabhängige RC-Kontrolle ausstehend |
-| CLI/Bedienung | vorhanden | Fachgeneratoren/-validatoren, Upgrade und Recovery | End-to-End-Handbuch bis RC konsolidieren |
-| Supply Chain | vorhanden | Candidate-/Finalprovenienz, Tag, Payload und Digest | RC-/1.0-Gesamtproof fehlt |
+| BC-Basic-Fachstrecke bis Handover | ja | unveraendert regressionsfaehig | finaler 1.0.0-Releaseproof |
+| Init, Projektarten und Ticketmapping | nein | P0-Linie | unabhaengiger Candidate-/Releaseprozess |
+| Customer Workspace und Basis-Inbox | nein | Foundation unter Proposal-Schicht | integrierter End-to-End-Consumerproof |
+| Information Inbox und Proposals | nein | fuehrender Intake-/Review-/Umsetzungsvertrag | reale Kundeninstanz bleibt ausserhalb Spectra |
+| Dokumentprojektion | nein | generated/authored und source-defined Hierarchie | Connector-Materialisierung separat |
+| Blueprint-Katalog | nein | V2 fuehrend, kuratierter V1-Pfad nur Legacy | unabhaengige Migrations-/Consumerreview |
+| BC Reference Library | nein | einmalig, gepinnt und blobgebunden | Runtime-Cache bleibt extern und kundenspezifische Symbole separat |
+| Consultant Knowledge/Playthrough | nein | fachliche Schicht ueber Reference Library | keine Live-BC-Ausfuehrung oder Kundenevidence |
+| P0-Skillkatalog | nein | 11 Skillfamilien lokal und im V1-Produktpayload gebunden | lokale Forward- und Consumerabnahme gruen; unabhaengige Remote-Review bleibt offen |
+| Variable Project-Story-Kardinalitaet | nein | instanzabgeleitete Mengen | weitere reale Strukturen nur anonymisiert als Tests |
 
-## Aktiver Releaseblock
+## Fuehrende Vertraege
 
-`spectra-v1-pilot-rc-evidence` belegt zwei isolierte Profile, Upgrade, Recovery, Dokumentation und null offene P1/P2. Ergebnis ist `GO_FOR_1.0.0-RC.1_CANDIDATE`; finale 1.0-Reife wird noch nicht behauptet.
+1. Workspace-Foundation fuehrt Customer-, Environment-, Company-, Project- und Supportidentitaet.
+2. Information Inbox fuehrt Intake, Proposalstatus, Review, Annahme und getrennte Umsetzung.
+3. Blueprint-Katalog V2 fuehrt neue Vorschauen; der kuratierte Katalog bleibt Legacy-Herkunft.
+4. BC Reference Library fuehrt Source-Lock, Objektkatalog und Query; Consultant Knowledge liegt darueber.
+5. Project-Story-Kardinalitaet wird aus der Instanz abgeleitet, nie aus einer festen Ticketzahl.
 
-## Priorisierte Folgeblöcke bis 1.0
+## Verbleibender Pfad zu 1.0.0
 
-1. RC-Pilot: unabhängige Implementation- und Support-only-Piloten, Upgrade, Backup/Restore, Recovery und deutsche Handbücher ohne offene P1/P2.
-2. RC-Candidate nur bei vollständigem Funktionsumfang und ehrlichem GO.
-3. `1.0.0`: erst nach unabhängiger Evidence für alle Pflichtfähigkeiten.
+1. Der minimale Releasevertragsfix fuer Stable-SemVer, Schema-v4-Dateimodi und den vollstaendigen Skill-Payload ist commitgebunden gruen.
+2. Der daraus getrennt erzeugte lokale `1.0.0`-Candidate ist mit 294 Payloads, beiden Profilen und Digest `06674b877918d01be6698c18e806dcb14d5ff1fc540275936a6729051827a27b` aus frischen No-Hardlinks-Kopien gruen und bleibt nicht installierbar.
+3. Offen sind ausschließlich unabhaengige Candidate-Review, normale Remoteintegration und ein getrenntes Release-GO. `1.0.0` darf erst nach finalem Manifest, annotiertem Tag, Veroeffentlichung und Postcheck ausgegeben werden.
 
 ## Wahrheitsgrenzen
 
-- Keine Kunden-Source-of-Truth oder Kunden-Evidence wird in Spectra übernommen.
-- Sandbox, Profile und technische Automation sind keine Produktions-, Berechtigungs- oder fachliche Freigabeevidence.
-- P1–P4, Waiver, Retest und Exit-Gates sind Spectra-Governance.
-- Releaseversionen entstehen nur aus belegtem Delta und getrenntem Release-Gate.
+- Keine Kunden-Source-of-Truth, Kunden-Evidence, Tenantwerte oder Secrets werden in Spectra uebernommen.
+- Synthetische Fixtures, Skill-Forward-Tests und technische Automation sind keine Kundenfreigabe.
+- Reale fachliche, steuerliche, rechtliche und betriebliche Entscheidungen entstehen ausschließlich im isolierten Kundenworkspace.
+- Historische RC2/RC3-Candidate-Evidence bleibt historische Evidence und bindet diesen Integrationsbranch nicht.

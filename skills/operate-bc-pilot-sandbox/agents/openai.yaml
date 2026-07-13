@@ -1,0 +1,7 @@
+interface:
+  display_name: "BC-Pilotsandbox bedienen"
+  short_description: "Autorisierte BC-Sandbox kontrolliert fachlich bedienen."
+  default_prompt: "Use $operate-bc-pilot-sandbox to plan an authorized synthetic BC sandbox action."
+
+policy:
+  allow_implicit_invocation: false

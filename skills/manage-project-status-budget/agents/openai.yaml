@@ -1,0 +1,4 @@
+interface:
+  display_name: "Projektstatus und Budget führen"
+  short_description: "Status, Forecast, Risiken und Entscheidungen pflegen."
+  default_prompt: "Use $manage-project-status-budget to update project status and budget from validated sources."

@@ -5,14 +5,27 @@ function Get-BCProjectOSRoot {
 }
 
 function Get-BCProjectOSReleaseScope {
-    param([Parameter(Mandatory = $true)][string]$Root)
+    param(
+        [Parameter(Mandatory = $true)][string]$Root,
+        [string]$Revision
+    )
 
     $scopePath = Join-Path $Root 'release\release-scope.json'
-    if (-not (Test-Path -LiteralPath $scopePath -PathType Leaf)) {
-        throw "Release scope is missing: $scopePath"
+    if ([string]::IsNullOrWhiteSpace($Revision)) {
+        if (-not (Test-Path -LiteralPath $scopePath -PathType Leaf)) {
+            throw "Release scope is missing: $scopePath"
+        }
+        $scopeText = [System.IO.File]::ReadAllText($scopePath)
+    }
+    else {
+        $scopeOutput = @(& git -C $Root show "$Revision`:release/release-scope.json" 2>$null)
+        if ($LASTEXITCODE -ne 0 -or $scopeOutput.Count -eq 0) {
+            throw "Release scope is missing from revision: $Revision"
+        }
+        $scopeText = ($scopeOutput -join "`n")
     }
 
-    $scope = Get-Content -LiteralPath $scopePath -Raw | ConvertFrom-Json
+    $scope = $scopeText | ConvertFrom-Json
     if ([int]$scope.schema_version -ne 1 -or [string]$scope.product_id -ne 'spectra') {
         throw 'Release scope has an unsupported schema or product identity.'
     }
@@ -91,8 +104,20 @@ function Get-BCProjectOSGitBlobRecord {
     param(
         [Parameter(Mandatory = $true)][string]$Root,
         [Parameter(Mandatory = $true)][string]$Revision,
-        [Parameter(Mandatory = $true)][string]$RelativePath
+        [Parameter(Mandatory = $true)][string]$RelativePath,
+        [switch]$IncludeMode
     )
+    $mode = $null
+    if ($IncludeMode) {
+        $modeOutput = @(& git -C $Root ls-tree '--format=%(objectmode)' $Revision -- $RelativePath 2>$null)
+        if ($LASTEXITCODE -ne 0 -or $modeOutput.Count -ne 1) {
+            throw "Git mode is unavailable for payload path: $RelativePath"
+        }
+        $mode = ([string]$modeOutput[0]).Trim()
+        if ($mode -notmatch '^100(644|755)$') {
+            throw "Unsupported Git payload mode '$mode': $RelativePath"
+        }
+    }
     $startInfo = New-Object System.Diagnostics.ProcessStartInfo
     $startInfo.FileName = 'git'
     $startInfo.Arguments = "-C `"$Root`" cat-file blob `"$Revision`:$RelativePath`""
@@ -110,7 +135,13 @@ function Get-BCProjectOSGitBlobRecord {
         if ($process.ExitCode -ne 0) { throw "git cat-file failed: $stderr" }
         $sha256 = [System.Security.Cryptography.SHA256]::Create()
         try {
-            return [pscustomobject]@{ path = $RelativePath; sha256 = ([System.BitConverter]::ToString($sha256.ComputeHash($bytes.ToArray()))).Replace('-', '').ToLowerInvariant(); size_bytes = [int64]$bytes.Length }
+            $record = [ordered]@{
+                path = $RelativePath
+                sha256 = ([System.BitConverter]::ToString($sha256.ComputeHash($bytes.ToArray()))).Replace('-', '').ToLowerInvariant()
+                size_bytes = [int64]$bytes.Length
+            }
+            if ($IncludeMode) { $record.mode = $mode }
+            return [pscustomobject]$record
         }
         finally { $sha256.Dispose() }
     }
@@ -121,16 +152,60 @@ function Get-BCProjectOSGitPayloadRecords {
     param(
         [Parameter(Mandatory = $true)][string]$Root,
         [Parameter(Mandatory = $true)][string]$Revision,
-        [Parameter(Mandatory = $true)]$Scope
+        [Parameter(Mandatory = $true)]$Scope,
+        [switch]$IncludeMode
     )
-    $files = @(Get-BCProjectOSPayloadFiles -Root $Root -Scope $Scope)
-    foreach ($file in $files) { Get-BCProjectOSGitBlobRecord -Root $Root -Revision $Revision -RelativePath ([string]$file.path) }
+    $paths = @{}
+    foreach ($relativePath in @($Scope.payload_files)) {
+        $normalized = [string]$relativePath -replace '\\', '/'
+        if ([System.IO.Path]::IsPathRooted($normalized) -or $normalized -match '(^|/)\.\.(/|$)') {
+            throw "Release scope contains an unsafe path: $relativePath"
+        }
+        & git -C $Root cat-file -e "$Revision`:$normalized" 2>$null
+        if ($LASTEXITCODE -ne 0) { throw "Release payload file is missing from revision: $normalized" }
+        $paths[$normalized] = $true
+    }
+    foreach ($relativeRoot in @($Scope.payload_roots)) {
+        $normalizedRoot = ([string]$relativeRoot -replace '\\', '/').TrimEnd('/')
+        if ([System.IO.Path]::IsPathRooted($normalizedRoot) -or $normalizedRoot -match '(^|/)\.\.(/|$)') {
+            throw "Release scope contains an unsafe root: $relativeRoot"
+        }
+        $treePaths = @(& git -C $Root ls-tree -r --name-only $Revision -- $normalizedRoot 2>$null)
+        if ($LASTEXITCODE -ne 0 -or $treePaths.Count -eq 0) {
+            throw "Release payload root is missing from revision: $normalizedRoot"
+        }
+        foreach ($treePath in $treePaths) {
+            $normalized = ([string]$treePath).Trim() -replace '\\', '/'
+            if ($normalized -ne $normalizedRoot -and -not $normalized.StartsWith("$normalizedRoot/", [System.StringComparison]::Ordinal)) {
+                throw "Release payload root escaped during Git enumeration: $normalized"
+            }
+            $paths[$normalized] = $true
+        }
+    }
+    $sortedPaths = [string[]]@($paths.Keys)
+    [System.Array]::Sort($sortedPaths, [System.StringComparer]::Ordinal)
+    foreach ($relativePath in $sortedPaths) {
+        Get-BCProjectOSGitBlobRecord -Root $Root -Revision $Revision -RelativePath $relativePath -IncludeMode:$IncludeMode
+    }
 }
 
 function Get-BCProjectOSChecksumsText {
-    param([Parameter(Mandatory = $true)]$Records)
+    param(
+        [Parameter(Mandatory = $true)]$Records,
+        [switch]$IncludeMode
+    )
 
-    $lines = @($Records | ForEach-Object { "$($_.sha256)  $($_.path)" })
+    $lines = @($Records | ForEach-Object {
+        if ($IncludeMode) {
+            if ($_.PSObject.Properties.Name -notcontains 'mode' -or [string]$_.mode -notmatch '^100(644|755)$') {
+                throw "Payload record has no valid Git mode: $($_.path)"
+            }
+            "$($_.sha256)  $($_.mode)  $($_.path)"
+        }
+        else {
+            "$($_.sha256)  $($_.path)"
+        }
+    })
     return ($lines -join "`n") + "`n"
 }
 

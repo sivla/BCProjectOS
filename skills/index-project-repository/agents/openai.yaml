@@ -1,0 +1,4 @@
+interface:
+  display_name: "Projektrepository inventarisieren"
+  short_description: "Repository- und Extensionkontext read-only erfassen."
+  default_prompt: "Use $index-project-repository to inventory a project repository without modifying it."

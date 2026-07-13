@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "product_id": "spectra",
+  "catalog": "business-central-sources",
+  "sources": [
+    {
+      "source_id": "microsoft-bc-functional-docs",
+      "canonical_url": "https://github.com/MicrosoftDocs/dynamics365smb-docs.git",
+      "role": "functional-documentation",
+      "default_branch": "main",
+      "license_ids": ["CC-BY-4.0", "MIT"],
+      "allowed_paths": ["business-central/**", "LICENSE*", "LICENSE-CODE"]
+    },
+    {
+      "source_id": "microsoft-bc-devitpro-docs",
+      "canonical_url": "https://github.com/MicrosoftDocs/dynamics365smb-devitpro-pb.git",
+      "role": "developer-itpro-documentation",
+      "default_branch": "main",
+      "license_ids": ["CC-BY-4.0", "MIT"],
+      "allowed_paths": ["dev-itpro/**", "LICENSE*", "LICENSE-CODE"]
+    },
+    {
+      "source_id": "microsoft-bcapps",
+      "canonical_url": "https://github.com/microsoft/BCApps.git",
+      "role": "canonical-application-source",
+      "default_branch": "main",
+      "license_ids": ["MIT"],
+      "allowed_paths": ["src/**", "LICENSE"]
+    }
+  ],
+  "historical_sources": [
+    {
+      "canonical_url": "https://github.com/microsoft/ALAppExtensions.git",
+      "role": "historical-extensibility-requests",
+      "canonical_application_source": false
+    }
+  ]
+}

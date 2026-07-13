@@ -2,7 +2,7 @@
 $ErrorActionPreference='Stop';Set-StrictMode -Version 2.0
 $root=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'));$temp=Join-Path ([IO.Path]::GetTempPath()) ('spectra-upgrade-'+[guid]::NewGuid().ToString('N'));$repo=Join-Path $temp 'repo';$workspace=Join-Path $temp 'workspace';New-Item -ItemType Directory -Force $repo|Out-Null
 try {
-  foreach($p in @('AGENTS.md','README.md','automation','catalogs','contract','examples\minimal-contract','schemas','release','tests\invalid')){Copy-Item (Join-Path $root $p) (Join-Path $repo $p) -Recurse -Force}
+  foreach($p in @('AGENTS.md','README.md','automation','catalogs','contract','examples\minimal-contract','schemas','skills','release','tests\invalid')){Copy-Item (Join-Path $root $p) (Join-Path $repo $p) -Recurse -Force}
   git -C $repo init -b main|Out-Null;git -C $repo remote add origin https://github.com/sivla/BCProjectOS.git;git -C $repo config core.autocrlf false;git -C $repo config user.email test@example.invalid;git -C $repo config user.name SpectraFixture;git -C $repo add .;git -C $repo commit -m fixture|Out-Null
   Push-Location $repo;$source1=(git rev-parse HEAD).Trim(); & powershell -NoProfile -ExecutionPolicy Bypass -File automation\New-ReleaseCandidate.ps1 -Version 9.5.0-alpha.1 -ReleaseDate 2026-07-11 -SourceCommit $source1|Out-Null;git add release;git commit -m candidate1|Out-Null
   & powershell -NoProfile -ExecutionPolicy Bypass -File automation\Promote-ReleaseCandidate.ps1 -RepositoryRoot $repo -Version 9.5.0-alpha.1 -SyntheticRepository|Out-Null

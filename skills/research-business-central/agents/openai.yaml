@@ -1,0 +1,4 @@
+interface:
+  display_name: "Business Central recherchieren"
+  short_description: "BC-Wissen zuerst lokal und quellgebunden recherchieren."
+  default_prompt: "Use $research-business-central to research a BC object from a validated local knowledge pack."

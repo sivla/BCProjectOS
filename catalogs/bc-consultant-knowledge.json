@@ -1,0 +1,8 @@
+{
+  "schema_version":1,"catalog":"bc-consultant-knowledge","product_id":"spectra","knowledge_pack_id":"bc-basic-start","catalog_version":"1.0.0",
+  "areas":["company","general-setup","finance","vat","posting-groups","dimensions","number-series","purchase","sales","inventory","bank-payments","period-close","vat-preview","permissions","configuration-packages","testing","training","cutover","support"],
+  "source_requirements":[{"source_id":"microsoft-bc-functional-docs","publisher":"Microsoft","exact_lock_required":true},{"source_id":"microsoft-bc-devitpro-docs","publisher":"Microsoft","exact_lock_required":true},{"source_id":"microsoft-bcapps","publisher":"Microsoft","exact_lock_required":true}],
+  "entry_templates":[{"template_id":"bc-knowledge-entry","required_filters":["process","role","object","project_phase","task_type"],"truth_classes":["official_documented","derived_standard_metadata","tested_generic_procedure","open_assumption"],"validation_state":"requires_validated_lock"}],
+  "playthrough_templates":["company-preflight","company-create-or-copy","configuration-package-import-validate-apply","readback-evidence","error-handling"],
+  "cronus_policy":{"baseline":"microsoft_demo_baseline","customer_ready":false,"rename_or_copy_proves_configuration":false}
+}

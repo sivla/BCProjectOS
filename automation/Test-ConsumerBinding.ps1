@@ -89,6 +89,7 @@ if ($null -ne $binding) {
                     if ([string]$manifest.manifest_state -ne 'final' -or [string]$manifest.release_version -ne [string]$binding.release_version -or [string]$manifest.expected_tag -ne [string]$binding.release_tag -or [string]$manifest.source_commit -ne [string]$binding.manifest_source_commit -or [string]$manifest.consumer_mode -ne [string]$binding.consumer_mode -or $manifest.installable_blueprint -ne $binding.installable_blueprint -or [string]$manifest.payload.digest_algorithm -ne 'SHA-256' -or [string]$manifest.payload.bundle_digest -ne [string]$binding.payload_bundle_digest) {
                         Add-Finding 'BOUND_MANIFEST_MISMATCH' 'Bound values do not match the final manifest at tag_commit.'
                     }
+                    $modeBound = [int]$manifest.schema_version -ge 4
                     $actualRecords = New-Object System.Collections.ArrayList
                     foreach ($record in @($manifest.payload.files)) {
                         if ([string]$record.path -match '(^|[\\/])\.\.([\\/]|$)' -or [System.IO.Path]::IsPathRooted([string]$record.path)) {
@@ -96,13 +97,15 @@ if ($null -ne $binding) {
                             continue
                         }
                         try {
-                            $actual = Get-BCProjectOSGitBlobRecord -Root $RepositoryRoot -Revision $binding.tag_commit -RelativePath ([string]$record.path)
-                            if ([int64]$actual.size_bytes -ne [int64]$record.size_bytes -or [string]$actual.sha256 -ne [string]$record.sha256) { Add-Finding 'BOUND_PAYLOAD_FILE_MISMATCH' "Manifest payload record differs from tagged content: $($record.path)" }
-                            [void]$actualRecords.Add([pscustomobject]@{ path = [string]$record.path; sha256 = [string]$actual.sha256 })
+                            $actual = Get-BCProjectOSGitBlobRecord -Root $RepositoryRoot -Revision $binding.tag_commit -RelativePath ([string]$record.path) -IncludeMode:$modeBound
+                            if ([int64]$actual.size_bytes -ne [int64]$record.size_bytes -or [string]$actual.sha256 -ne [string]$record.sha256 -or ($modeBound -and [string]$actual.mode -ne [string]$record.mode)) { Add-Finding 'BOUND_PAYLOAD_FILE_MISMATCH' "Manifest payload record differs from tagged content or mode: $($record.path)" }
+                            $actualRecord = [ordered]@{ path = [string]$record.path; sha256 = [string]$actual.sha256 }
+                            if ($modeBound) { $actualRecord.mode = [string]$actual.mode }
+                            [void]$actualRecords.Add([pscustomobject]$actualRecord)
                         }
                         catch { Add-Finding 'BOUND_PAYLOAD_FILE_MISSING' $_.Exception.Message }
                     }
-                    $checksumText = Get-BCProjectOSChecksumsText -Records $actualRecords
+                    $checksumText = Get-BCProjectOSChecksumsText -Records $actualRecords -IncludeMode:$modeBound
                     if ((Get-TextSha256 -Text $checksumText) -ne [string]$binding.payload_bundle_digest) { Add-Finding 'BOUND_PAYLOAD_DIGEST_MISMATCH' 'Recomputed tagged payload digest differs from the bound digest.' }
                 }
             }

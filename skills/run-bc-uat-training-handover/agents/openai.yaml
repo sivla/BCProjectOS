@@ -1,0 +1,4 @@
+interface:
+  display_name: "BC-UAT Training Übergabe"
+  short_description: "UAT, Training und Betriebsübergabe zusammenführen."
+  default_prompt: "Use $run-bc-uat-training-handover to prepare a synthetic role-based UAT and training flow."

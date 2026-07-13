@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$')]
+    [ValidatePattern('^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$')]
     [string]$Version = '0.1.0-alpha.1',
 
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')]
@@ -19,7 +19,6 @@ $env:GIT_OPTIONAL_LOCKS = '0'
 
 $root = Get-BCProjectOSRoot
 $repoRoot = $root
-$scope = Get-BCProjectOSReleaseScope -Root $root
 $resolvedOutput = @(& git -C $repoRoot rev-parse "$CandidateSourceCommit`^{commit}" 2>$null)
 $resolvedSourceCommit = $resolvedOutput | Select-Object -First 1
 if ($LASTEXITCODE -ne 0 -or [string]$resolvedSourceCommit -notmatch '^[0-9a-f]{40}$') { throw "CANDIDATE_SOURCE_COMMIT_INVALID:$CandidateSourceCommit" }
@@ -29,12 +28,13 @@ $sourceTree = (& git -C $repoRoot rev-parse "$resolvedSourceCommit`^{tree}").Tri
 $releaseMetadataPath = "release/versions/$Version/release-manifest.json"
 $savedPreference=$ErrorActionPreference;$ErrorActionPreference='Continue';& git -C $repoRoot cat-file -e "$resolvedSourceCommit`:$releaseMetadataPath" 2>$null;$sourceContainsCandidate=$LASTEXITCODE-eq0;$ErrorActionPreference=$savedPreference
 if ($sourceContainsCandidate) { throw 'CANDIDATE_SOURCE_SELF_REFERENCE' }
-$records = @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision $resolvedSourceCommit -Scope $scope)
-$checksumsText = Get-BCProjectOSChecksumsText -Records $records
+$scope = Get-BCProjectOSReleaseScope -Root $root -Revision $resolvedSourceCommit
+$records = @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision $resolvedSourceCommit -Scope $scope -IncludeMode)
+$checksumsText = Get-BCProjectOSChecksumsText -Records $records -IncludeMode
 $bundleDigest = Get-BCProjectOSTextSha256 -Text $checksumsText
 
 $manifest = [ordered]@{
-    schema_version = 3
+    schema_version = 4
     product_id = 'spectra'
     release_version = $Version
     release_kind = 'installable_blueprint'
@@ -64,9 +64,9 @@ $manifest = [ordered]@{
     excluded_from_payload = @($scope.excluded_roots)
     known_limits = @(
         'Candidate provenance is bound but final source fields remain unset until promotion; candidate is not installable or published',
-        'Operator pilots use isolated synthetic workspaces and provide no customer evidence',
-        'Reconciliation records never assert invoices, postings, payments or productive activity',
-        'Adapter provenance is local and read-only; no live adapter, Project Twin write path or external-system integration'
+        'All profiles, pilots and forward tests are synthetic and provide no customer evidence',
+        'The candidate is contract-reference-only until separate promotion, annotated tag and publication verification',
+        'Live Business Central, Atlassian and customer-system mutations remain outside this candidate evidence'
     )
 }
 

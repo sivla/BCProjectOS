@@ -5,20 +5,20 @@
   "type": "object",
   "required": ["schema_version","product_id","release_version","release_kind","manifest_state","release_date","expected_tag","source_commit","consumer_mode","installable_blueprint","blueprint_version","payload","binding_requirements","excluded_from_payload","known_limits"],
   "properties": {
-    "schema_version": {"enum": [1, 2, 3]},
+    "schema_version": {"enum": [1, 2, 3, 4]},
     "product_id": {"const": "spectra"},
-    "release_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"},
+    "release_version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},
     "release_kind": {"enum": ["product_contract", "installable_blueprint"]},
     "manifest_state": {"enum": ["candidate", "final"]},
     "release_date": {"type": "string", "format": "date"},
-    "expected_tag": {"type": "string", "pattern": "^spectra-v[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"},
+    "expected_tag": {"type": "string", "pattern": "^spectra-v(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},
     "source_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
     "source_tree": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
     "candidate_source_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
     "candidate_source_tree": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
     "consumer_mode": {"enum": ["CONTRACT_REFERENCE_ONLY", "INSTALLABLE_BLUEPRINT"]},
     "installable_blueprint": {"type": "boolean"},
-    "blueprint_version": {"type": ["string", "null"], "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"},
+    "blueprint_version": {"type": ["string", "null"], "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"},
     "payload": {
       "type": "object",
       "required": ["digest_algorithm","bundle_digest","file_count","checksums_file","files"],
@@ -36,7 +36,8 @@
             "properties": {
               "path": {"type": "string", "minLength": 1},
               "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
-              "size_bytes": {"type": "integer", "minimum": 0}
+              "size_bytes": {"type": "integer", "minimum": 0},
+              "mode": {"enum": ["100644", "100755"]}
             },
             "additionalProperties": false
           }
@@ -50,14 +51,28 @@
   },
   "allOf": [
     {
-      "if": {"properties": {"schema_version": {"const": 2}}},
+      "if": {"properties": {"schema_version": {"enum": [2, 3, 4]}}},
       "then": {"required": ["source_tree"]}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": 4}}},
+      "then": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "files": {
+                "items": {"required": ["path", "sha256", "size_bytes", "mode"]}
+              }
+            }
+          }
+        }
+      }
     },
     {
       "if": {"properties": {"manifest_state": {"const": "candidate"}}},
       "then": {
         "properties": {
-          "schema_version": {"const": 3},
+          "schema_version": {"const": 4},
           "release_kind": {"const": "installable_blueprint"},
           "source_commit": {"type": "null"},
           "source_tree": {"type": "null"},
@@ -65,7 +80,7 @@
           "candidate_source_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
           "consumer_mode": {"const": "CONTRACT_REFERENCE_ONLY"},
           "installable_blueprint": {"const": false},
-          "blueprint_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"}
+          "blueprint_version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"}
         },
         "required": ["source_commit", "source_tree", "candidate_source_commit", "candidate_source_tree"]
       }
@@ -80,7 +95,7 @@
           "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
           "candidate_source_commit": {"type": "null"},
           "candidate_source_tree": {"type": "null"},
-          "blueprint_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$"}
+          "blueprint_version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"}
         }
       }
     }

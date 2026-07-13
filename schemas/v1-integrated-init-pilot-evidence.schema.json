@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.invalid/schemas/v1-integrated-init-pilot-evidence.schema.json",
+  "title": "Spectra V1 Integrated Init Pilot Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "product_id", "classification", "release_version", "release_tag", "tag_commit", "implementation", "support_only", "documentation", "open_product_p1", "open_product_p2", "decision", "known_limits"],
+  "properties": {
+    "schema_version": {"type": "integer", "enum": [1]},
+    "product_id": {"type": "string", "enum": ["spectra"]},
+    "classification": {"type": "string", "enum": ["synthetic_non_production"]},
+    "release_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+-[0-9A-Za-z.-]+$"},
+    "release_tag": {"type": "string", "pattern": "^spectra-v[0-9]+\\.[0-9]+\\.[0-9]+-[0-9A-Za-z.-]+$"},
+    "tag_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "implementation": {"$ref": "#/$defs/profile"},
+    "support_only": {"$ref": "#/$defs/profile"},
+    "documentation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "language", "commands_replayed", "files_checked"],
+      "properties": {
+        "status": {"type": "string"},
+        "language": {"type": "string"},
+        "commands_replayed": {"type": "integer", "minimum": 0},
+        "files_checked": {"type": "integer", "minimum": 2}
+      }
+    },
+    "open_product_p1": {"type": "integer", "minimum": 0},
+    "open_product_p2": {"type": "integer", "minimum": 0},
+    "decision": {"type": "string"},
+    "known_limits": {"type": "array", "minItems": 2, "items": {"type": "string", "minLength": 10}}
+  },
+  "$defs": {
+    "profile": {
+      "type": "object", "additionalProperties": false,
+      "required": ["profile", "init", "validate", "domain_flow", "backup", "restore", "revalidate", "selected_blueprints", "status"],
+      "properties": {
+        "profile": {"type": "string", "enum": ["implementation", "support-only"]},
+        "init": {"type": "string"},
+        "validate": {"type": "string"},
+        "domain_flow": {"type": "string"},
+        "backup": {"type": "string"},
+        "restore": {"type": "string"},
+        "revalidate": {"type": "string"},
+        "selected_blueprints": {"type": "array", "minItems": 3, "items": {"type": "string", "pattern": "^BPC-[A-Z-]+$"}},
+        "status": {"type": "string"}
+      }
+    }
+  }
+}

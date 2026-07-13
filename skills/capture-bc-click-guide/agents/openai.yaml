@@ -1,0 +1,4 @@
+interface:
+  display_name: "BC-Klickanleitung erfassen"
+  short_description: "Gebundene Browserflows als sichere Anleitung erfassen."
+  default_prompt: "Use $capture-bc-click-guide to capture a read-only BC navigation guide."

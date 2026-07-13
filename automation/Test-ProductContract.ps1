@@ -14,7 +14,7 @@ function Get-RepositoryAuthoredFiles {
 }
 
 function Get-ProductContractFiles {
-    $allowedRoots = @('automation','catalogs','contract','examples\minimal-contract','pilots','release','schemas','tests')
+    $allowedRoots = @('automation','catalogs','contract','examples\minimal-contract','pilots','release','schemas','skills','tests')
     $files = New-Object System.Collections.ArrayList
     foreach ($relative in $allowedRoots) {
         $path = Join-Path $root $relative
@@ -193,7 +193,10 @@ foreach ($file in $repositoryFiles) {
 }
 
 $productFiles = @(Get-ProductContractFiles)
-$structuredFiles = @($productFiles | Where-Object { $_.Extension -in @('.json','.yaml') })
+$structuredFiles = @($productFiles | Where-Object {
+    $_.Extension -in @('.json','.yaml') -and
+    $_.FullName -notmatch '[\\/]skills[\\/].*[\\/]agents[\\/]openai\.yaml$'
+})
 foreach ($file in $structuredFiles) {
     $parsed = Read-StructuredFile -Path $file.FullName
     if ($null -eq $parsed) { continue }

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/project-init.schema.json",
+  "title": "Spectra Project Initialization Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "product_id", "mode", "project_id", "project_name", "profile", "language", "bc_package", "processes", "collaboration", "project_space", "referenced_spaces", "ticket_structure", "blueprints"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "product_id": {"const": "spectra"},
+    "mode": {"enum": ["new", "local", "onboard"]},
+    "project_id": {"type": "string", "pattern": "^PRJ-[A-Z0-9][A-Z0-9-]{2,47}$"},
+    "project_name": {"type": "string", "minLength": 3},
+    "profile": {"enum": ["implementation", "support-only"]},
+    "project_type": {"enum": ["implementation", "support", "fit-gap", "migration"]},
+    "language": {"enum": ["de-DE", "en-US"]},
+    "bc_package": {"const": "bc-basic-standard"},
+    "processes": {"type": "array", "minItems": 1, "items": {"enum": ["finance", "p2p", "o2c", "cash-bank", "inventory", "closing", "vat-preview"]}},
+    "collaboration": {"enum": ["local-only", "portable-atlassian", "existing-atlassian-readonly"]},
+    "project_space": {"$ref": "#/$defs/space"},
+    "referenced_spaces": {"type": "array", "items": {"$ref": "#/$defs/referencedSpace"}},
+    "ticket_structure": {"$ref": "#/$defs/ticketStructure"},
+    "blueprints": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^BPC-[A-Z0-9-]+$"}},
+    "onboarding_source": {"type": ["object", "null"], "additionalProperties": false, "required": ["path", "format"], "properties": {"path": {"type": "string", "minLength": 1}, "format": {"const": "spectra-portable-atlassian-v1"}}},
+    "predecessor": {"type": ["object", "null"], "additionalProperties": false, "required": ["project_id", "project_type", "relationship", "read_only"], "properties": {"project_id": {"type": "string", "pattern": "^PRJ-[A-Z0-9][A-Z0-9-]{2,47}$"}, "project_type": {"enum": ["implementation", "support", "fit-gap", "migration"]}, "relationship": {"enum": ["continues-as", "migrates-from", "onboards-from"]}, "read_only": {"const": true}}}
+  },
+  "$defs": {
+    "space": {"type": "object", "additionalProperties": false, "required": ["id", "title"], "properties": {"id": {"type": "string", "pattern": "^SPACE-[A-Z0-9-]{3,40}$"}, "title": {"type": "string", "minLength": 3}}},
+    "referencedSpace": {"type": "object", "additionalProperties": false, "required": ["id", "title", "read_only"], "properties": {"id": {"type": "string", "pattern": "^SPACE-[A-Z0-9-]{3,40}$"}, "title": {"type": "string", "minLength": 3}, "read_only": {"const": true}}},
+    "ticketStructure": {
+      "type": "object", "additionalProperties": false,
+      "required": ["strategy", "provider", "mapping_version", "read_only", "issue_types", "status_mappings"],
+      "properties": {
+        "strategy": {"enum": ["spectra-standard", "project-mapping", "imported-readonly"]},
+        "provider": {"enum": ["jira", "generic-file", "other"]},
+        "mapping_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "read_only": {"const": true},
+        "issue_types": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/issueTypeMapping"}},
+        "status_mappings": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/statusMapping"}}
+      }
+    },
+    "issueTypeMapping": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_type", "spectra_category", "hierarchy_level"],
+      "properties": {
+        "source_type": {"type": "string", "minLength": 1},
+        "spectra_category": {"enum": ["work", "defect", "change", "decision", "risk", "evidence", "support"]},
+        "hierarchy_level": {"type": "integer", "minimum": 0}
+      }
+    },
+    "statusMapping": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_status", "spectra_status"],
+      "properties": {
+        "source_status": {"type": "string", "minLength": 1},
+        "spectra_status": {"enum": ["planned", "ready", "in_progress", "blocked", "done", "closed", "rejected"]}
+      }
+    }
+  }
+}

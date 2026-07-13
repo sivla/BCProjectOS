@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.invalid/schemas/project-scenario-catalog.schema.json",
+  "title": "Spectra Project Scenario Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "product_id", "catalog_version", "scenarios"],
+  "properties": {
+    "schema_version": {"type": "integer", "enum": [1]},
+    "product_id": {"type": "string", "enum": ["spectra"]},
+    "catalog_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "scenarios": {"type": "array", "minItems": 4, "items": {"$ref": "#/$defs/scenario"}}
+  },
+  "$defs": {
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project_type", "title", "workspace_profile", "recommended_blueprints", "allowed_predecessor_types", "allowed_relationships"],
+      "properties": {
+        "project_type": {"type": "string", "enum": ["implementation", "support", "fit-gap", "migration"]},
+        "title": {"type": "string", "minLength": 3},
+        "workspace_profile": {"type": "string", "enum": ["implementation", "support-only"]},
+        "recommended_blueprints": {"type": "array", "minItems": 3, "items": {"type": "string", "pattern": "^BPC-[A-Z0-9-]+$"}},
+        "allowed_predecessor_types": {"type": "array", "items": {"type": "string", "enum": ["implementation", "support", "fit-gap", "migration"]}},
+        "allowed_relationships": {"type": "array", "items": {"type": "string", "enum": ["continues-as", "migrates-from", "onboards-from"]}}
+      }
+    }
+  }
+}
