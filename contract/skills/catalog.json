@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "product_id": "spectra",
+  "catalog": "p0-skill-catalog",
+  "catalog_version": "1.0.0",
+  "skills": [
+    {"name":"initialize-customer-workspace","responsibility":"workspace-initialization","freedom":"medium","mutation_class":"local-write","implicit_allowed":true,"trigger_phrase":"Kundenworkspace initialisieren","trigger_example":"Lege einen neuen Support-only-Kundenworkspace an","forbidden_implicit_from":[]},
+    {"name":"process-project-intake","responsibility":"proposal-only-intake","freedom":"high","mutation_class":"proposal-only","implicit_allowed":true,"trigger_phrase":"Projektintake verarbeiten","trigger_example":"Verarbeite dieses Meetingtranskript als Intake","forbidden_implicit_from":[]},
+    {"name":"manage-project-status-budget","responsibility":"status-budget-forecast","freedom":"medium","mutation_class":"reviewed-write","implicit_allowed":true,"trigger_phrase":"Projektstatus und Budget aktualisieren","trigger_example":"Aktualisiere Forecast, Risiken und nächste Aktionen","forbidden_implicit_from":[]},
+    {"name":"render-project-documentation","responsibility":"deterministic-document-rendering","freedom":"medium","mutation_class":"local-generated-write","implicit_allowed":true,"trigger_phrase":"Projektdokumentation rendern","trigger_example":"Rendere den validierten Projektsnapshot als Dokumentation","forbidden_implicit_from":[]},
+    {"name":"materialize-atlassian-project","responsibility":"external-atlassian-materialization","freedom":"low","mutation_class":"external-write","implicit_allowed":false,"trigger_phrase":"Atlassian-Projekt materialisieren","trigger_example":"Erzeuge einen Dry-run-Plan für Jira und Confluence","forbidden_implicit_from":["process-project-intake","manage-project-status-budget"]},
+    {"name":"index-project-repository","responsibility":"read-only-repository-inventory","freedom":"medium","mutation_class":"read-only","implicit_allowed":true,"trigger_phrase":"Projektrepository inventarisieren","trigger_example":"Inventarisiere Apps und Abhängigkeiten aus diesem Commit","forbidden_implicit_from":[]},
+    {"name":"research-business-central","responsibility":"source-bound-bc-research","freedom":"high","mutation_class":"read-only","implicit_allowed":true,"trigger_phrase":"Business Central recherchieren","trigger_example":"Welche Page verwendet die Tabelle Purchase Header?","forbidden_implicit_from":[]},
+    {"name":"operate-bc-pilot-sandbox","responsibility":"authorized-bc-sandbox-operation","freedom":"low","mutation_class":"sandbox-write","implicit_allowed":false,"trigger_phrase":"BC-Pilotsandbox bedienen","trigger_example":"Plane einen gebundenen P2P-Playthrough in der Pilotsandbox","forbidden_implicit_from":["capture-bc-click-guide","research-business-central"]},
+    {"name":"capture-bc-click-guide","responsibility":"read-only-browser-guide","freedom":"medium","mutation_class":"read-only","implicit_allowed":true,"trigger_phrase":"BC-Klickanleitung erfassen","trigger_example":"Erstelle eine read-only Klickanleitung für die Einkaufsseite","forbidden_implicit_from":[]},
+    {"name":"run-bc-uat-training-handover","responsibility":"uat-training-handover","freedom":"medium","mutation_class":"reviewed-write","implicit_allowed":true,"trigger_phrase":"BC-UAT Training und Übergabe führen","trigger_example":"Bereite rollenbezogene UAT- und Trainingsunterlagen vor","forbidden_implicit_from":[]},
+    {"name":"validate-project-snapshot","responsibility":"fail-closed-snapshot-validation","freedom":"low","mutation_class":"read-only","implicit_allowed":true,"trigger_phrase":"Projektsnapshot validieren","trigger_example":"Validiere diesen Snapshot vor der Twin-Übergabe","forbidden_implicit_from":[]}
+  ]
+}

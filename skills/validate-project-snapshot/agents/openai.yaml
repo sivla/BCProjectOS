@@ -1,0 +1,4 @@
+interface:
+  display_name: "Projektsnapshot validieren"
+  short_description: "Projektvertrag und Provenienz fail-closed prüfen."
+  default_prompt: "Use $validate-project-snapshot to validate a Spectra project snapshot fail-closed."

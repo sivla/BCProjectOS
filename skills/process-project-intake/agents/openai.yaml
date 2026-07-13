@@ -1,0 +1,4 @@
+interface:
+  display_name: "Projektintake verarbeiten"
+  short_description: "Quellen aufnehmen und geprüfte Vorschläge erzeugen."
+  default_prompt: "Use $process-project-intake to turn a project document into observations and proposals."

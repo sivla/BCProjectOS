@@ -1,0 +1,7 @@
+interface:
+  display_name: "Atlassian-Projekt materialisieren"
+  short_description: "Freigegebene Jira- und Confluence-Pläne anwenden."
+  default_prompt: "Use $materialize-atlassian-project to dry-run a validated Atlassian desired state."
+
+policy:
+  allow_implicit_invocation: false

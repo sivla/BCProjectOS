@@ -1,0 +1,4 @@
+interface:
+  display_name: "Projektdokumentation rendern"
+  short_description: "Generated und authored Dokumentation sicher projizieren."
+  default_prompt: "Use $render-project-documentation to render a validated project documentation snapshot."

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/skill-catalog.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "product_id", "catalog", "catalog_version", "skills"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "product_id": {"type": "string", "const": "spectra"},
+    "catalog": {"type": "string", "const": "p0-skill-catalog"},
+    "catalog_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "skills": {"type": "array", "minItems": 11, "items": {"$ref": "#/$defs/skill"}}
+  },
+  "$defs": {
+    "skill": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "responsibility", "freedom", "mutation_class", "implicit_allowed", "trigger_phrase", "trigger_example", "forbidden_implicit_from"],
+      "properties": {
+        "name": {"type": "string", "pattern": "^[a-z0-9-]{1,63}$"},
+        "responsibility": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "freedom": {"type": "string", "enum": ["high", "medium", "low"]},
+        "mutation_class": {"type": "string", "enum": ["read-only", "proposal-only", "local-write", "local-generated-write", "reviewed-write", "sandbox-write", "external-write"]},
+        "implicit_allowed": {"type": "boolean"},
+        "trigger_phrase": {"type": "string", "minLength": 8},
+        "trigger_example": {"type": "string", "minLength": 12},
+        "forbidden_implicit_from": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

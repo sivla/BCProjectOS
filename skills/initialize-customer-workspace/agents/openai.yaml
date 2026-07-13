@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kundenworkspace initialisieren"
+  short_description: "Kunden-, Projekt- oder Supportworkspace sicher anlegen."
+  default_prompt: "Use $initialize-customer-workspace to initialize a synthetic Spectra customer workspace."
