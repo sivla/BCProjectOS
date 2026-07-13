@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param()
+param([string]$ReleaseVersion='1.0.0-rc.1')
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
@@ -80,12 +80,18 @@ try {
     Assert-Equal (Get-AdoptionFileDigest (Join-Path $workspace 'workspace.json')) (Get-AdoptionFileDigest (Join-Path $restored 'workspace.json')) "ADOPTION_RESTORE_CHANGED_WORKSPACE:$profile"
     $passed++
   }
-  $releaseVersion = '1.0.0-rc.1'
+  $releaseVersion = $ReleaseVersion
   $manifestPath = Join-Path $root "release\versions\$releaseVersion\release-manifest.json"
   $manifest = Read-AdoptionJson $manifestPath
-  $verifiedBinding = [pscustomobject]@{release_status='BOUND';installable_blueprint=$true;version=$releaseVersion;commit=$manifest.source_commit;tree=$manifest.source_tree;digest=$manifest.payload.bundle_digest;manifest_path="release/versions/$releaseVersion/release-manifest.json"}
-  $verified = Test-AdoptionProductBinding -Binding $verifiedBinding -ProductRoot $root
-  Assert-Equal $verified.release_status 'BOUND' 'ADOPTION_IMMUTABLE_RELEASE_NOT_ACCEPTED'
+  if(Test-Path (Join-Path $root '.spectra-install.json') -PathType Leaf){
+    . (Join-Path $PSScriptRoot 'Spectra.Bootstrap.ps1')
+    $verified=Get-SpectraReleaseBinding -ProductRoot $root -Version $releaseVersion
+    Assert-Equal $verified.version $releaseVersion 'ADOPTION_INSTALLED_RELEASE_NOT_ACCEPTED'
+  }else{
+    $verifiedBinding = [pscustomobject]@{release_status='BOUND';installable_blueprint=$true;version=$releaseVersion;commit=$manifest.source_commit;tree=$manifest.source_tree;digest=$manifest.payload.bundle_digest;manifest_path="release/versions/$releaseVersion/release-manifest.json"}
+    $verified = Test-AdoptionProductBinding -Binding $verifiedBinding -ProductRoot $root
+    Assert-Equal $verified.release_status 'BOUND' 'ADOPTION_IMMUTABLE_RELEASE_NOT_ACCEPTED'
+  }
   $passed++
   if ($passed -ne 17) { throw 'ADOPTION_POSITIVE_TEST_COUNT_INVALID' }
   Write-Host "PASS: $passed Existing-Project-Adoption-Positiv-, Determinismus-, Idempotenz- und Backup/Restore-Pruefungen fuer zwei Profile."
