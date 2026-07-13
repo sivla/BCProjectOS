@@ -83,7 +83,7 @@ function Invoke-Install {
       if ((Get-SpectraBootstrapSha $destination) -cne [string]$file.sha256) { throw 'INSTALL_PAYLOAD_DIGEST_MISMATCH' }
       if ((Get-SpectraPlatform) -ne 'windows') {
         $permission = if ([string]$file.mode -ceq '100755') { '755' } else { '644' }
-        & chmod $permission -- $destination
+        & chmod $permission $destination
         if ($LASTEXITCODE -ne 0) { throw 'INSTALL_PAYLOAD_MODE_FAILED' }
       }
     }

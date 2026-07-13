@@ -60,8 +60,10 @@ jobs:
         shell: pwsh
         run: |
           $version = '${{ inputs.release_tag }}'.Substring('spectra-v'.Length)
-          pwsh -NoProfile -File automation/Test-SpectraMacOSOnboarding.ps1 -ProductRoot $PWD -Version $version -OutputPath portability-evidence.json
-          $e = Get-Content portability-evidence.json -Raw | ConvertFrom-Json
+          $evidencePath = Join-Path $PWD 'portability-evidence.json'
+          pwsh -NoProfile -File automation/Test-SpectraMacOSOnboarding.ps1 -ProductRoot $PWD -Version $version -OutputPath $evidencePath
+          if ($LASTEXITCODE -ne 0) { throw 'PORTABILITY_EVIDENCE_COMMAND_FAILED' }
+          $e = Get-Content $evidencePath -Raw | ConvertFrom-Json
           if ($IsMacOS -and $e.status -cne 'PASS') { throw 'PORTABILITY_MACOS_NOT_PASS' }
           if (-not $IsMacOS -and $e.status -cne 'PENDING') { throw 'PORTABILITY_NON_MAC_FALSE_PASS' }
       - name: Upload sanitized evidence
