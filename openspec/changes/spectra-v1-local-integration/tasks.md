@@ -26,6 +26,6 @@
 
 ## 5. Lokaler 1.0.0-Candidate
 
-- [ ] 5.1 Candidate zweimal deterministisch aus exakt dem Releasevertragsfix-Commit erzeugen
-- [ ] 5.2 Payloadblobs, Modi, Groessen, SHA-256, Digest und PENDING-/Nichtinstallierbarkeitsevidence pruefen
-- [ ] 5.3 Profile, Init/Upgrade/Backup/Restore, integrierte Vertraege, Manipulation, deutsche Doku und Fresh Clone belegen
+- [x] 5.1 Candidate zweimal deterministisch aus exakt dem Releasevertragsfix-Commit erzeugen
+- [x] 5.2 Payloadblobs, Modi, Groessen, SHA-256, Digest und PENDING-/Nichtinstallierbarkeitsevidence pruefen
+- [x] 5.3 Profile, Init/Upgrade/Backup/Restore, integrierte Vertraege, Manipulation, deutsche Doku und Fresh Clone belegen
