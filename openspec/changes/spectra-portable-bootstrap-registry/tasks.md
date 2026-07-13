@@ -32,3 +32,4 @@
 - [ ] 3.11 Installierten Doctor und versionierte Untergates schliessen und die Matrix mit `1.2.0-alpha.8` abschliessen
 - [ ] 3.12 Physischen macOS-Temppfad fuer alle Kindgates binden und die Matrix mit `1.2.0-alpha.9` abschliessen
 - [ ] 3.13 Nativen macOS-realpath eindeutig vom PowerShell-Alias trennen und die Matrix mit `1.2.0-alpha.10` abschliessen
+- [ ] 3.14 Physischen macOS-Temppfad POSIX-portabel mit `pwd -P` bestimmen und die Matrix mit `1.2.0-alpha.11` abschliessen
