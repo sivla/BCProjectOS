@@ -30,6 +30,14 @@ function Get-JsonNodeKind {
 }
 
 function Get-JsonValue { param($Object,[string]$Name);$entry=Get-JsonPropertyEntry $Object $Name;if($null -ne $entry){$entry.Value} }
+function Get-JsonObjectEntries {
+  param($Object)
+  if($Object -is [Collections.IDictionary]){
+    foreach($entry in @($Object.GetEnumerator())){[pscustomobject]@{Name=[string]$entry.Key;Value=$entry.Value}}
+    return
+  }
+  @($Object.PSObject.Properties)
+}
 
 $kind=Get-JsonNodeKind $Value
 $ref=Get-JsonValue $Schema '$ref'
@@ -42,10 +50,15 @@ foreach($type in $types){
   $valid=$valid -or ($type -eq 'object' -and $kind -eq 'object') -or ($type -eq 'array' -and $kind -eq 'array') -or ($type -eq 'string' -and $Value -is [string]) -or ($type -eq 'boolean' -and $Value -is [bool]) -or ($type -eq 'integer' -and $Value -is [int]) -or ($type -eq 'number' -and $kind -eq 'primitive') -or ($type -eq 'null' -and $kind -eq 'null')
 }
 if(-not $valid){throw "PORTABLE_SCHEMA_TYPE_INVALID:$Path"}
+$const=Get-JsonValue $Schema 'const';if($null -ne $const -and $Value -cne $const){throw "PORTABLE_SCHEMA_CONST_INVALID:$Path"}
+$enum=@(Get-JsonValue $Schema 'enum');if($enum.Count -gt 0 -and $enum -cnotcontains $Value){throw "PORTABLE_SCHEMA_ENUM_INVALID:$Path"}
+$pattern=Get-JsonValue $Schema 'pattern';if($null -ne $pattern -and $Value -is [string] -and $Value -notmatch [string]$pattern){throw "PORTABLE_SCHEMA_PATTERN_INVALID:$Path"}
+$minimum=Get-JsonValue $Schema 'minimum';if($null -ne $minimum -and $Value -is [ValueType] -and [decimal]$Value -lt [decimal]$minimum){throw "PORTABLE_SCHEMA_MINIMUM_INVALID:$Path"}
+$minLength=Get-JsonValue $Schema 'minLength';if($null -ne $minLength -and $Value -is [string] -and $Value.Length -lt [int]$minLength){throw "PORTABLE_SCHEMA_MINLENGTH_INVALID:$Path"}
 $min=Get-JsonValue $Schema 'minItems';if($null -ne $min -and $kind -eq 'array' -and $Value.Count -lt $min){throw "PORTABLE_SCHEMA_MINITEMS:$Path"}
 if($kind -eq 'array'){$index=0;foreach($item in $Value){$items=Get-JsonValue $Schema 'items';if($items){& $script:InvokeSchema $item $items "$Path[$index]"};$index++};return}
 if($kind -eq 'object'){
   foreach($required in @(Get-JsonValue $Schema 'required')){if($null -eq (Get-JsonPropertyEntry $Value $required)){throw "PORTABLE_SCHEMA_REQUIRED:$Path.$required"}}
   $properties=Get-JsonValue $Schema 'properties'
-  foreach($property in @($Value.PSObject.Properties)){$spec=if($properties){Get-JsonValue $properties $property.Name};if($null -eq $spec -and (Get-JsonValue $Schema 'additionalProperties') -eq $false){throw "PORTABLE_SCHEMA_ADDITIONAL_PROPERTY:$Path.$($property.Name)"};if($spec){& $script:InvokeSchema $property.Value $spec "$Path.$($property.Name)"}}
+  foreach($property in @(Get-JsonObjectEntries $Value)){$spec=if($properties){Get-JsonValue $properties $property.Name};if($null -eq $spec -and (Get-JsonValue $Schema 'additionalProperties') -eq $false){throw "PORTABLE_SCHEMA_ADDITIONAL_PROPERTY:$Path.$($property.Name)"};if($spec){& $script:InvokeSchema $property.Value $spec "$Path.$($property.Name)"}}
 }

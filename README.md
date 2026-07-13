@@ -66,6 +66,10 @@ Der kundenbezogene Kern führt Umgebungen, Gesellschaften, optionale Projekte, d
 
 `generate-document-projection` erzeugt ausschließlich synthetische lokale Projektionen. `validate-document-projection` prüft beliebig viele Dokumentationsräume, Hierarchien, authored/generated-Eigentum, Provenienz und getrennte Jira-Sichten read-only. Die Materialisierung in Atlassian-Systeme ist ausdrücklich nicht Bestandteil dieses Vertrags.
 
+## Business-Central-Referenzbibliothek
+
+Spectra registriert offizielle Microsoft-Dokumentation und BCApps, speichert Vendorinhalte aber ausschließlich in einem externen gemeinsamen Bare-Mirror-Cache. Exakte Locks und deterministische Indexe ermöglichen offline `status`, `build`, `search`, `show` und Snapshot-Diffs. Rolling Branches, unbelegte Objektbeschreibungen und stiller Onlinefallback werden abgelehnt.
+
 Consumer-Bindungsvertrag pruefen:
 
 ```powershell

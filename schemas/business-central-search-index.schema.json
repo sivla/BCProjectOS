@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/business-central-search-index.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "product_id", "snapshot_id", "knowledge_pack_id", "bc_version", "countries", "source_lock_digest", "object_count", "document_count", "objects_digest", "documents_digest", "terms_digest", "index_digest", "validation_status"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "product_id": {"type": "string", "const": "spectra"},
+    "snapshot_id": {"type": "string"},
+    "knowledge_pack_id": {"type": "string"},
+    "bc_version": {"type": "string"},
+    "countries": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "source_lock_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "object_count": {"type": "integer", "minimum": 0},
+    "document_count": {"type": "integer", "minimum": 0},
+    "objects_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "documents_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "terms_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "index_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "validation_status": {"type": "string", "const": "validated"}
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/business-central-object-catalog.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["object_key", "bc_version", "country", "object_type", "object_id", "name", "caption", "namespace", "app", "layer", "source", "obsolete_state", "page", "table", "purpose", "process_tags"],
+  "properties": {
+    "object_key": {"type": "string", "pattern": "^[a-f0-9-]{36}\\|(W1|[A-Z]{2})\\|[a-z]+\\|[0-9]+$"},
+    "bc_version": {"type": "string"},
+    "country": {"type": "string", "pattern": "^(W1|[A-Z]{2})$"},
+    "object_type": {"type": "string", "enum": ["table", "tableextension", "page", "pageextension", "report", "codeunit", "query", "xmlport", "enum", "interface", "permissionset", "api"]},
+    "object_id": {"type": "integer", "minimum": 1},
+    "name": {"type": "string", "minLength": 1},
+    "caption": {"type": ["string", "null"]},
+    "namespace": {"type": ["string", "null"]},
+    "app": {"type": "object", "additionalProperties": false, "required": ["app_id", "name", "publisher", "version"], "properties": {"app_id": {"type": "string"}, "name": {"type": "string"}, "publisher": {"type": "string"}, "version": {"type": "string"}}},
+    "layer": {"type": "string", "enum": ["system", "foundation", "base", "first-party", "localization", "installed-extension"]},
+    "source": {"type": "object", "additionalProperties": false, "required": ["source_id", "path", "line", "commit"], "properties": {"source_id": {"type": "string"}, "path": {"type": "string"}, "line": {"type": "integer", "minimum": 1}, "commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"}}},
+    "obsolete_state": {"type": "string", "enum": ["none", "pending", "removed"]},
+    "page": {"type": ["object", "null"], "additionalProperties": false, "required": ["page_type", "source_table", "extends"], "properties": {"page_type": {"type": ["string", "null"]}, "source_table": {"type": ["string", "null"]}, "extends": {"type": ["string", "null"]}}},
+    "table": {"type": ["object", "null"], "additionalProperties": false, "required": ["extends", "fields", "keys", "relations"], "properties": {"extends": {"type": ["string", "null"]}, "fields": {"type": "array"}, "keys": {"type": "array"}, "relations": {"type": "array"}}},
+    "purpose": {"type": "object", "additionalProperties": false, "required": ["status", "text", "provenance_ids"], "properties": {"status": {"type": "string", "enum": ["official", "curated", "unknown"]}, "text": {"type": ["string", "null"]}, "provenance_ids": {"type": "array", "items": {"type": "string"}}}},
+    "process_tags": {"type": "array", "items": {"type": "string"}}
+  }
+}
