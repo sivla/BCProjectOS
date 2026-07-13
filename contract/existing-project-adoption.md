@@ -10,6 +10,8 @@ Spectra kann ein bestehendes Jira-/Confluence-Projekt aufnehmen, ohne dessen Str
 2. `config.json` mit Customer-/Workspace-/optional Project-ID, Profil, Jira-Projekt/Board, Confluence-Spaces/Roots und Mapping erstellen.
 3. Runtime-Schluessel wie `SPECTRA_ATLASSIAN_ACCOUNT` und `SPECTRA_ATLASSIAN_TOKEN` nur im Secret Store oder in der lokalen Prozessumgebung setzen. Spectra committed keine `.env`-Dateien; `AGENTS.md` verbietet dies.
 
+`product_binding` ist entweder ehrlich `PENDING_BCPROJECTOS_RELEASE` mit `installable_blueprint: false` und leeren Releasefeldern oder `BOUND` gegen ein finales Manifest, dessen Source-Commit, Tree, Digest und annotierter Tag im angegebenen Product-Root verifiziert werden. Syntaktisch plausible Werte allein berechtigen niemals zu einem installierbaren Workspace.
+
 ## Befehle
 
 ```powershell

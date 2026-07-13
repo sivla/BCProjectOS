@@ -57,6 +57,46 @@ function Assert-AdoptionUnique($Values, [string]$Code) {
   }
 }
 
+function Test-AdoptionProductBinding {
+  param([Parameter(Mandatory=$true)]$Binding, [string]$ProductRoot)
+  if ([string]$Binding.release_status -ceq 'PENDING_BCPROJECTOS_RELEASE') {
+    if ($Binding.installable_blueprint -or $null -ne $Binding.version -or $null -ne $Binding.commit -or $null -ne $Binding.tree -or $null -ne $Binding.digest -or $null -ne $Binding.manifest_path) { throw 'ADOPTION_PRODUCT_PENDING_VALUES_FORBIDDEN' }
+    return [pscustomobject]@{release_status='PENDING_BCPROJECTOS_RELEASE';installable_blueprint=$false}
+  }
+  if ([string]$Binding.release_status -cne 'BOUND' -or -not $Binding.installable_blueprint) { throw 'ADOPTION_PRODUCT_RELEASE_NOT_INSTALLABLE' }
+  foreach ($name in @('version','commit','tree','digest','manifest_path')) { if ([string]::IsNullOrWhiteSpace([string]$Binding.$name)) { throw 'ADOPTION_PRODUCT_EVIDENCE_INCOMPLETE' } }
+  $root = if ([string]::IsNullOrWhiteSpace($ProductRoot)) { Get-AdoptionProductRoot } else { [IO.Path]::GetFullPath($ProductRoot) }
+  $expectedManifestPath = "release/versions/$($Binding.version)/release-manifest.json"
+  if ([string]$Binding.manifest_path -cne $expectedManifestPath) { throw 'ADOPTION_PRODUCT_MANIFEST_PATH_INVALID' }
+  $manifestPath = Join-Path $root ($expectedManifestPath -replace '/', '\')
+  if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) { throw 'ADOPTION_PRODUCT_MANIFEST_MISSING' }
+  $manifest = Read-AdoptionJson $manifestPath
+  if ([string]$manifest.product_id -cne 'spectra' -or [string]$manifest.release_version -cne [string]$Binding.version -or [string]$manifest.blueprint_version -cne [string]$Binding.version -or [string]$manifest.release_kind -cne 'installable_blueprint' -or [string]$manifest.manifest_state -cne 'final' -or [string]$manifest.consumer_mode -cne 'INSTALLABLE_BLUEPRINT' -or $manifest.installable_blueprint -ne $true -or [string]$manifest.expected_tag -cne "spectra-v$($Binding.version)" -or [string]$manifest.source_commit -cne [string]$Binding.commit -or [string]$manifest.source_tree -cne [string]$Binding.tree -or [string]$manifest.payload.bundle_digest -cne [string]$Binding.digest) { throw 'ADOPTION_PRODUCT_MANIFEST_MISMATCH' }
+  . (Join-Path $root 'automation\Release.Common.ps1')
+  $actualTree = (& git -C $root rev-parse "$($Binding.commit)^{tree}" 2>$null | Select-Object -First 1).Trim()
+  if ($actualTree -notmatch '^[0-9a-f]{40}$' -or $actualTree -cne [string]$Binding.tree) { throw 'ADOPTION_PRODUCT_TREE_MISMATCH' }
+  $modeBound = [int]$manifest.schema_version -ge 4
+  $scope = Get-BCProjectOSReleaseScope -Root $root -Revision ([string]$Binding.commit)
+  $records = @(Get-BCProjectOSGitPayloadRecords -Root $root -Revision ([string]$Binding.commit) -Scope $scope -IncludeMode:$modeBound)
+  $checksums = Get-BCProjectOSChecksumsText -Records $records -IncludeMode:$modeBound
+  if ((Get-BCProjectOSTextSha256 -Text $checksums) -cne [string]$Binding.digest) { throw 'ADOPTION_PRODUCT_DIGEST_MISMATCH' }
+  $storedChecksums = Join-Path (Split-Path -Parent $manifestPath) 'checksums.sha256'
+  if (-not (Test-Path -LiteralPath $storedChecksums -PathType Leaf) -or ([IO.File]::ReadAllText($storedChecksums) -replace "`r`n","`n") -cne $checksums) { throw 'ADOPTION_PRODUCT_CHECKSUM_MISMATCH' }
+  $remote = @(& git -C $root remote get-url origin 2>$null)
+  if ($LASTEXITCODE -ne 0 -or [string]($remote | Select-Object -First 1) -cne 'https://github.com/sivla/BCProjectOS.git') { throw 'ADOPTION_PRODUCT_REMOTE_INVALID' }
+  $tag = "spectra-v$($Binding.version)"
+  & git -C $root show-ref --verify --quiet "refs/tags/$tag"
+  if ($LASTEXITCODE -ne 0) { throw 'ADOPTION_PRODUCT_TAG_MISSING' }
+  $tagType = & git -C $root cat-file -t "refs/tags/$tag" 2>$null | Select-Object -First 1
+  if ([string]$tagType -cne 'tag') { throw 'ADOPTION_PRODUCT_TAG_NOT_ANNOTATED' }
+  $tagCommit = (& git -C $root rev-parse "refs/tags/$tag^{commit}" 2>$null | Select-Object -First 1).Trim()
+  & git -C $root merge-base --is-ancestor ([string]$Binding.commit) $tagCommit 2>$null
+  if ($LASTEXITCODE -ne 0) { throw 'ADOPTION_PRODUCT_SOURCE_ANCESTRY_INVALID' }
+  & git -C $root cat-file -e "$tagCommit`:$expectedManifestPath" 2>$null
+  if ($LASTEXITCODE -ne 0) { throw 'ADOPTION_PRODUCT_MANIFEST_NOT_TAGGED' }
+  [pscustomobject]@{release_status='BOUND';installable_blueprint=$true;tag_commit=$tagCommit;manifest=$manifest}
+}
+
 function Test-ExistingProjectDiscovery {
   param([Parameter(Mandatory=$true)]$Discovery)
   Assert-AdoptionNoForbiddenContent $Discovery
@@ -82,14 +122,14 @@ function Test-ExistingProjectDiscovery {
 }
 
 function Test-ExistingProjectAdoptionConfig {
-  param([Parameter(Mandatory=$true)]$Config, [Parameter(Mandatory=$true)]$Discovery, [string]$DiscoveryPath)
+  param([Parameter(Mandatory=$true)]$Config, [Parameter(Mandatory=$true)]$Discovery, [string]$DiscoveryPath, [string]$ProductRoot)
   Assert-AdoptionNoForbiddenContent $Config
   Assert-AdoptionSafeRelativePath ([string]$Config.discovery_binding.relative_path)
   Assert-AdoptionHttpsOrigin ([string]$Config.jira_binding.base_url)
   foreach ($binding in @($Config.confluence_bindings)) { Assert-AdoptionHttpsOrigin ([string]$binding.base_url) }
   Assert-AdoptionSchema $Config 'existing-project-adoption-config.schema.json'
   Test-ExistingProjectDiscovery $Discovery | Out-Null
-  if (-not $Config.product_binding.version -or -not $Config.product_binding.commit -or -not $Config.product_binding.tree -or -not $Config.product_binding.digest) { throw 'ADOPTION_PRODUCT_UNPINNED' }
+  Test-AdoptionProductBinding -Binding $Config.product_binding -ProductRoot $ProductRoot | Out-Null
   if ($Config.workspace.profile -eq 'support-only') {
     if ($null -ne $Config.workspace.project_id -or $null -ne $Config.workspace.project_name -or $null -ne $Discovery.jira.project -or $null -ne $Config.jira_binding.project_id -or $null -ne $Config.jira_binding.project_key) { throw 'ADOPTION_SUPPORT_PROJECT_FORBIDDEN' }
   } elseif ([string]::IsNullOrWhiteSpace([string]$Config.workspace.project_id) -or [string]::IsNullOrWhiteSpace([string]$Config.workspace.project_name) -or $null -eq $Discovery.jira.project) { throw 'ADOPTION_PROJECT_REQUIRED' }
@@ -122,7 +162,7 @@ function Test-ExistingProjectAdoptionConfig {
     $targetKind = if ($kind -eq 'space_roles') { 'spaces' } else { $kind }
     foreach ($entry in $entries) { if (-not $observed[$targetKind].ContainsKey([string]$entry.source_id)) { throw "ADOPTION_MAPPING_SOURCE_UNKNOWN_$($kind.ToUpperInvariant())" } }
   }
-  foreach ($kind in @('issue_types','statuses')) {
+  foreach ($kind in @('issue_types','statuses','fields')) {
     $mapped = @{}; foreach ($entry in @($Config.mapping.$kind)) { $mapped[[string]$entry.source_id] = $true }
     foreach ($id in $observed[$kind].Keys) { if (-not $mapped.ContainsKey($id)) { throw "ADOPTION_MAPPING_INCOMPLETE_$($kind.ToUpperInvariant())" } }
   }
@@ -143,8 +183,8 @@ function Get-ExistingProjectInspection {
 }
 
 function New-ExistingProjectAdoptionPlan {
-  param([Parameter(Mandatory=$true)]$Config, [Parameter(Mandatory=$true)]$Discovery, [Parameter(Mandatory=$true)][string]$DiscoveryPath)
-  Test-ExistingProjectAdoptionConfig -Config $Config -Discovery $Discovery -DiscoveryPath $DiscoveryPath | Out-Null
+  param([Parameter(Mandatory=$true)]$Config, [Parameter(Mandatory=$true)]$Discovery, [Parameter(Mandatory=$true)][string]$DiscoveryPath, [string]$ProductRoot)
+  Test-ExistingProjectAdoptionConfig -Config $Config -Discovery $Discovery -DiscoveryPath $DiscoveryPath -ProductRoot $ProductRoot | Out-Null
   $operations = @()
   $i = 0
   $operations += [ordered]@{id=('OP-{0:D3}' -f (++$i));class='adopt-as-is';domain='workspace';source_ref=$Config.discovery_binding.discovery_id;target=$Config.workspace.workspace_id;reason='Revisionsgebundenes Bestandsinventar lokal uebernehmen.';remote_action='none'}
@@ -160,14 +200,14 @@ function New-ExistingProjectAdoptionPlan {
   $digestSource = [ordered]@{}; foreach ($property in $plan.Keys) { if ($property -ne 'plan_digest') { $digestSource[$property] = $plan[$property] } }
   $plan.plan_digest = Get-AdoptionTextDigest ($digestSource | ConvertTo-Json -Depth 40 -Compress)
   $plan = ($plan | ConvertTo-Json -Depth 40 -Compress) | ConvertFrom-Json
-  Test-ExistingProjectAdoptionPlan -Plan $plan -Config $Config -Discovery $Discovery -DiscoveryPath $DiscoveryPath | Out-Null
+  Test-ExistingProjectAdoptionPlan -Plan $plan -Config $Config -Discovery $Discovery -DiscoveryPath $DiscoveryPath -ProductRoot $ProductRoot | Out-Null
   $plan
 }
 
 function Test-ExistingProjectAdoptionPlan {
-  param([Parameter(Mandatory=$true)]$Plan, [Parameter(Mandatory=$true)]$Config, [Parameter(Mandatory=$true)]$Discovery, [Parameter(Mandatory=$true)][string]$DiscoveryPath)
+  param([Parameter(Mandatory=$true)]$Plan, [Parameter(Mandatory=$true)]$Config, [Parameter(Mandatory=$true)]$Discovery, [Parameter(Mandatory=$true)][string]$DiscoveryPath, [string]$ProductRoot)
   Assert-AdoptionSchema $Plan 'existing-project-adoption-plan.schema.json'
-  Test-ExistingProjectAdoptionConfig -Config $Config -Discovery $Discovery -DiscoveryPath $DiscoveryPath | Out-Null
+  Test-ExistingProjectAdoptionConfig -Config $Config -Discovery $Discovery -DiscoveryPath $DiscoveryPath -ProductRoot $ProductRoot | Out-Null
   if ([string]$Plan.config_id -cne [string]$Config.config_id -or [string]$Plan.discovery_id -cne [string]$Discovery.discovery_id) { throw 'ADOPTION_PLAN_BINDING_MISMATCH' }
   if ([string]$Plan.source_revision -cne [string]$Discovery.source_revision -or [string]$Plan.discovery_sha256 -cne (Get-AdoptionFileDigest $DiscoveryPath)) { throw 'ADOPTION_PLAN_DISCOVERY_DRIFT' }
   if ($Plan.remote_mutation_allowed) { throw 'ADOPTION_REMOTE_MUTATION_FORBIDDEN' }
@@ -180,10 +220,10 @@ function Test-ExistingProjectAdoptionPlan {
 }
 
 function Invoke-ExistingProjectAdoptionApply {
-  param([Parameter(Mandatory=$true)]$Config, [Parameter(Mandatory=$true)]$Discovery, [Parameter(Mandatory=$true)]$Plan, [Parameter(Mandatory=$true)][string]$DiscoveryPath, [Parameter(Mandatory=$true)][string]$Destination, [Parameter(Mandatory=$true)][string]$ExpectedPlanDigest, [switch]$Approve, [switch]$Remote)
+  param([Parameter(Mandatory=$true)]$Config, [Parameter(Mandatory=$true)]$Discovery, [Parameter(Mandatory=$true)]$Plan, [Parameter(Mandatory=$true)][string]$DiscoveryPath, [Parameter(Mandatory=$true)][string]$Destination, [Parameter(Mandatory=$true)][string]$ExpectedPlanDigest, [string]$ProductRoot, [switch]$Approve, [switch]$Remote)
   if (-not $Approve) { throw 'ADOPTION_APPROVAL_REQUIRED' }
   if ($Remote) { throw 'ADOPTION_REMOTE_ADAPTER_NOT_CONFIGURED' }
-  Test-ExistingProjectAdoptionPlan -Plan $Plan -Config $Config -Discovery $Discovery -DiscoveryPath $DiscoveryPath | Out-Null
+  Test-ExistingProjectAdoptionPlan -Plan $Plan -Config $Config -Discovery $Discovery -DiscoveryPath $DiscoveryPath -ProductRoot $ProductRoot | Out-Null
   if ([string]$ExpectedPlanDigest -cne [string]$Plan.plan_digest) { throw 'ADOPTION_PLAN_DIGEST_EXPECTED_MISMATCH' }
   $destinationPath = [IO.Path]::GetFullPath($Destination)
   if ($destinationPath -eq [IO.Path]::GetPathRoot($destinationPath)) { throw 'ADOPTION_DESTINATION_UNSAFE' }
@@ -201,10 +241,13 @@ function Invoke-ExistingProjectAdoptionApply {
   try {
     New-Item -ItemType Directory -Path $staging | Out-Null
     foreach ($folder in @('governance','imports','inbox','proposals','knowledge','support','projects','openspec')) { New-Item -ItemType Directory -Path (Join-Path $staging $folder) -Force | Out-Null }
-    Write-AdoptionJson (Join-Path $staging 'governance\adoption-config.json') $Config
+    $storedConfig = ($Config | ConvertTo-Json -Depth 40 -Compress) | ConvertFrom-Json
+    $storedConfig.discovery_binding.relative_path = 'imports/atlassian-discovery.json'
+    $storedConfig.discovery_binding.sha256 = Get-AdoptionFileDigest $DiscoveryPath
+    Write-AdoptionJson (Join-Path $staging 'governance\adoption-config.json') $storedConfig
     Write-AdoptionJson (Join-Path $staging 'governance\adoption-plan.json') $Plan
     Write-AdoptionJson (Join-Path $staging 'imports\atlassian-discovery.json') $Discovery
-    $workspace = [ordered]@{schema_version=1;product_id='spectra';workspace_id=$Config.workspace.workspace_id;customer_id=$Config.workspace.customer_id;customer_name=$Config.workspace.customer_name;profile=$Config.workspace.profile;project_id=$Config.workspace.project_id;project_name=$Config.workspace.project_name;product_binding=$Config.product_binding;adoption_plan_digest=$Plan.plan_digest;customer_truth_boundary='workspace-owned';remote_write_enabled=$false}
+    $workspace = [ordered]@{schema_version=1;product_id='spectra';workspace_id=$Config.workspace.workspace_id;customer_id=$Config.workspace.customer_id;customer_name=$Config.workspace.customer_name;profile=$Config.workspace.profile;project_id=$Config.workspace.project_id;project_name=$Config.workspace.project_name;release_status=$Config.product_binding.release_status;installable_blueprint=$Config.product_binding.installable_blueprint;product_binding=$Config.product_binding;adoption_plan_digest=$Plan.plan_digest;customer_truth_boundary='workspace-owned';remote_write_enabled=$false}
     Write-AdoptionJson (Join-Path $staging 'workspace.json') $workspace
     $inbox = [ordered]@{schema_version=1;product_id='spectra';workspace_id=$Config.workspace.workspace_id;intake_items=@();proposals=@();writes_performed=$false}
     Write-AdoptionJson (Join-Path $staging 'inbox\adoption-inbox.json') $inbox
@@ -217,16 +260,17 @@ function Invoke-ExistingProjectAdoptionApply {
 }
 
 function Test-ExistingProjectAdoptionWorkspace {
-  param([Parameter(Mandatory=$true)][string]$Path)
+  param([Parameter(Mandatory=$true)][string]$Path, [string]$ProductRoot)
   $root = [IO.Path]::GetFullPath($Path)
   foreach ($relative in @('workspace.json','governance/adoption-config.json','governance/adoption-plan.json','governance/adoption-receipt.json','imports/atlassian-discovery.json','inbox/adoption-inbox.json')) { if (-not (Test-Path -LiteralPath (Join-Path $root ($relative -replace '/', '\')) -PathType Leaf)) { throw 'ADOPTION_WORKSPACE_FILE_MISSING' } }
   $config = Read-AdoptionJson (Join-Path $root 'governance\adoption-config.json')
   $plan = Read-AdoptionJson (Join-Path $root 'governance\adoption-plan.json')
-  $discoveryPath = Join-Path $root 'imports\atlassian-discovery.json'
+  Assert-AdoptionSafeRelativePath ([string]$config.discovery_binding.relative_path)
+  $discoveryPath = [IO.Path]::GetFullPath((Join-Path $root ([string]$config.discovery_binding.relative_path -replace '/', '\')))
+  $rootPrefix = $root.TrimEnd('\','/') + [IO.Path]::DirectorySeparatorChar
+  if (-not $discoveryPath.StartsWith($rootPrefix,[StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path -LiteralPath $discoveryPath -PathType Leaf)) { throw 'ADOPTION_DISCOVERY_PATH_INVALID' }
   $discovery = Read-AdoptionJson $discoveryPath
-  $config.discovery_binding.relative_path = 'imports/atlassian-discovery.json'
-  $config.discovery_binding.sha256 = Get-AdoptionFileDigest $discoveryPath
-  Test-ExistingProjectAdoptionPlan -Plan $plan -Config $config -Discovery $discovery -DiscoveryPath $discoveryPath | Out-Null
+  Test-ExistingProjectAdoptionPlan -Plan $plan -Config $config -Discovery $discovery -DiscoveryPath $discoveryPath -ProductRoot $ProductRoot | Out-Null
   $receipt = Read-AdoptionJson (Join-Path $root 'governance\adoption-receipt.json')
   if ([string]$receipt.plan_digest -cne [string]$plan.plan_digest -or $receipt.remote_writes -ne 0) { throw 'ADOPTION_RECEIPT_INVALID' }
   $true

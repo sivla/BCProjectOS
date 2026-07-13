@@ -1,10 +1,7 @@
 [CmdletBinding()]
 param(
   [Parameter(Mandatory=$true)][string]$Destination,
-  [Parameter(Mandatory=$true)][ValidateSet('implementation','support-only')][string]$Profile,
-  [Parameter(Mandatory=$true)][string]$ProductCommit,
-  [Parameter(Mandatory=$true)][string]$ProductTree,
-  [Parameter(Mandatory=$true)][string]$ProductDigest
+  [Parameter(Mandatory=$true)][ValidateSet('implementation','support-only')][string]$Profile
 )
 $ErrorActionPreference='Stop';Set-StrictMode -Version 2.0
 . (Join-Path $PSScriptRoot 'ExistingProject.Adoption.ps1')
@@ -40,7 +37,7 @@ try{
   $statusMappings=@();foreach($s in $statuses){$target=switch($s.name){'Open'{'planned'}'Incoming'{'ready'}'In Progress'{'in_progress'}'Working'{'in_progress'}default{'done'}};$statusMappings+=[ordered]@{source_id=$s.id;source_name=$s.name;target=$target}}
   $fieldMappings=@();foreach($f in $fields){$fieldMappings+=[ordered]@{source_id=$f.id;source_name=$f.name;target=($f.name.ToLowerInvariant() -replace ' ','_')}}
   $jiraProjectId=if($null -eq $jiraProject){$null}else{$jiraProject.id};$jiraProjectKey=if($null -eq $jiraProject){$null}else{$jiraProject.key}
-  $config=[ordered]@{schema_version=1;product_id='spectra';config_id="ADC-SYN-$suffix";workspace=[ordered]@{customer_id="CUS-SYN-$suffix";customer_name="Synthetischer Kunde $suffix";workspace_id="WS-SYN-$suffix";profile=$Profile;project_id=$projectId;project_name=$projectName};product_binding=[ordered]@{version='1.0.0';commit=$ProductCommit;tree=$ProductTree;digest=$ProductDigest};discovery_binding=[ordered]@{discovery_id=$discovery.discovery_id;source_revision=$discovery.source_revision;sha256=Get-AdoptionFileDigest $discoveryPath;relative_path='discovery.json'};jira_binding=[ordered]@{base_url=$discovery.jira.base_url;site_id=$discovery.jira.site_id;project_id=$jiraProjectId;project_key=$jiraProjectKey;board_id=$board.id;board_name=$board.name;filter_id=$board.filter_id};confluence_bindings=$spaceBindings;mapping=[ordered]@{version='1.0.0';issue_types=$issueMappings;statuses=$statusMappings;fields=$fieldMappings;space_roles=$spaceMappings};runtime_secret_keys=@('SPECTRA_ATLASSIAN_ACCOUNT','SPECTRA_ATLASSIAN_TOKEN')}
+  $config=[ordered]@{schema_version=1;product_id='spectra';config_id="ADC-SYN-$suffix";workspace=[ordered]@{customer_id="CUS-SYN-$suffix";customer_name="Synthetischer Kunde $suffix";workspace_id="WS-SYN-$suffix";profile=$Profile;project_id=$projectId;project_name=$projectName};product_binding=[ordered]@{release_status='PENDING_BCPROJECTOS_RELEASE';installable_blueprint=$false;version=$null;commit=$null;tree=$null;digest=$null;manifest_path=$null};discovery_binding=[ordered]@{discovery_id=$discovery.discovery_id;source_revision=$discovery.source_revision;sha256=Get-AdoptionFileDigest $discoveryPath;relative_path='discovery.json'};jira_binding=[ordered]@{base_url=$discovery.jira.base_url;site_id=$discovery.jira.site_id;project_id=$jiraProjectId;project_key=$jiraProjectKey;board_id=$board.id;board_name=$board.name;filter_id=$board.filter_id};confluence_bindings=$spaceBindings;mapping=[ordered]@{version='1.0.0';issue_types=$issueMappings;statuses=$statusMappings;fields=$fieldMappings;space_roles=$spaceMappings};runtime_secret_keys=@('SPECTRA_ATLASSIAN_ACCOUNT','SPECTRA_ATLASSIAN_TOKEN')}
   Write-AdoptionJson (Join-Path $staging 'config.json') $config
   Move-Item -LiteralPath $staging -Destination $d
   Write-Host "PASS: Synthetische Existing-Project-Fixture $Profile erzeugt."

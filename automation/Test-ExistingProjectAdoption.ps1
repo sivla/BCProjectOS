@@ -5,9 +5,6 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
 $root = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $temp = Join-Path ([IO.Path]::GetTempPath()) ('spectra-adoption-positive-' + [guid]::NewGuid().ToString('N'))
-$commit = (git -C $root rev-parse HEAD).Trim()
-$tree = (git -C $root rev-parse 'HEAD^{tree}').Trim()
-$productDigest = 'c' * 64
 . (Join-Path $PSScriptRoot 'ExistingProject.Adoption.ps1')
 
 function Assert-Equal([object]$Actual, [object]$Expected, [string]$Code) {
@@ -29,8 +26,8 @@ try {
   foreach ($profile in $profiles) {
     $fixtureA = Join-Path $temp "$profile-a"
     $fixtureB = Join-Path $temp "$profile-b"
-    & (Join-Path $PSScriptRoot 'New-SyntheticExistingProjectAdoption.ps1') -Destination $fixtureA -Profile $profile -ProductCommit $commit -ProductTree $tree -ProductDigest $productDigest | Out-Null
-    & (Join-Path $PSScriptRoot 'New-SyntheticExistingProjectAdoption.ps1') -Destination $fixtureB -Profile $profile -ProductCommit $commit -ProductTree $tree -ProductDigest $productDigest | Out-Null
+    & (Join-Path $PSScriptRoot 'New-SyntheticExistingProjectAdoption.ps1') -Destination $fixtureA -Profile $profile | Out-Null
+    & (Join-Path $PSScriptRoot 'New-SyntheticExistingProjectAdoption.ps1') -Destination $fixtureB -Profile $profile | Out-Null
     Assert-Equal (Get-FixtureHashes $fixtureA) (Get-FixtureHashes $fixtureB) "ADOPTION_FIXTURE_NOT_DETERMINISTIC:$profile"
     $passed++
 
@@ -41,6 +38,7 @@ try {
     $inspection = Get-ExistingProjectInspection -DiscoveryPath $discoveryPath
     Assert-Equal $inspection.writes_performed $false "ADOPTION_INSPECT_WROTE:$profile"
     Test-ExistingProjectAdoptionConfig -Config $config -Discovery $discovery -DiscoveryPath $discoveryPath | Out-Null
+    if ([string]$config.product_binding.release_status -cne 'PENDING_BCPROJECTOS_RELEASE' -or $config.product_binding.installable_blueprint -or $null -ne $config.product_binding.commit -or $null -ne $config.product_binding.digest) { throw "ADOPTION_FIXTURE_RELEASE_CLAIM_INVALID:$profile" }
     $passed++
 
     $cliInspection = (& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Invoke-ExistingProjectAdoption.ps1') -Command inspect -DiscoveryPath $discoveryPath | Out-String) | ConvertFrom-Json
@@ -63,6 +61,8 @@ try {
     $apply = Invoke-ExistingProjectAdoptionApply -Config $config -Discovery $discovery -Plan $planA -DiscoveryPath $discoveryPath -Destination $workspace -ExpectedPlanDigest $planA.plan_digest -Approve
     Assert-Equal $apply.status 'APPLIED' "ADOPTION_APPLY_FAILED:$profile"
     Test-ExistingProjectAdoptionWorkspace -Path $workspace | Out-Null
+    $workspaceIdentity = Read-AdoptionJson (Join-Path $workspace 'workspace.json')
+    if ([string]$workspaceIdentity.release_status -cne 'PENDING_BCPROJECTOS_RELEASE' -or $workspaceIdentity.installable_blueprint) { throw "ADOPTION_WORKSPACE_INSTALLABLE_CLAIM_INVALID:$profile" }
     $passed++
 
     $repeat = Invoke-ExistingProjectAdoptionApply -Config $config -Discovery $discovery -Plan $planA -DiscoveryPath $discoveryPath -Destination $workspace -ExpectedPlanDigest $planA.plan_digest -Approve
@@ -78,7 +78,14 @@ try {
     Assert-Equal (Get-AdoptionFileDigest (Join-Path $workspace 'workspace.json')) (Get-AdoptionFileDigest (Join-Path $restored 'workspace.json')) "ADOPTION_RESTORE_CHANGED_WORKSPACE:$profile"
     $passed++
   }
-  if ($passed -ne 16) { throw 'ADOPTION_POSITIVE_TEST_COUNT_INVALID' }
+  $releaseVersion = '1.0.0-rc.1'
+  $manifestPath = Join-Path $root "release\versions\$releaseVersion\release-manifest.json"
+  $manifest = Read-AdoptionJson $manifestPath
+  $verifiedBinding = [pscustomobject]@{release_status='BOUND';installable_blueprint=$true;version=$releaseVersion;commit=$manifest.source_commit;tree=$manifest.source_tree;digest=$manifest.payload.bundle_digest;manifest_path="release/versions/$releaseVersion/release-manifest.json"}
+  $verified = Test-AdoptionProductBinding -Binding $verifiedBinding -ProductRoot $root
+  Assert-Equal $verified.release_status 'BOUND' 'ADOPTION_IMMUTABLE_RELEASE_NOT_ACCEPTED'
+  $passed++
+  if ($passed -ne 17) { throw 'ADOPTION_POSITIVE_TEST_COUNT_INVALID' }
   Write-Host "PASS: $passed Existing-Project-Adoption-Positiv-, Determinismus-, Idempotenz- und Backup/Restore-Pruefungen fuer zwei Profile."
 } finally {
   if (Test-Path -LiteralPath $temp) { Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue }
