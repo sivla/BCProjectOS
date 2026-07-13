@@ -1,7 +1,7 @@
 Set-StrictMode -Version 2.0
 
 function Get-SpectraBootstrapProductRoot { [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..')) }
-function Write-SpectraBootstrapJson([string]$Path,$Value){$p=Split-Path -Parent $Path;if(-not(Test-Path $p)){New-Item -ItemType Directory -Path $p -Force|Out-Null};$tmp="$Path.tmp";[IO.File]::WriteAllText($tmp,(($Value|ConvertTo-Json -Depth 30)+"`n"),[Text.UTF8Encoding]::new($false));Move-Item -LiteralPath $tmp -Destination $Path -Force}
+function Write-SpectraBootstrapJson([string]$Path,$Value){$p=Split-Path -Parent $Path;if([string]::IsNullOrWhiteSpace($p)){$p=(Get-Location).Path};if(-not(Test-Path $p)){New-Item -ItemType Directory -Path $p -Force|Out-Null};$tmp="$Path.tmp";[IO.File]::WriteAllText($tmp,(($Value|ConvertTo-Json -Depth 30)+"`n"),[Text.UTF8Encoding]::new($false));Move-Item -LiteralPath $tmp -Destination $Path -Force}
 function Read-SpectraBootstrapJson([string]$Path){if(-not(Test-Path $Path -PathType Leaf)){throw 'BOOTSTRAP_FILE_MISSING'};try{Get-Content $Path -Raw|ConvertFrom-Json}catch{throw 'BOOTSTRAP_JSON_INVALID'}}
 function Get-SpectraBootstrapSha([string]$Path){(Get-FileHash $Path -Algorithm SHA256).Hash.ToLowerInvariant()}
 function Get-SpectraPlatform {if([Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT){'windows'}elseif((Get-Variable IsMacOS -ErrorAction SilentlyContinue)-and$IsMacOS){'macos'}else{'other'}}

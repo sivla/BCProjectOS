@@ -86,6 +86,8 @@ Die Releasebindung MUST die beiden semantisch identischen kanonischen HTTPS-Remo
 
 Der Installer MUST Payloadbytes aus den Git-Blobs des gebundenen `source_commit` extrahieren und den SHA-256-Digest nach dem Schreiben erneut prüfen. Er MUST unabhängig von Arbeitsbaum-Zeilenendennormalisierung sein und unter macOS den im Manifest gebundenen Modus `100644` beziehungsweise `100755` wiederherstellen. Das finale Release-Manifest und seine Checksum-Datei MUST als getrennte, taggebundene Betriebsmetadaten mitinstalliert und beim Uninstall wieder entfernt werden.
 
+Die Moduswiederherstellung MUST mit BSD-`chmod` auf macOS funktionieren. Evidence-Schreiber MUST sowohl absolute als auch dateinamensrelative Ausgabepfade atomar unterstützen; Workflow-Kindprozesse MUST ihren Exitcode vor dem Lesen der Evidence explizit prüfen.
+
 #### Scenario: Echter macOS-Runner ohne TEMP
 
 - **WHEN** der Portabilitätsvertrag unter PowerShell 7 auf macOS ohne gesetztes `TEMP` ausgeführt wird

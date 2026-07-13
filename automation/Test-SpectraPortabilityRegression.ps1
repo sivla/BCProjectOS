@@ -53,5 +53,12 @@ foreach($remote in @('https://github.com/sivla/Other.git','https://token@github.
 }
 $passed++
 
-if($passed -ne 5){throw "PORTABILITY_REGRESSION_COUNT_INVALID:$passed"}
-Write-Host "PASS: $passed Portabilitaetsregressionen fuer Zeitwerte, Temp, Kindprozess, Links und kanonische Remotes."
+$relativeEvidence='spectra-relative-evidence-'+[guid]::NewGuid().ToString('N')+'.json'
+try{
+  Write-SpectraBootstrapJson $relativeEvidence ([ordered]@{status='PENDING'})
+  if(-not(Test-Path $relativeEvidence -PathType Leaf)){throw 'PORTABILITY_RELATIVE_EVIDENCE_MISSING'}
+}finally{if(Test-Path $relativeEvidence -PathType Leaf){Remove-Item -LiteralPath $relativeEvidence -Force}}
+$passed++
+
+if($passed -ne 6){throw "PORTABILITY_REGRESSION_COUNT_INVALID:$passed"}
+Write-Host "PASS: $passed Portabilitaetsregressionen fuer Zeitwerte, Temp, Kindprozess, Links, Remotes und relative Evidence."
