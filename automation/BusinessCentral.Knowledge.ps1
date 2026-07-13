@@ -20,6 +20,25 @@ function Resolve-BCKnowledgeRoot([string]$Root){
   $full
 }
 
+function Assert-BCKnowledgePathSafe([string]$Root,[string]$Path,[switch]$AllowMissing){
+  $rootFull=[IO.Path]::GetFullPath($Root).TrimEnd('\','/');$full=[IO.Path]::GetFullPath($Path);$prefix=$rootFull+[IO.Path]::DirectorySeparatorChar
+  if($full -ne $rootFull -and -not $full.StartsWith($prefix,[StringComparison]::OrdinalIgnoreCase)){throw 'BC_KNOWLEDGE_PATH_ESCAPE'}
+  $relative=$full.Substring($rootFull.Length).TrimStart('\','/');$current=$rootFull
+  foreach($part in @($relative -split '[\\/]'|Where-Object{$_})){
+    if($part -in @('.','..')){throw 'BC_KNOWLEDGE_PATH_UNSAFE'}
+    $current=Join-Path $current $part
+    if(Test-Path -LiteralPath $current){$item=Get-Item -LiteralPath $current -Force;if(($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0){throw 'BC_KNOWLEDGE_PATH_REPARSE'}}
+    elseif(-not$AllowMissing){throw 'BC_KNOWLEDGE_PATH_MISSING'}
+  }
+  $full
+}
+
+function Test-BCKnowledgeAllowedPath([string]$Path,$AllowedPaths){
+  if([string]::IsNullOrWhiteSpace($Path)-or[IO.Path]::IsPathRooted($Path)-or$Path.Contains('\')-or$Path-match'(^|/)\.\.(/|$)'-or$Path-match'(^|/)\.(/|$)'){throw 'BC_KNOWLEDGE_SOURCE_PATH_UNSAFE'}
+  foreach($pattern in @($AllowedPaths)){if([string]::IsNullOrWhiteSpace([string]$pattern) -or [IO.Path]::IsPathRooted([string]$pattern) -or [string]$pattern -match '\\|(^|/)\.\.(/|$)'){throw 'BC_KNOWLEDGE_ALLOWED_PATHS_INVALID'};if($Path -like ([string]$pattern)){return $true}}
+  $false
+}
+
 function Get-GitText([string]$Mirror,[string]$Revision,[string]$Path){
   $text=& git -C $Mirror show "$Revision`:$Path" 2>$null;if($LASTEXITCODE -ne 0){throw 'BC_KNOWLEDGE_GIT_BLOB_MISSING'};($text -join "`n")+"`n"
 }
@@ -29,6 +48,10 @@ function Test-GitObjectExists([string]$Mirror,[string]$Object){$psi=[Diagnostics
 function Test-BCKnowledgeLock([string]$Root,[string]$SnapshotId){
   $runtime=Resolve-BCKnowledgeRoot $Root;$lockPath=Join-Path $runtime "locks\$SnapshotId\sources.lock.json"
   if(-not(Test-Path $lockPath -PathType Leaf)){throw 'BC_KNOWLEDGE_LOCK_MISSING'}
+  [void](Assert-BCKnowledgePathSafe $runtime (Join-Path $runtime 'locks'))
+  [void](Assert-BCKnowledgePathSafe $runtime (Join-Path $runtime "locks\$SnapshotId"))
+  [void](Assert-BCKnowledgePathSafe $runtime $lockPath)
+  [void](Assert-BCKnowledgePathSafe $runtime (Join-Path $runtime 'sources'))
   $lock=Get-Content $lockPath -Raw|ConvertFrom-Json;$registry=Get-BCKnowledgeRegistry
   if([int]$lock.schema_version -ne 1 -or [string]$lock.product_id -ne 'spectra' -or [string]$lock.snapshot_id -ne $SnapshotId -or [string]$lock.validation_status -ne 'validated'){throw 'BC_KNOWLEDGE_LOCK_CONTRACT_INVALID'}
   try{Invoke-BCJsonSchema $lock 'business-central-source-lock.schema.json'}catch{throw "BC_KNOWLEDGE_LOCK_SCHEMA_INVALID:$($_.Exception.Message.Split(':')[0])"}
@@ -37,8 +60,9 @@ function Test-BCKnowledgeLock([string]$Root,[string]$SnapshotId){
   foreach($s in @($lock.sources)){
     $reg=@($registry.sources|Where-Object source_id -eq $s.source_id);if($reg.Count -ne 1 -or [string]$reg[0].canonical_url -ne [string]$s.canonical_url -or [string]$reg[0].role -ne [string]$s.role){throw 'BC_KNOWLEDGE_SOURCE_NOT_ALLOWED'}
     if([string]$s.ref_kind -notin @('commit','release') -or [string]$s.commit -notmatch '^[a-f0-9]{40}$' -or [string]$s.tree -notmatch '^[a-f0-9]{40}$'){throw 'BC_KNOWLEDGE_SOURCE_UNPINNED'}
+    $expectedPaths=@($reg[0].allowed_paths|ForEach-Object{[string]$_}|Sort-Object);$actualPaths=@($s.allowed_paths|ForEach-Object{[string]$_}|Sort-Object);if(($expectedPaths -join "`n") -cne ($actualPaths -join "`n")){throw 'BC_KNOWLEDGE_ALLOWED_PATHS_MISMATCH'};foreach($pattern in $actualPaths){[void](Test-BCKnowledgeAllowedPath 'LICENSE' @($pattern,'LICENSE'))}
     if([string]$s.mirror_name-notmatch'^[a-z0-9-]+\.git$'){throw 'BC_KNOWLEDGE_MIRROR_PATH_UNSAFE'}
-    $mirror=Join-Path $runtime "sources\$($s.mirror_name)";if(-not(Test-Path $mirror -PathType Container)){throw 'BC_KNOWLEDGE_MIRROR_MISSING'}
+    $mirror=Join-Path $runtime "sources\$($s.mirror_name)";if(-not(Test-Path $mirror -PathType Container)){throw 'BC_KNOWLEDGE_MIRROR_MISSING'};[void](Assert-BCKnowledgePathSafe $runtime $mirror)
     if((& git -C $mirror rev-parse --is-bare-repository).Trim()-ne'true'){throw 'BC_KNOWLEDGE_MIRROR_NOT_BARE'}
     if(-not(Test-GitObjectExists $mirror "$($s.commit)^{commit}")){throw 'BC_KNOWLEDGE_COMMIT_MISSING'}
     if((& git -C $mirror rev-parse "$($s.commit)^{tree}").Trim() -ne [string]$s.tree){throw 'BC_KNOWLEDGE_TREE_MISMATCH'}
@@ -53,6 +77,10 @@ function Test-BCKnowledgeLock([string]$Root,[string]$SnapshotId){
 function Get-BCKnowledgeApp($Lock,[string]$Country){
   $apps=@($Lock.installed_apps|Where-Object country -eq $Country);if($apps.Count -eq 0){throw 'BC_KNOWLEDGE_APP_BINDING_MISSING'};$apps[0]
 }
+function Get-BCKnowledgeBindingFingerprint($Lock){
+  $sources=(@($Lock.sources|Sort-Object source_id|ForEach-Object{"$($_.source_id)|$($_.commit)|$($_.tree)|$($_.license_blob_digest)|$($_.content_digest)"}) -join "`n")+"`n"
+  Get-Sha256Text "$($Lock.lock_digest)|$sources"
+}
 function Get-ALProperty([string]$Text,[string]$Name){$m=[regex]::Match($Text,"(?im)^\s*$([regex]::Escape($Name))\s*=\s*([^;]+);");if($m.Success){$m.Groups[1].Value.Trim(' ','"')}else{$null}}
 function Convert-ALObject([string]$Text,[string]$Path,$Source,$Lock){
   $m=[regex]::Match($Text,'(?im)^\s*(tableextension|pageextension|table|page|report|codeunit|query|xmlport|enum|interface|permissionset)\s+(\d+)\s+"?([^"\r\n{]+?)"?(?:\s+extends\s+"?([^"\r\n{]+?)"?)?\s*\{')
@@ -66,23 +94,69 @@ function Convert-ALObject([string]$Text,[string]$Path,$Source,$Lock){
   [ordered]@{object_key="$($app.app_id)|$country|$type|$id";bc_version=[string]$Lock.bc_version;country=$country;object_type=$type;object_id=$id;name=$name;caption=$caption;namespace=$namespace;app=[ordered]@{app_id=$app.app_id;name=$app.name;publisher=$app.publisher;version=$app.version};layer=if($country-eq'DE'){'localization'}else{'base'};source=[ordered]@{source_id=$Source.source_id;path=$Path;line=($Text.Substring(0,$m.Index)-split"`n").Count;commit=$Source.commit};obsolete_state=$obsolete;page=$page;table=$table;purpose=[ordered]@{status='unknown';text=$null;provenance_ids=@()};process_tags=@()}
 }
 
-function Build-BCKnowledgeIndex([string]$Root,[string]$SnapshotId){
-  $runtime=Resolve-BCKnowledgeRoot $Root;$lock=Test-BCKnowledgeLock $runtime $SnapshotId;$indexDir=Join-Path $runtime "indexes\$SnapshotId"
-  if(Test-Path $indexDir){throw 'BC_KNOWLEDGE_INDEX_EXISTS'};New-Item -ItemType Directory -Path $indexDir|Out-Null
-  $objects=@();$documents=@()
-  foreach($s in @($lock.sources|Sort-Object source_id)){$mirror=Join-Path $runtime "sources\$($s.mirror_name)";$paths=@(& git -C $mirror ls-tree -r --name-only $s.commit);foreach($path in $paths|Sort-Object){if($path-match'(^|/)LICENSE'){continue};if($s.role-eq'canonical-application-source'-and$path.EndsWith('.al',[StringComparison]::OrdinalIgnoreCase)){$objects+=(Convert-ALObject (Get-GitText $mirror $s.commit $path) $path $s $lock)}elseif($s.role-like'*documentation'-and$path.EndsWith('.md',[StringComparison]::OrdinalIgnoreCase)){$text=Get-GitText $mirror $s.commit $path;$title=([regex]::Match($text,'(?m)^#\s+(.+)$')).Groups[1].Value;if([string]::IsNullOrWhiteSpace($title)){$title=[IO.Path]::GetFileNameWithoutExtension($path)};$documents+=[ordered]@{document_key="$($s.source_id)|$path";title=$title;role=$s.role;source_id=$s.source_id;path=$path;commit=$s.commit;content_digest=Get-Sha256Text $text}}}}
-  if(@($objects|Group-Object { $_.object_key }|Where-Object Count -gt 1).Count -gt 0){throw 'BC_KNOWLEDGE_OBJECT_KEY_DUPLICATE'}
-  foreach($object in $objects){try{Invoke-BCJsonSchema $object 'business-central-object-catalog.schema.json'}catch{throw "BC_KNOWLEDGE_OBJECT_SCHEMA_INVALID:$($_.Exception.Message.Split(':')[0])"}}
-  $objectText=(@($objects|Sort-Object { $_.object_key }|ForEach-Object{$_|ConvertTo-Json -Depth 12 -Compress})-join"`n")+"`n";$documentText=(@($documents|Sort-Object { $_.document_key }|ForEach-Object{$_|ConvertTo-Json -Depth 8 -Compress})-join"`n")+"`n"
-  $terms=@();foreach($o in $objects){$terms+=,[ordered]@{term=([string]$o.name).ToLowerInvariant();kind='object';key=$o.object_key};if($o.caption){$terms+=,[ordered]@{term=([string]$o.caption).ToLowerInvariant();kind='object';key=$o.object_key}}};foreach($d in $documents){$terms+=,[ordered]@{term=([string]$d.title).ToLowerInvariant();kind='document';key=$d.document_key}}
-  $termText=(@($terms|Sort-Object { $_.term },{ $_.kind },{ $_.key }|ForEach-Object{$_|ConvertTo-Json -Compress})-join"`n")+"`n";$od=Get-Sha256Text $objectText;$dd=Get-Sha256Text $documentText;$td=Get-Sha256Text $termText;$indexDigest=Get-Sha256Text "$($lock.lock_digest)|$od|$dd|$td`n"
-  Write-Utf8 (Join-Path $indexDir 'objects.jsonl') $objectText;Write-Utf8 (Join-Path $indexDir 'documents.jsonl') $documentText;Write-Utf8 (Join-Path $indexDir 'terms.jsonl') $termText
-  $manifest=[ordered]@{schema_version=1;product_id='spectra';snapshot_id=$SnapshotId;knowledge_pack_id=$lock.knowledge_pack_id;bc_version=$lock.bc_version;countries=@($lock.countries);source_lock_digest=$lock.lock_digest;object_count=$objects.Count;document_count=$documents.Count;objects_digest=$od;documents_digest=$dd;terms_digest=$td;index_digest=$indexDigest;validation_status='validated'}
-  Write-Utf8 (Join-Path $indexDir 'manifest.json') (($manifest|ConvertTo-Json -Depth 8)+"`n");$manifest
+function Build-BCKnowledgeIndex {
+  [CmdletBinding()]
+  param([string]$Root,[string]$SnapshotId,[scriptblock]$BeforePublish)
+
+  $runtime=Resolve-BCKnowledgeRoot $Root
+  $lock=Test-BCKnowledgeLock $runtime $SnapshotId
+  $bindingFingerprint=Get-BCKnowledgeBindingFingerprint $lock
+  $lockPath=Join-Path $runtime "locks\$SnapshotId\sources.lock.json"
+  $lockFileDigest=(Get-FileHash -LiteralPath $lockPath -Algorithm SHA256).Hash.ToLowerInvariant()
+  $indexes=Join-Path $runtime 'indexes'
+  $indexDir=Join-Path $indexes $SnapshotId
+  $staging=Join-Path $indexes ('.staging-'+$SnapshotId+'-'+[guid]::NewGuid().ToString('N'))
+  [void](Assert-BCKnowledgePathSafe $runtime $indexes -AllowMissing)
+  [void](Assert-BCKnowledgePathSafe $runtime $indexDir -AllowMissing)
+  [void](Assert-BCKnowledgePathSafe $runtime $staging -AllowMissing)
+  if(Test-Path $indexDir){throw 'BC_KNOWLEDGE_INDEX_EXISTS'}
+  New-Item -ItemType Directory -Force -Path $indexes|Out-Null
+  New-Item -ItemType Directory -Path $staging|Out-Null
+  $published=$false
+  try{
+    $objects=@();$documents=@()
+    foreach($s in @($lock.sources|Sort-Object source_id)){
+      $mirror=Join-Path $runtime "sources\$($s.mirror_name)"
+      $entries=@(& git -C $mirror ls-tree -r $s.commit)
+      foreach($entry in $entries|Sort-Object){
+        if($entry -notmatch'^(\d{6})\s+blob\s+[a-f0-9]{40}\t(.+)$'){throw 'BC_KNOWLEDGE_TREE_ENTRY_INVALID'}
+        $mode=$Matches[1];$path=$Matches[2]
+        if($mode -eq '120000'){throw 'BC_KNOWLEDGE_SOURCE_SYMLINK_FORBIDDEN'}
+        $allowed=Test-BCKnowledgeAllowedPath $path $s.allowed_paths
+        $eligible=($s.role -eq 'canonical-application-source' -and $path.EndsWith('.al',[StringComparison]::OrdinalIgnoreCase)) -or ($s.role -like '*documentation' -and $path.EndsWith('.md',[StringComparison]::OrdinalIgnoreCase))
+        if(-not$allowed){if($eligible){throw 'BC_KNOWLEDGE_PATH_NOT_ALLOWED'};continue}
+        if($path -match '(^|/)LICENSE'){continue}
+        if($s.role -eq 'canonical-application-source' -and $path.EndsWith('.al',[StringComparison]::OrdinalIgnoreCase)){$objects+=(Convert-ALObject (Get-GitText $mirror $s.commit $path) $path $s $lock)}
+        elseif($s.role -like '*documentation' -and $path.EndsWith('.md',[StringComparison]::OrdinalIgnoreCase)){$text=Get-GitText $mirror $s.commit $path;$title=([regex]::Match($text,'(?m)^#\s+(.+)$')).Groups[1].Value;if([string]::IsNullOrWhiteSpace($title)){$title=[IO.Path]::GetFileNameWithoutExtension($path)};$documents+=[ordered]@{document_key="$($s.source_id)|$path";title=$title;role=$s.role;source_id=$s.source_id;path=$path;commit=$s.commit;content_digest=Get-Sha256Text $text}}
+      }
+    }
+    if(@($objects|Group-Object { $_.object_key }|Where-Object Count -gt 1).Count -gt 0){throw 'BC_KNOWLEDGE_OBJECT_KEY_DUPLICATE'}
+    foreach($object in $objects){try{Invoke-BCJsonSchema $object 'business-central-object-catalog.schema.json'}catch{throw "BC_KNOWLEDGE_OBJECT_SCHEMA_INVALID:$($_.Exception.Message.Split(':')[0])"}}
+    $objectText=(@($objects|Sort-Object { $_.object_key }|ForEach-Object{$_|ConvertTo-Json -Depth 12 -Compress})-join"`n")+"`n"
+    $documentText=(@($documents|Sort-Object { $_.document_key }|ForEach-Object{$_|ConvertTo-Json -Depth 8 -Compress})-join"`n")+"`n"
+    $terms=@();foreach($o in $objects){$terms+=,[ordered]@{term=([string]$o.name).ToLowerInvariant();kind='object';key=$o.object_key};if($o.caption){$terms+=,[ordered]@{term=([string]$o.caption).ToLowerInvariant();kind='object';key=$o.object_key}}};foreach($d in $documents){$terms+=,[ordered]@{term=([string]$d.title).ToLowerInvariant();kind='document';key=$d.document_key}}
+    $termText=(@($terms|Sort-Object { $_.term },{ $_.kind },{ $_.key }|ForEach-Object{$_|ConvertTo-Json -Compress})-join"`n")+"`n"
+    $od=Get-Sha256Text $objectText;$dd=Get-Sha256Text $documentText;$td=Get-Sha256Text $termText;$indexDigest=Get-Sha256Text "$($lock.lock_digest)|$od|$dd|$td`n"
+    Write-Utf8 (Join-Path $staging 'objects.jsonl') $objectText;Write-Utf8 (Join-Path $staging 'documents.jsonl') $documentText;Write-Utf8 (Join-Path $staging 'terms.jsonl') $termText
+    if($BeforePublish){& $BeforePublish $runtime $lockPath}
+    try{$rechecked=Test-BCKnowledgeLock $runtime $SnapshotId}catch{throw 'BC_KNOWLEDGE_SOURCE_CHANGED_DURING_BUILD'}
+    if((Get-BCKnowledgeBindingFingerprint $rechecked) -ne $bindingFingerprint -or (Get-FileHash -LiteralPath $lockPath -Algorithm SHA256).Hash.ToLowerInvariant() -ne $lockFileDigest){throw 'BC_KNOWLEDGE_SOURCE_CHANGED_DURING_BUILD'}
+    $manifest=[ordered]@{schema_version=1;product_id='spectra';snapshot_id=$SnapshotId;knowledge_pack_id=$lock.knowledge_pack_id;bc_version=$lock.bc_version;countries=@($lock.countries);source_lock_digest=$lock.lock_digest;object_count=$objects.Count;document_count=$documents.Count;objects_digest=$od;documents_digest=$dd;terms_digest=$td;index_digest=$indexDigest;validation_status='validated'}
+    Write-Utf8 (Join-Path $staging 'manifest.json') (($manifest|ConvertTo-Json -Depth 8)+"`n")
+    try{$finalCheck=Test-BCKnowledgeLock $runtime $SnapshotId}catch{throw 'BC_KNOWLEDGE_SOURCE_CHANGED_DURING_BUILD'}
+    if((Get-BCKnowledgeBindingFingerprint $finalCheck) -ne $bindingFingerprint -or (Get-FileHash -LiteralPath $lockPath -Algorithm SHA256).Hash.ToLowerInvariant() -ne $lockFileDigest){throw 'BC_KNOWLEDGE_SOURCE_CHANGED_DURING_BUILD'}
+    Move-Item -LiteralPath $staging -Destination $indexDir
+    $published=$true
+    try{[void](Test-BCKnowledgeIndex $runtime $SnapshotId)}catch{Remove-Item -LiteralPath $indexDir -Recurse -Force;throw}
+    $manifest
+  }finally{
+    if(-not$published -and (Test-Path -LiteralPath $staging)){Remove-Item -LiteralPath $staging -Recurse -Force}
+  }
 }
 
 function Test-BCKnowledgeIndex([string]$Root,[string]$SnapshotId){
   $runtime=Resolve-BCKnowledgeRoot $Root;$lock=Test-BCKnowledgeLock $runtime $SnapshotId;$dir=Join-Path $runtime "indexes\$SnapshotId";$mf=Join-Path $dir 'manifest.json';if(-not(Test-Path $mf)){throw 'BC_KNOWLEDGE_INDEX_MISSING'};$m=Get-Content $mf -Raw|ConvertFrom-Json
+  [void](Assert-BCKnowledgePathSafe $runtime (Join-Path $runtime 'indexes'));[void](Assert-BCKnowledgePathSafe $runtime $dir);[void](Assert-BCKnowledgePathSafe $runtime $mf);foreach($name in @('objects.jsonl','documents.jsonl','terms.jsonl')){[void](Assert-BCKnowledgePathSafe $runtime (Join-Path $dir $name))}
   try{Invoke-BCJsonSchema $m 'business-central-search-index.schema.json'}catch{throw "BC_KNOWLEDGE_INDEX_SCHEMA_INVALID:$($_.Exception.Message.Split(':')[0])"}
   $ot=Read-Utf8Strict (Join-Path $dir 'objects.jsonl');$dt=Read-Utf8Strict (Join-Path $dir 'documents.jsonl');$tt=Read-Utf8Strict (Join-Path $dir 'terms.jsonl')
   if([string]$m.source_lock_digest -ne [string]$lock.lock_digest -or (Get-Sha256Text $ot) -ne [string]$m.objects_digest -or (Get-Sha256Text $dt) -ne [string]$m.documents_digest -or (Get-Sha256Text $tt) -ne [string]$m.terms_digest){throw 'BC_KNOWLEDGE_INDEX_STALE_OR_TAMPERED'}
