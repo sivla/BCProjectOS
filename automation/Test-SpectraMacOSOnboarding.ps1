@@ -33,7 +33,11 @@ if ((Get-SpectraPlatform) -ne 'macos') {
 
 Assert-SpectraToolAvailable pwsh 'BOOTSTRAP_PWSH_MISSING' | Out-Null
 if ($PSVersionTable.PSEdition -ne 'Core' -or $PSVersionTable.PSVersion.Major -lt 7) { throw 'BOOTSTRAP_PWSH7_REQUIRED' }
-$temp = Join-Path ([IO.Path]::GetTempPath()) ('Spectra macOS acceptance ' + [guid]::NewGuid().ToString('N'))
+$savedTmpDir=$env:TMPDIR
+$physicalTemp=(& realpath ([IO.Path]::GetTempPath()) 2>$null|Select-Object -First 1).Trim()
+if($LASTEXITCODE-ne0-or[string]::IsNullOrWhiteSpace($physicalTemp)-or-not(Test-Path $physicalTemp -PathType Container)){throw 'MACOS_PHYSICAL_TEMP_UNAVAILABLE'}
+$env:TMPDIR=$physicalTemp
+$temp = Join-Path $physicalTemp ('Spectra macOS acceptance ' + [guid]::NewGuid().ToString('N'))
 $clone = Join-Path $temp 'fresh clone'
 try {
   New-Item -ItemType Directory -Path $temp | Out-Null
@@ -73,4 +77,5 @@ try {
   Write-Evidence -Status PASS -Reason $null -Gates $gates | ConvertTo-Json -Depth 10
 } finally {
   if (Test-Path $temp) { Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue }
+  $env:TMPDIR=$savedTmpDir
 }

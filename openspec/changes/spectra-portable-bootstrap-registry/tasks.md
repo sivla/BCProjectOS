@@ -30,3 +30,4 @@
 - [ ] 3.9 macOS-Fresh-Clone-Fixture kanonisch binden und die Matrix mit `1.2.0-alpha.6` schließen
 - [ ] 3.10 macOS-XDG-First-Run fuer Config und Registry schliessen und die Matrix mit `1.2.0-alpha.7` abschliessen
 - [ ] 3.11 Installierten Doctor und versionierte Untergates schliessen und die Matrix mit `1.2.0-alpha.8` abschliessen
+- [ ] 3.12 Physischen macOS-Temppfad fuer alle Kindgates binden und die Matrix mit `1.2.0-alpha.9` abschliessen
