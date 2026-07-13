@@ -108,7 +108,7 @@ function Invoke-ProfilePilot([string]$Profile) {
 
 try {
   New-Item -ItemType Directory -Path $fixture -Force | Out-Null
-  foreach ($relative in @('AGENTS.md','README.md','automation','catalogs','contract','examples\minimal-contract','schemas','tests\invalid','release')) {
+  foreach ($relative in @('AGENTS.md','README.md','automation','catalogs','contract','examples\minimal-contract','schemas','skills','tests\invalid','release')) {
     $source = Join-Path $root $relative
     $target = Join-Path $fixture $relative
     $parent = Split-Path -Parent $target

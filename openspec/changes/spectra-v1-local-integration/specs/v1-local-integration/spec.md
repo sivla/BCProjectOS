@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Dieser Vertrag beschreibt ausschließlich die lokale Konsolidierung zweier belegter Spectra-V1-Vertragslinien. Er fuehrt keine neue Produktfunktion und keine Releaseversion ein.
+Dieser Vertrag beschreibt die lokale Konsolidierung zweier belegter Spectra-V1-Vertragslinien und den danach getrennt erzeugten, nicht installierbaren `1.0.0`-Candidate. Er fuehrt keine neue Produktfunktion und keine Published-Behauptung ein.
 
 ## ADDED Requirements
 
@@ -52,11 +52,39 @@ Portable Project Stories MUST variable Seiten-, Ticket-, Timeline- und Hypercare
 - **WHEN** eine synthetische gueltige Story andere Mengen als Referenzfixtures besitzt
 - **THEN** wird sie anhand ihrer Relationen und Inhalte statt anhand fester Counts validiert
 
-### Requirement: Integration ist kein Release
+### Requirement: Lokaler Candidate ist kein Release
 
-Der Integrationsstand MUST `PENDING_BCPROJECTOS_RELEASE` bleiben und MUST weder Candidate-, Manifest-, Tag- noch Published-Evidence fuer eine neue Version erzeugen.
+Der Integrationsstand und sein lokaler `1.0.0`-Candidate MUST `PENDING_BCPROJECTOS_RELEASE` bleiben. Der Candidate MUST nicht installierbar und `CONTRACT_REFERENCE_ONLY` sein und MUST weder finales Manifest, Tag- noch Published-Evidence erzeugen.
 
-#### Scenario: Unzulaessiger Releaseclaim
+#### Scenario: Unzulaessiger finaler Releaseclaim
 
-- **WHEN** der Integrationsdelta eine neue Version oder Releasebindung behauptet
+- **WHEN** der Integrationsdelta ein finales, installierbares, getaggtes oder veroeffentlichtes `1.0.0` behauptet
 - **THEN** wird die Uebergabe als NO-GO bewertet
+
+### Requirement: Der stabile 1.0.0-Candidate nutzt die kanonische Releasepipeline
+
+Die drei kanonischen Candidate-Einstiege MUST die laut SemVer-Plan erwartete stabile Version `1.0.0` konsistent erlauben und MUST ungueltige, alte oder nicht erwartete Versionen fail-closed ablehnen. Es darf keine parallele Generator-, Validator- oder Promotionspipeline entstehen.
+
+#### Scenario: Stabile Zielversion
+
+- **WHEN** der kanonische Generator mit `1.0.0` auf dem freigegebenen Source-Commit aufgerufen wird
+- **THEN** entsteht ein Schema-v4-Candidate mit PENDING-Status und ohne finale Source- oder Tagevidence
+
+#### Scenario: Ungueltige Version
+
+- **WHEN** ein Candidate mit syntaktisch ungueltiger oder nicht erwarteter Version erzeugt oder validiert wird
+- **THEN** lehnt der kanonische Einstieg den Aufruf fail-closed ab
+
+### Requirement: Schema v4 bindet Git-Dateimodi und den vollstaendigen V1-Payload
+
+Jeder Schema-v4-Payloadrecord MUST Pfad, Git-Dateimodus, Groesse und SHA-256 des gebundenen Git-Blobs enthalten. Checksums, Bundle-Digest, Validator und Promotion MUST dieselben sortierten Werte verwenden. Der V1-Payload MUST den integrierten P0-Skillkatalog enthalten. Fehlende, manipulierte oder nicht unterstuetzte Modi sowie Payload-Selbstbezug MUST fail-closed abgewiesen werden. Finale Schema-v1/v2/v3-Manifeste MUST aus Kompatibilitaetsgruenden weiter pruefbar bleiben.
+
+#### Scenario: Modusmanipulation
+
+- **WHEN** ein Payloadrecord seinen Modus auslaesst oder ein Blob zwischen `100644` und `100755` umgebunden wird
+- **THEN** lehnt das Binding-Gate den Candidate mit einem stabilen Fehlercode ab
+
+#### Scenario: Historisches Finalmanifest
+
+- **WHEN** ein unveraendertes veroeffentlichtes Schema-v1/v2/v3-Finalmanifest geprueft wird
+- **THEN** bleibt seine legacy Checksum-Semantik gueltig, ohne alte Candidates wieder zuzulassen

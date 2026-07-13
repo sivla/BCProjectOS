@@ -36,3 +36,10 @@ P0-Skills konsumieren die integrierten Vertraege und duerfen weder direkte Kunde
 ## Commitstrategie
 
 Der normale Mergecommit enthaelt die Quellhistorien, fachliche Konfliktaufloesung, Change-Grundlage und Gap-Matrix. Hoechstens ein nachgelagerter Integrationsfix-/Evidencecommit darf aufgrund realer Gatebefunde Tests, Guardrails oder Evidence korrigieren. Neue Features sind ausgeschlossen.
+
+Nach der unabhaengigen Integrationsabnahme wird der lokale Candidate-Gate in zwei explizit getrennten Commits geschlossen:
+
+1. Ein Releasevertragsfix erlaubt die kanonische stabile Zielversion `1.0.0`, bindet Git-Modi zusammen mit Blobgroesse und SHA-256 im Schema-v4-Manifest und nimmt den integrierten P0-Skillkatalog in den Produktpayload auf. Historische finale Schema-v1/v2/v3-Manifeste bleiben pruefbar; alte Candidates bleiben unzulaessig.
+2. Ein separater Evidencecommit wird ausschließlich aus diesem Source-Commit erzeugt. Er enthaelt Candidate-Manifest, Checksums und Releaseevidence, veraendert aber keinen Produktpayload.
+
+Der Candidate setzt `manifest_state=candidate`, `installable_blueprint=false`, `consumer_mode=CONTRACT_REFERENCE_ONLY` und bindet ausschließlich `candidate_source_commit` sowie `candidate_source_tree`. Finale Sourcefelder bleiben leer. Manifest und Checksums liegen ausserhalb des Produktdigests.

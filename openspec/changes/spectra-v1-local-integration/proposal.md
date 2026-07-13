@@ -6,7 +6,7 @@ Seit dem veroeffentlichten `spectra-v1.0.0-rc.1` wurden zwei lokale, jeweils bel
 
 ## Ziel
 
-Dieser Change fuehrt beide Linien lokal und ohne Funktionsausweitung zusammen. Er bestimmt je Konfliktklasse genau einen fuehrenden Vertrag, erhaelt kompatible Herkunftspfade und belegt die integrierte Ausfuehrbarkeit. Das Ergebnis ist ausschließlich ein lokaler Integrationsstand fuer einen spaeteren getrennten Releaseprozess.
+Dieser Change fuehrt beide Linien lokal und ohne Funktionsausweitung zusammen. Er bestimmt je Konfliktklasse genau einen fuehrenden Vertrag, erhaelt kompatible Herkunftspfade und belegt die integrierte Ausfuehrbarkeit. Nach der unabhaengig bestandenen Integrationsabnahme schliesst derselbe WIP-1-Change ausschließlich die zwingende Releasevertragsluecke und erzeugt daraus einen lokalen, nicht installierbaren `1.0.0`-Candidate fuer einen spaeteren getrennten Review- und Promotionsprozess.
 
 ## Scope
 
@@ -16,14 +16,18 @@ Dieser Change fuehrt beide Linien lokal und ohne Funktionsausweitung zusammen. E
 - Genau eine byteidentische BC Reference Library mit Consultant-Knowledge als fachlicher Schicht darueber.
 - Erhalt des P0-Skillkatalogs und der variablen Project-Story-Kardinalitaet.
 - Integrationsmatrix, Gap-Matrix und commitgebundene Tests.
+- Kanonische Stable-SemVer-Unterstuetzung fuer exakt den geplanten `1.0.0`-Candidate, ohne alte oder ungueltige Versionen zu akzeptieren.
+- Schema-v4-Bindung von Git-Dateimodus, Groesse und SHA-256 jedes Payloadblobs sowie Aufnahme des P0-Skillkatalogs in den Produktpayload.
+- Zwei getrennte lokale Commits: zuerst der Releasevertragsfix, danach ausschließlich die daran gebundene Candidate-Evidence.
 
 ## Nicht-Scope
 
 - keine neue Fachfunktion, kein neuer Connector und kein Livezugriff;
 - keine Kunden-, Tenant-, Personen-, Authentifizierungs- oder Runtime-Evidence-Daten;
-- kein Candidate, keine neue Version, kein Manifest, kein Tag und keine Releasebehauptung;
+- kein finales Manifest, kein Tag, kein Push, keine GitHub-Veroeffentlichung und keine Published-Behauptung;
+- keine nachgelagerten V1.x-Folgefaehigkeiten im Candidatezyklus;
 - keine Umschreibung, Rebase- oder Force-Aenderung der beiden Quelllinien.
 
 ## Wahrheitsgrenze
 
-Veroeffentlicht bleibt ausschließlich `spectra-v1.0.0-rc.1`. Der Integrationsbranch bleibt `PENDING_BCPROJECTOS_RELEASE`, bis ein spaeterer separater Candidate-, Review-, Promotion- und Postcheck-Prozess erfolgreich abgeschlossen wurde.
+Veroeffentlicht bleibt ausschließlich `spectra-v1.0.0-rc.1`. Der lokale `1.0.0`-Candidate bleibt `PENDING_BCPROJECTOS_RELEASE`, `CONTRACT_REFERENCE_ONLY` und nicht installierbar; finale Source-, Tag-, Published- und Installierbarkeitsevidence entsteht erst in einem spaeteren, separat freigegebenen Promotionsprozess.

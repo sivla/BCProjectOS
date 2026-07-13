@@ -15,6 +15,7 @@ function Assert-Code([string]$Name,[string]$Expected,[scriptblock]$Action) {
 }
 
 . (Join-Path $root 'automation\Inbox.Compatibility.ps1')
+. (Join-Path $root 'automation\V1.Integration.Release.ps1')
 $foundationBase = [pscustomobject]@{
   customer = [pscustomobject]@{id='CUS-SYN-INTEGRATION'}
   projects = @([pscustomobject]@{id='PRJ-SYN-INTEGRATION'})
@@ -45,6 +46,49 @@ Assert-Code 'inbox-truth' 'INBOX_LEADING_TRUTH_CONFLICT' {
 Assert-Code 'inbox-duplicate-source' 'INBOX_LEADING_SOURCE_DUPLICATE' {
   $legacy=Clone-Json $legacyBase;$legacy.intake_items=@($legacy.intake_items)+@(Clone-Json $legacy.intake_items[0])
   Test-SpectraInboxCompatibility -Foundation $foundationBase -LegacyInbox $legacy -InformationInbox $informationBase | Out-Null
+}
+
+$releasePaths = @(
+  'release/release-scope.json',
+  'release/versions/1.0.0/checksums.sha256',
+  'release/versions/1.0.0/release-manifest.json',
+  'release/versions/1.0.0/release-notes.md'
+)
+$releaseSourceCommit = '1' * 40
+$releaseSourceTree = '2' * 40
+$releaseManifest = [pscustomobject]@{
+  schema_version = 4
+  product_id = 'spectra'
+  release_version = '1.0.0'
+  expected_tag = 'spectra-v1.0.0'
+  manifest_state = 'candidate'
+  installable_blueprint = $false
+  consumer_mode = 'CONTRACT_REFERENCE_ONLY'
+  source_commit = $null
+  source_tree = $null
+  candidate_source_commit = $releaseSourceCommit
+  candidate_source_tree = $releaseSourceTree
+}
+[void](Test-SpectraV1IntegrationReleaseDelta -Paths $releasePaths -CandidateManifest $releaseManifest -ExpectedCandidateSourceCommit $releaseSourceCommit -ExpectedCandidateSourceTree $releaseSourceTree)
+
+Assert-Code 'release-path' 'V1_INTEGRATION_RELEASE_DELTA_FORBIDDEN' {
+  Test-SpectraV1IntegrationReleaseDelta -Paths @($releasePaths + 'release/versions/1.0.0/unexpected.txt') -CandidateManifest $releaseManifest -ExpectedCandidateSourceCommit $releaseSourceCommit -ExpectedCandidateSourceTree $releaseSourceTree | Out-Null
+}
+Assert-Code 'release-evidence-incomplete' 'V1_INTEGRATION_CANDIDATE_EVIDENCE_INCOMPLETE' {
+  Test-SpectraV1IntegrationReleaseDelta -Paths @($releasePaths | Where-Object { $_ -cne 'release/versions/1.0.0/checksums.sha256' }) -CandidateManifest $releaseManifest -ExpectedCandidateSourceCommit $releaseSourceCommit -ExpectedCandidateSourceTree $releaseSourceTree | Out-Null
+}
+Assert-Code 'release-manifest-final' 'V1_INTEGRATION_CANDIDATE_MANIFEST_INVALID' {
+  $manifest = Clone-Json $releaseManifest
+  $manifest.manifest_state = 'final'
+  Test-SpectraV1IntegrationReleaseDelta -Paths $releasePaths -CandidateManifest $manifest -ExpectedCandidateSourceCommit $releaseSourceCommit -ExpectedCandidateSourceTree $releaseSourceTree | Out-Null
+}
+Assert-Code 'release-source' 'V1_INTEGRATION_CANDIDATE_SOURCE_INVALID' {
+  $manifest = Clone-Json $releaseManifest
+  $manifest.candidate_source_commit = '3' * 40
+  Test-SpectraV1IntegrationReleaseDelta -Paths $releasePaths -CandidateManifest $manifest -ExpectedCandidateSourceCommit $releaseSourceCommit -ExpectedCandidateSourceTree $releaseSourceTree | Out-Null
+}
+Assert-Code 'release-tag' 'V1_INTEGRATION_RELEASE_TAG_FORBIDDEN' {
+  Test-SpectraV1IntegrationReleaseDelta -Paths $releasePaths -CandidateManifest $releaseManifest -ExpectedCandidateSourceCommit $releaseSourceCommit -ExpectedCandidateSourceTree $releaseSourceTree -TagExists $true | Out-Null
 }
 
 . (Join-Path $root 'automation\Blueprint.Catalog.ps1')
@@ -83,4 +127,4 @@ try {
   }
 } finally { if (Test-Path -LiteralPath $temp) { Remove-Item -LiteralPath $temp -Recurse -Force } }
 
-Write-Output 'PASS: 9 isolierte Integrations-Manipulationsfaelle.'
+Write-Output 'PASS: 14 isolierte Integrations-Manipulationsfaelle.'

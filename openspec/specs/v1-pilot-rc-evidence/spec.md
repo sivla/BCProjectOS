@@ -21,4 +21,3 @@ Spectra MUST vor einer RC-Behauptung einen Implementation- und einen Support-onl
 #### Scenario: Wahrheitsgrenze
 - **WHEN** synthetische Piloten bestehen
 - **THEN** wird weder Kunden- noch Produktiv- oder Live-BC-Evidence behauptet
-

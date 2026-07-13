@@ -16,7 +16,7 @@ Einzig veroeffentlichte Basis ist `spectra-v1.0.0-rc.1` auf Commit `0c4542f8e69c
 | Blueprint-Katalog | nein | V2 fuehrend, kuratierter V1-Pfad nur Legacy | unabhaengige Migrations-/Consumerreview |
 | BC Reference Library | nein | einmalig, gepinnt und blobgebunden | Runtime-Cache bleibt extern und kundenspezifische Symbole separat |
 | Consultant Knowledge/Playthrough | nein | fachliche Schicht ueber Reference Library | keine Live-BC-Ausfuehrung oder Kundenevidence |
-| P0-Skillkatalog | nein | 11 Skillfamilien lokal | Forward- und Consumerabnahme im finalen Integrationsrelease |
+| P0-Skillkatalog | nein | 11 Skillfamilien lokal und im V1-Produktpayload gebunden | Forward- und Consumerabnahme im lokalen Candidate-Gate |
 | Variable Project-Story-Kardinalitaet | nein | instanzabgeleitete Mengen | weitere reale Strukturen nur anonymisiert als Tests |
 
 ## Fuehrende Vertraege
@@ -29,9 +29,9 @@ Einzig veroeffentlichte Basis ist `spectra-v1.0.0-rc.1` auf Commit `0c4542f8e69c
 
 ## Verbleibender Pfad zu 1.0.0
 
-1. Lokalen Integrationsstand commitgebunden vollstaendig pruefen und unabhaengig reviewen.
-2. In einem separaten Releasezyklus Candidate, Manifest, Digest und beide Profile aus frischem Clone pruefen.
-3. `1.0.0` erst nach normaler Integration, unabhaengigem Release-GO, finalem Manifest, annotiertem Tag, Veroeffentlichung und Postcheck ausgeben.
+1. Den minimalen Releasevertragsfix fuer Stable-SemVer, Schema-v4-Dateimodi und den vollstaendigen Skill-Payload commitgebunden pruefen.
+2. Daraus separat den lokalen, nicht installierbaren `1.0.0`-Candidate mit Manifest, Digest und beiden Profilen aus frischem Clone pruefen.
+3. `1.0.0` erst nach normaler Remoteintegration, unabhaengigem Release-GO, finalem Manifest, annotiertem Tag, Veroeffentlichung und Postcheck ausgeben.
 
 ## Wahrheitsgrenzen
 

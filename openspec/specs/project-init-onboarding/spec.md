@@ -75,4 +75,3 @@ Spectra MUST eine optionale Vorgängerbeziehung nur mit stabiler Projekt-ID, erl
 #### Scenario: Unerlaubter Übergang
 - **WHEN** Projektart, Profil, Beziehung oder Vorgängertyp nicht zum Katalog passen
 - **THEN** lehnt Init mit einem stabilen Fehlercode ab
-

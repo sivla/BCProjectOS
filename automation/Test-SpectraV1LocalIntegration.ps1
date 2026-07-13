@@ -14,6 +14,8 @@ function Invoke-Git([string[]]$Arguments) {
   @($output)
 }
 
+. (Join-Path $root 'automation\V1.Integration.Release.ps1')
+
 if ([string](@(Invoke-Git @('rev-parse','--show-toplevel'))[0]).Replace('\','/') -cne $root.Replace('\','/')) { Fail 'V1_INTEGRATION_ROOT_INVALID' }
 foreach ($commit in @($p0Commit,$contractsCommit,$publishedBase)) { [void](Invoke-Git @('cat-file','-e',"$commit^{commit}")) }
 $mergeBase = [string](@(Invoke-Git @('merge-base',$p0Commit,$contractsCommit))[0])
@@ -22,7 +24,31 @@ foreach ($commit in @($p0Commit,$contractsCommit)) {
   & git -C $root merge-base --is-ancestor $commit HEAD
   if ($LASTEXITCODE -ne 0) { Fail 'V1_INTEGRATION_SOURCE_ANCESTRY_MISSING' }
 }
-if (@(Invoke-Git @('diff','--name-only',$publishedBase,'HEAD','--','release')).Count -ne 0) { Fail 'V1_INTEGRATION_RELEASE_DELTA_FORBIDDEN' }
+$releaseDelta = @(Invoke-Git @('diff','--name-only',$publishedBase,'HEAD','--','release'))
+$candidateManifestPath = 'release/versions/1.0.0/release-manifest.json'
+$candidateManifest = $null
+$candidateSourceCommit = $null
+$candidateSourceTree = $null
+
+if ($candidateManifestPath -cin $releaseDelta) {
+  $candidateManifestText = (@(Invoke-Git @('show',"HEAD:$candidateManifestPath")) -join "`n")
+  try {
+    $candidateManifest = $candidateManifestText | ConvertFrom-Json
+  } catch {
+    Fail 'V1_INTEGRATION_CANDIDATE_MANIFEST_INVALID'
+  }
+  $candidateSourceCommit = [string](@(Invoke-Git @('rev-parse','HEAD^'))[0])
+  $candidateSourceTree = [string](@(Invoke-Git @('rev-parse',"$candidateSourceCommit^{tree}"))[0])
+}
+
+& git -C $root show-ref --verify --quiet 'refs/tags/spectra-v1.0.0'
+$candidateTagExists = ($LASTEXITCODE -eq 0)
+[void](Test-SpectraV1IntegrationReleaseDelta `
+  -Paths $releaseDelta `
+  -CandidateManifest $candidateManifest `
+  -ExpectedCandidateSourceCommit $candidateSourceCommit `
+  -ExpectedCandidateSourceTree $candidateSourceTree `
+  -TagExists $candidateTagExists)
 
 $activeChanges = @(
   Get-ChildItem -LiteralPath (Join-Path $root 'openspec\changes') -Directory |

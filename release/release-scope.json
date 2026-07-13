@@ -12,6 +12,7 @@
     "contract",
     "examples/minimal-contract",
     "schemas",
+    "skills",
     "tests/invalid"
   ],
   "excluded_roots": [
