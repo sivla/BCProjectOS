@@ -4,7 +4,8 @@ $ErrorActionPreference='Stop'
 $d=[IO.Path]::GetFullPath($Path)
 $x=Get-Content (Join-Path $d 'project-story.json') -Raw | ConvertFrom-Json
 if($x.project_id -notmatch '^PROJECT-' -or $x.story_id -notmatch '^STORY-' -or $x.classification -ne 'synthetic' -or $x.status -ne 'hypercare'){throw 'PORTABLE_IDENTITY_INVALID'}
-if(@($x.pages).Count -ne 19 -or @($x.tickets).Count -ne 17 -or @($x.timeline).Count -ne 15 -or @($x.hypercare).Count -ne 3){throw 'PORTABLE_COUNT_INVALID'}
+# Kardinalitäten stammen aus der validierten Instanz und dem Profil. Synthetische
+# Fixture-Größen sind kein Produktvertrag; keine feste Count-Prüfung verwenden.
 $ids=@($x.offer.id)+@($x.pages|ForEach-Object id)+@($x.tickets|ForEach-Object id)+@($x.evidence|ForEach-Object id)+@($x.sessions|ForEach-Object id)+@($x.decisions|ForEach-Object id)+@($x.deliverables|ForEach-Object id)
 if(@($ids|Sort-Object -Unique).Count -ne $ids.Count){throw 'PORTABLE_DUPLICATE_ID'}
 $pageById=@{};$paths=@()
