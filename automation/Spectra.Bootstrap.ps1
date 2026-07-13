@@ -16,6 +16,11 @@ function Get-SpectraDefaultRoots {
   [ordered]@{config_root=(Join-Path $base 'Spectra\config');registry_root=(Join-Path $base 'Spectra\data');source='windows-local-app-data'}
 }
 function Assert-SpectraToolAvailable([string]$Name,[string]$Code='BOOTSTRAP_TOOL_MISSING'){if(-not(Get-Command $Name -ErrorAction SilentlyContinue)){throw "$Code`:$Name"};$true}
+function Test-SpectraCanonicalRepositoryUrl([string]$Remote){
+  if([string]::IsNullOrWhiteSpace($Remote)){return $false}
+  $normalized=$Remote.Trim()
+  return $normalized-ceq'https://github.com/sivla/BCProjectOS'-or$normalized-ceq'https://github.com/sivla/BCProjectOS.git'
+}
 function Test-SpectraRootWritableMetadata([string]$Path){if(-not(Test-Path $Path -PathType Container)){return $false};$item=Get-Item $Path -Force;if(($item.Attributes -band [IO.FileAttributes]::ReadOnly) -ne 0){return $false};$probe=Join-Path $Path ('.spectra-write-probe-'+[guid]::NewGuid().ToString('N'));try{$stream=[IO.File]::Open($probe,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None);$stream.Dispose();Remove-Item -LiteralPath $probe -Force;return $true}catch{if(Test-Path $probe){Remove-Item -LiteralPath $probe -Force -ErrorAction SilentlyContinue};return $false}}
 function Assert-SpectraPortableConfigFile([string]$Path){
   $value=Read-SpectraBootstrapJson $Path
@@ -48,7 +53,7 @@ function Get-SpectraReleaseBinding([string]$ProductRoot,[string]$Version){
   $installedMarkerPath=Join-Path $ProductRoot '.spectra-install.json';if(Test-Path $installedMarkerPath -PathType Leaf){$marker=Read-SpectraBootstrapJson $installedMarkerPath;if([string]$marker.version-cne$Version-or[string]$marker.release_commit-notmatch'^[a-f0-9]{40}$'-or[string]$marker.release_tree-cne[string]$m.source_tree-or[string]$marker.bundle_digest-cne[string]$m.payload.bundle_digest-or[int]$marker.file_count-ne[int]$m.payload.file_count){throw 'BOOTSTRAP_INSTALLED_RELEASE_MARKER_INVALID'};. (Join-Path $ProductRoot 'automation\Release.Common.ps1');$modeBound=[int]$m.schema_version-ge4;$text=Get-BCProjectOSChecksumsText -Records @($m.payload.files) -IncludeMode:$modeBound;$digest=Get-BCProjectOSTextSha256 $text;if($digest-cne[string]$m.payload.bundle_digest){throw 'BOOTSTRAP_INSTALLED_MANIFEST_DIGEST_INVALID'};foreach($file in @($m.payload.files)){$path=Join-Path $ProductRoot (([string]$file.path)-replace'/',[IO.Path]::DirectorySeparatorChar);if(-not(Test-Path $path -PathType Leaf)-or(Get-SpectraBootstrapSha $path)-cne[string]$file.sha256){throw 'BOOTSTRAP_INSTALLED_PAYLOAD_INVALID'}};return [ordered]@{version=$Version;tag="spectra-v$Version";commit=[string]$marker.release_commit;tree=[string]$marker.release_tree;digest=[string]$marker.bundle_digest}}
   $remote = [string](& git -C $ProductRoot remote get-url origin 2>$null | Select-Object -First 1)
   $remote = $remote.Trim()
-  if ($remote -cne 'https://github.com/sivla/BCProjectOS.git') { throw 'BOOTSTRAP_RELEASE_REMOTE_INVALID' }
+  if (-not(Test-SpectraCanonicalRepositoryUrl $remote)) { throw 'BOOTSTRAP_RELEASE_REMOTE_INVALID' }
   $tag="spectra-v$Version";$tagType=(& git -C $ProductRoot cat-file -t "refs/tags/$tag" 2>$null|Select-Object -First 1);if($tagType-cne'tag'){throw 'BOOTSTRAP_RELEASE_TAG_NOT_ANNOTATED'};$peeled=(& git -C $ProductRoot rev-parse "$tag^{}" 2>$null);if($LASTEXITCODE-ne0){throw 'BOOTSTRAP_RELEASE_TAG_BINDING_INVALID'};& git -C $ProductRoot merge-base --is-ancestor ([string]$m.source_commit) ([string]$peeled);if($LASTEXITCODE-ne0){throw 'BOOTSTRAP_RELEASE_TAG_BINDING_INVALID'}
   $sourceTree=(& git -C $ProductRoot rev-parse "$($m.source_commit)^{tree}" 2>$null).Trim();if($LASTEXITCODE-ne0-or$sourceTree-cne[string]$m.source_tree){throw 'BOOTSTRAP_RELEASE_SOURCE_TREE_INVALID'}
   . (Join-Path $ProductRoot 'automation\Release.Common.ps1');$scope=Get-BCProjectOSReleaseScope -Root $ProductRoot -Revision ([string]$m.source_commit);$modeBound=[int]$m.schema_version-ge4;$records=@(Get-BCProjectOSGitPayloadRecords -Root $ProductRoot -Revision ([string]$m.source_commit) -Scope $scope -IncludeMode:$modeBound);$text=Get-BCProjectOSChecksumsText $records -IncludeMode:$modeBound;$digest=Get-BCProjectOSTextSha256 $text

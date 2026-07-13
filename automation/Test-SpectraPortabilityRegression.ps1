@@ -3,6 +3,7 @@ $ErrorActionPreference='Stop'
 Set-StrictMode -Version 2.0
 . (Join-Path $PSScriptRoot 'Spectra.JsonSchema.ps1')
 . (Join-Path $PSScriptRoot 'Spectra.PowerShellHost.ps1')
+. (Join-Path $PSScriptRoot 'Spectra.Bootstrap.ps1')
 
 $passed=0
 $stringSchema=[pscustomobject]@{type='string';pattern='^[0-9]{4}-[0-9]{2}-[0-9]{2}T'}
@@ -44,5 +45,13 @@ $negative=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'Test-SpectraPortabl
 if($negative -notmatch "'Junction'.*'SymbolicLink'"){throw 'PORTABILITY_LINK_PLATFORM_BRANCH_MISSING'}
 $passed++
 
-if($passed -ne 4){throw "PORTABILITY_REGRESSION_COUNT_INVALID:$passed"}
-Write-Host "PASS: $passed Portabilitaetsregressionen fuer Zeitwerte, Temp, Kindprozess und Links."
+foreach($remote in @('https://github.com/sivla/BCProjectOS','https://github.com/sivla/BCProjectOS.git')){
+  if(-not(Test-SpectraCanonicalRepositoryUrl $remote)){throw "PORTABILITY_CANONICAL_REMOTE_REJECTED:$remote"}
+}
+foreach($remote in @('https://github.com/sivla/Other.git','https://token@github.com/sivla/BCProjectOS.git','git@github.com:sivla/BCProjectOS.git','https://github.com/sivla/BCProjectOS-extra','https://github.com/sivla/BCProjectOS/')){
+  if(Test-SpectraCanonicalRepositoryUrl $remote){throw "PORTABILITY_FOREIGN_REMOTE_ACCEPTED:$remote"}
+}
+$passed++
+
+if($passed -ne 5){throw "PORTABILITY_REGRESSION_COUNT_INVALID:$passed"}
+Write-Host "PASS: $passed Portabilitaetsregressionen fuer Zeitwerte, Temp, Kindprozess, Links und kanonische Remotes."
