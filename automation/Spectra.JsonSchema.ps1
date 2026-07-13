@@ -28,6 +28,17 @@ function Get-SpectraJsonKind {
   return 'unknown'
 }
 
+function ConvertTo-SpectraJsonScalar {
+  param($Value)
+  if ($Value -is [DateTimeOffset]) {
+    return $Value.UtcDateTime.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'",[Globalization.CultureInfo]::InvariantCulture)
+  }
+  if ($Value -is [DateTime]) {
+    return $Value.ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'",[Globalization.CultureInfo]::InvariantCulture)
+  }
+  throw 'SPECTRA_SCHEMA_SCALAR_NORMALIZATION_UNSUPPORTED'
+}
+
 function Test-SpectraJsonSchema {
   param(
     [Parameter(Mandatory=$true)][AllowNull()]$Value,
@@ -35,6 +46,9 @@ function Test-SpectraJsonSchema {
     [Parameter(Mandatory=$true)]$RootSchema,
     [string]$Path='root'
   )
+  if ($Value -is [DateTimeOffset] -or $Value -is [DateTime]) {
+    $Value=ConvertTo-SpectraJsonScalar $Value
+  }
   $ref=Get-SpectraJsonProperty $Schema '$ref'
   if($ref){
     $prefix='#/$defs/'

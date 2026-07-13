@@ -2,7 +2,7 @@
 $ErrorActionPreference='Stop';Set-StrictMode -Version 2.0
 . (Join-Path $PSScriptRoot 'Spectra.Bootstrap.ps1')
 . (Join-Path $PSScriptRoot 'PortableSnapshot.Catalog.ps1')
-$root=Get-SpectraBootstrapProductRoot;$temp=Join-Path $env:TEMP ('spectra-bootstrap-'+[guid]::NewGuid().ToString('N'));$passed=0
+$root=Get-SpectraBootstrapProductRoot;$temp=Join-Path ([IO.Path]::GetTempPath()) ('spectra-bootstrap-'+[guid]::NewGuid().ToString('N'));$passed=0
 function Assert-Equal($A,$B,[string]$Code){if($A-cne$B){throw $Code}}
 try{
   New-Item -ItemType Directory -Path $temp|Out-Null;$registry=Join-Path $temp 'projects with spaces';$config=Join-Path $temp 'config with spaces'

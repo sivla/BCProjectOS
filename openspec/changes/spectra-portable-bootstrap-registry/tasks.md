@@ -23,3 +23,4 @@
 - [x] 3.2 Product Contract, Adoption, Upgrade, Backup/Restore und OpenSpec strict ausführen
 - [ ] 3.3 macOS-Evidence auf echtem macOS-Runner ausführen
 - [ ] 3.4 Fresh Clone, Marker-/Secret-Scan, Diffcheck und sauberen Commit belegen
+- [ ] 3.5 Portabilitätsfehler aus `spectra-v1.2.0-alpha.1` mit echter Windows-/macOS-Matrix für `1.2.0-alpha.2` schließen
