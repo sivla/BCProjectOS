@@ -39,6 +39,8 @@ try {
   New-Item -ItemType Directory -Path $temp | Out-Null
   & git clone --no-hardlinks --quiet $ProductRoot $clone
   if ($LASTEXITCODE -ne 0) { throw 'MACOS_FRESH_CLONE_FAILED' }
+  & git -C $clone remote set-url origin https://github.com/sivla/BCProjectOS
+  if ($LASTEXITCODE -ne 0) { throw 'MACOS_FRESH_CLONE_REMOTE_FAILED' }
   $gates = [ordered]@{ freshClone='PASS'; install='PENDING'; doctor='PENDING'; init='PENDING'; adopt='PENDING'; validate='PENDING'; snapshot='PENDING'; noRemoteWrites='PENDING'; pathSemantics='PENDING' }
 
   & pwsh -NoProfile -File (Join-Path $clone 'automation/Test-ReleaseCandidate.ps1') -Version $Version -RequirePublished | Out-Null

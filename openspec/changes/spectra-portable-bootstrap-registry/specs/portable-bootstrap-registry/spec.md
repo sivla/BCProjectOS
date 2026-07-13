@@ -88,6 +88,8 @@ Der Installer MUST Payloadbytes aus den Git-Blobs des gebundenen `source_commit`
 
 Die Moduswiederherstellung MUST mit BSD-`chmod` auf macOS funktionieren. Evidence-Schreiber MUST sowohl absolute als auch dateinamensrelative Ausgabepfade atomar unterstützen; Workflow-Kindprozesse MUST ihren Exitcode vor dem Lesen der Evidence explizit prüfen.
 
+Eine lokal erzeugte macOS-Fresh-Clone-Prüfkopie MUST vor der Releaseprüfung explizit auf den kanonischen Repository-Remote gebunden werden. Ein lokaler Quellpfad darf niemals als veröffentlichte Repository-Identität akzeptiert werden.
+
 #### Scenario: Echter macOS-Runner ohne TEMP
 
 - **WHEN** der Portabilitätsvertrag unter PowerShell 7 auf macOS ohne gesetztes `TEMP` ausgeführt wird

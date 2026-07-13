@@ -60,5 +60,9 @@ try{
 }finally{if(Test-Path $relativeEvidence -PathType Leaf){Remove-Item -LiteralPath $relativeEvidence -Force}}
 $passed++
 
-if($passed -ne 6){throw "PORTABILITY_REGRESSION_COUNT_INVALID:$passed"}
-Write-Host "PASS: $passed Portabilitaetsregressionen fuer Zeitwerte, Temp, Kindprozess, Links, Remotes und relative Evidence."
+$macAcceptance=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'Test-SpectraMacOSOnboarding.ps1') -Raw
+if($macAcceptance -notmatch 'remote set-url origin https://github\.com/sivla/BCProjectOS'){throw 'PORTABILITY_MACOS_CLONE_REMOTE_REBIND_MISSING'}
+$passed++
+
+if($passed -ne 7){throw "PORTABILITY_REGRESSION_COUNT_INVALID:$passed"}
+Write-Host "PASS: $passed Portabilitaetsregressionen fuer Zeitwerte, Temp, Kindprozess, Links, Remotes, Evidence und macOS-Clonebindung."
