@@ -6,14 +6,14 @@
 
 ## 2. Produktimplementierung
 
-- [ ] 2.1 Konfigurations-, Discovery-, Mapping- und Plan-Schemas implementieren
-- [ ] 2.2 Offline-Generator, Inspector, Validator, Planner und lokalen Apply implementieren
-- [ ] 2.3 Dispatcher und deutsches Anwenderhandbuch integrieren
-- [ ] 2.4 Zwei synthetische Existing-Project-Fixtures und Negativmatrix implementieren
+- [x] 2.1 Konfigurations-, Discovery-, Mapping- und Plan-Schemas implementieren
+- [x] 2.2 Offline-Generator, Inspector, Validator, Planner und lokalen Apply implementieren
+- [x] 2.3 Dispatcher und deutsches Anwenderhandbuch integrieren
+- [x] 2.4 Zwei synthetische Existing-Project-Fixtures und Negativmatrix implementieren
 
 ## 3. Evidence
 
-- [ ] 3.1 Positive Profile, Idempotenz und Drift pruefen
-- [ ] 3.2 Negativmatrix, Product Contract und OpenSpec strict pruefen
-- [ ] 3.3 Upgrade, Backup/Restore und Fresh Clone pruefen
-- [ ] 3.4 Produktcommit, Tree, sauberer Stand und nachgelagertes Releasegate uebergeben
+- [x] 3.1 Positive Profile, Idempotenz und Drift pruefen
+- [x] 3.2 Negativmatrix, Product Contract und OpenSpec strict pruefen
+- [x] 3.3 Upgrade, Backup/Restore und Fresh Clone pruefen
+- [x] 3.4 Produktcommit, Tree, sauberer Stand und nachgelagertes Releasegate uebergeben
