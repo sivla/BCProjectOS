@@ -40,6 +40,7 @@ if($ref){
 $types=@(Get-JsonValue $Schema 'type');$valid=$false
 foreach($type in $types){
   $valid=$valid -or ($type -eq 'object' -and $kind -eq 'object') -or ($type -eq 'array' -and $kind -eq 'array') -or ($type -eq 'string' -and $Value -is [string]) -or ($type -eq 'integer' -and $Value -is [int]) -or ($type -eq 'number' -and $kind -eq 'primitive') -or ($type -eq 'null' -and $kind -eq 'null')
+  $valid=$valid -or ($type -eq 'boolean' -and $Value -is [bool])
 }
 if(-not $valid){throw "PORTABLE_SCHEMA_TYPE_INVALID:$Path"}
 $min=Get-JsonValue $Schema 'minItems';if($null -ne $min -and $kind -eq 'array' -and $Value.Count -lt $min){throw "PORTABLE_SCHEMA_MINITEMS:$Path"}
