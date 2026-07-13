@@ -189,6 +189,41 @@ function Get-BCProjectOSGitPayloadRecords {
     }
 }
 
+function Copy-BCProjectOSGitBlob {
+    param(
+        [Parameter(Mandatory = $true)][string]$Root,
+        [Parameter(Mandatory = $true)][string]$Revision,
+        [Parameter(Mandatory = $true)][string]$RelativePath,
+        [Parameter(Mandatory = $true)][string]$Destination
+    )
+    $startInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $startInfo.FileName = 'git'
+    $startInfo.Arguments = "-C `"$Root`" cat-file blob `"$Revision`:$RelativePath`""
+    $startInfo.UseShellExecute = $false
+    $startInfo.RedirectStandardOutput = $true
+    $startInfo.RedirectStandardError = $true
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $startInfo
+    [void]$process.Start()
+    $stream = [System.IO.File]::Open($Destination,[System.IO.FileMode]::CreateNew,[System.IO.FileAccess]::Write,[System.IO.FileShare]::None)
+    try {
+        $process.StandardOutput.BaseStream.CopyTo($stream)
+        $stream.Flush()
+        $stderr = $process.StandardError.ReadToEnd()
+        $process.WaitForExit()
+        if ($process.ExitCode -ne 0) { throw "git cat-file failed: $stderr" }
+    }
+    catch {
+        $stream.Dispose()
+        if (Test-Path -LiteralPath $Destination -PathType Leaf) { Remove-Item -LiteralPath $Destination -Force }
+        throw
+    }
+    finally {
+        $stream.Dispose()
+        $process.Dispose()
+    }
+}
+
 function Get-BCProjectOSChecksumsText {
     param(
         [Parameter(Mandatory = $true)]$Records,

@@ -84,6 +84,8 @@ Spectra MUST von PowerShell deserialisierte `DateTime`- und `DateTimeOffset`-Wer
 
 Die Releasebindung MUST die beiden semantisch identischen kanonischen HTTPS-Remoteformen `https://github.com/sivla/BCProjectOS` und `https://github.com/sivla/BCProjectOS.git` akzeptieren. Benutzerinformationen, SSH-Remotes, andere Repositories und bloße Präfixtreffer MUST fail-closed bleiben.
 
+Der Installer MUST Payloadbytes aus den Git-Blobs des gebundenen `source_commit` extrahieren und den SHA-256-Digest nach dem Schreiben erneut prüfen. Er MUST unabhängig von Arbeitsbaum-Zeilenendennormalisierung sein und unter macOS den im Manifest gebundenen Modus `100644` beziehungsweise `100755` wiederherstellen. Das finale Release-Manifest und seine Checksum-Datei MUST als getrennte, taggebundene Betriebsmetadaten mitinstalliert und beim Uninstall wieder entfernt werden.
+
 #### Scenario: Echter macOS-Runner ohne TEMP
 
 - **WHEN** der Portabilitätsvertrag unter PowerShell 7 auf macOS ohne gesetztes `TEMP` ausgeführt wird
@@ -93,6 +95,11 @@ Die Releasebindung MUST die beiden semantisch identischen kanonischen HTTPS-Remo
 
 - **WHEN** ein unveränderlicher Release-Tag durch `actions/checkout` mit `https://github.com/sivla/BCProjectOS` ausgecheckt wird
 - **THEN** bleibt die Releasebindung gültig, während jede nicht exakt kanonische Repository-Identität blockiert wird
+
+#### Scenario: Checkout normalisiert Textdateien im Arbeitsbaum
+
+- **WHEN** der Arbeitsbaum andere Zeilenenden als die gebundenen Git-Blobs besitzt
+- **THEN** installiert Spectra weiterhin exakt die Blobbytes und der installierte SHA-256-Digest entspricht dem Release-Manifest
 
 ### Requirement: Registry ist lokal, relativ und idempotent
 

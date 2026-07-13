@@ -49,9 +49,12 @@ jobs:
           New-Item -ItemType Directory -Path $sandbox,$project -Force | Out-Null
           Set-Content -LiteralPath (Join-Path $project 'customer-data.txt') -Value 'synthetic-preserve-check'
           pwsh -NoProfile -File ./install.ps1 -Command install -SourceRoot $PWD -InstallRoot $install -Version $version -Apply -Approve
+          if ($LASTEXITCODE -ne 0) { throw 'PORTABILITY_INSTALL_FAILED' }
           $second = pwsh -NoProfile -File ./install.ps1 -Command install -SourceRoot $PWD -InstallRoot $install -Version $version -Apply -Approve | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { throw 'PORTABILITY_REINSTALL_FAILED' }
           if ($second.status -cne 'ALREADY_INSTALLED' -or $second.writes_performed) { throw 'PORTABILITY_REINSTALL_NOT_IDEMPOTENT' }
           pwsh -NoProfile -File ./install.ps1 -Command uninstall -SourceRoot $PWD -InstallRoot $install -Version $version -Apply -Approve
+          if ($LASTEXITCODE -ne 0) { throw 'PORTABILITY_UNINSTALL_FAILED' }
           if (-not (Test-Path (Join-Path $project 'customer-data.txt'))) { throw 'PORTABILITY_UNINSTALL_REMOVED_PROJECT_DATA' }
       - name: macOS acceptance or honest Windows pending evidence
         shell: pwsh
