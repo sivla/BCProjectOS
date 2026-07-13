@@ -7,10 +7,12 @@ $root = [IO.Path]::GetFullPath($Path)
 if (-not (Test-Path -LiteralPath $root -PathType Container)) { throw 'FOUNDATION_WORKSPACE_MISSING' }
 $foundationPath = Join-Path $root 'customer-workspace-foundation.json'
 $inboxPath = Join-Path $root 'knowledge-inbox.json'
+$informationInboxPath = Join-Path $root 'information-inbox.json'
 if (-not (Test-Path -LiteralPath $foundationPath -PathType Leaf)) { throw 'FOUNDATION_FILE_MISSING' }
 if (-not (Test-Path -LiteralPath $inboxPath -PathType Leaf)) { throw 'INBOX_FILE_MISSING' }
 $beforeFoundation = (Get-FileHash -LiteralPath $foundationPath -Algorithm SHA256).Hash
 $beforeInbox = (Get-FileHash -LiteralPath $inboxPath -Algorithm SHA256).Hash
+$beforeInformationInbox = if (Test-Path -LiteralPath $informationInboxPath -PathType Leaf) { (Get-FileHash -LiteralPath $informationInboxPath -Algorithm SHA256).Hash } else { $null }
 $foundation = Get-Content -LiteralPath $foundationPath -Raw | ConvertFrom-Json
 $inbox = Get-Content -LiteralPath $inboxPath -Raw | ConvertFrom-Json
 . (Join-Path $PSScriptRoot 'Spectra.JsonSchema.ps1')
@@ -166,8 +168,16 @@ foreach ($conflict in @($inbox.conflicts)) {
   }
 }
 
+if (Test-Path -LiteralPath $informationInboxPath -PathType Leaf) {
+  & (Join-Path $PSScriptRoot 'Test-InformationInbox.ps1') -Path $root *> $null
+  $informationInbox = Get-Content -LiteralPath $informationInboxPath -Raw | ConvertFrom-Json
+  . (Join-Path $PSScriptRoot 'Inbox.Compatibility.ps1')
+  [void](Test-SpectraInboxCompatibility -Foundation $foundation -LegacyInbox $inbox -InformationInbox $informationInbox)
+}
+
 $scan = (Get-Content -LiteralPath $foundationPath -Raw) + (Get-Content -LiteralPath $inboxPath -Raw)
 foreach ($item in @($inbox.intake_items)) { $scan += Get-Content -LiteralPath (Join-Path $root ([string]$item.source_path -replace '/', '\')) -Raw }
 if ($scan -match '(?i)(universaarl|uabc|credential_marker|tenant_marker|client[_-]?secret|access[_-]?token|password\s*[:=])') { throw 'FOUNDATION_CUSTOMER_OR_SECRET_MARKER' }
 if ((Get-FileHash -LiteralPath $foundationPath -Algorithm SHA256).Hash -cne $beforeFoundation -or (Get-FileHash -LiteralPath $inboxPath -Algorithm SHA256).Hash -cne $beforeInbox) { throw 'FOUNDATION_VALIDATOR_MUTATED_SOURCE' }
+if ($null -ne $beforeInformationInbox -and (Get-FileHash -LiteralPath $informationInboxPath -Algorithm SHA256).Hash -cne $beforeInformationInbox) { throw 'FOUNDATION_VALIDATOR_MUTATED_SOURCE' }
 Write-Host 'PASS: Kundenworkspace, Supportkontext und Knowledge Inbox sind referenziell, proposal-only und read-only valide.'

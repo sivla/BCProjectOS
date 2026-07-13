@@ -28,6 +28,9 @@ try{
     if(-not$apply.writes_performed-or$apply.status-ne'APPLIED'){throw 'INIT_APPLY_FAILED'}
     $result=Get-Content (Join-Path $destination 'governance\project-init.json') -Raw|ConvertFrom-Json
     if($result.project_space.id-ne$config.project_space.id-or$result.live_write_enabled-ne$false){throw 'INIT_PROJECT_SPACE_INVALID'}
+    $expectedCanonical=if($mode-eq'local'){'bp-customer-support'}else{'bp-bc-basic'}
+    if([string]$result.blueprint_contract -cne 'blueprint-catalog-v2' -or [string]$result.canonical_blueprint_id -cne $expectedCanonical){throw 'INIT_CANONICAL_BLUEPRINT_INVALID'}
+    if(-not(Test-Path (Join-Path $destination 'governance\blueprint-proposal\preview.json'))){throw 'INIT_CANONICAL_BLUEPRINT_PREVIEW_MISSING'}
     $ticketResult=Get-Content (Join-Path $destination 'collaboration\jira-structure.json') -Raw|ConvertFrom-Json
     if($ticketResult.strategy-ne$ticket.strategy-or$ticketResult.mapping_version-ne$ticket.mapping_version-or$ticketResult.source_values_preserved-ne$true){throw 'INIT_TICKET_MAPPING_INVALID'}
     if($mode-eq'local'){

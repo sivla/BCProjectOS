@@ -1,40 +1,41 @@
-# Spectra 1.0.0 Gap-Matrix nach RC.1 und lokalen Init-Folgeblöcken
+# Spectra 1.0.0 Gap-Matrix nach RC.1 und lokaler Vertragsintegration
 
-Veröffentlichte Bewertungsbasis ist `spectra-v1.0.0-rc.1`. Die nachgelagerten Init-, Blueprint- und integrierten Pilotblöcke sind lokale, noch unveröffentlichte Produktstände und werden ausdrücklich nicht dem RC zugerechnet. Statuswerte sind `vorhanden`, `teilweise`, `fehlend` oder `unbewiesen`. Synthetische Evidence ist keine reale Kunden-, BC-, Steuer- oder Rechtsaktivität.
+## Statusgrenze
 
-## Produkt- und Betriebsfähigkeit
+Einzig veroeffentlichte Basis ist `spectra-v1.0.0-rc.1` auf Commit `0c4542f8e69c3a7d52807b96b9bdd50a54309371`. Alle nachfolgenden Init-, Workspace-, Dokument-, Wissens-, Skill-, Inbox- und Blueprint-Bloecke sind lokale Produktstaende. Der Integrationsbranch ist keine neue Version und bleibt `PENDING_BCPROJECTOS_RELEASE`.
 
-| Pflichtbereich | Status | Evidence | Verbleibende Hauptlücke |
+## Integrierter lokaler Stand
+
+| Bereich | Veroeffentlicht in RC.1 | Lokal integriert | Noch unbewiesen / spaeteres Gate |
 |---|---|---|---|
-| Produktkern/Schemas | vorhanden | Engagement, Setup/Daten, UAT/Training/Defects, Betriebsdurchstich, Projekt-Init und Blueprint-Katalog | Integration der lokalen Folgeblöcke in einen kontrollierten Release |
-| Implementation-Profil | vorhanden | releasegebundener Guided Init, vollständiger Blueprintsatz, Fachstrecke und Backup/Restore | unabhängige Review des integrierten Init-Piloten |
-| Support-only-Profil | vorhanden | schlanker Guided Init ohne unnötige Consulting-Vorlagen, Supportqualität, Betrieb und Recovery | unabhängige Review des integrierten Init-Piloten |
-| Engagement/Fit-to-Standard | vorhanden | Scope, E2E-Prozesse, Fit/Gap und Entscheidungen | reale Kundenparameter bleiben Kundenevidence |
-| Setup/Berechtigungen/Daten | vorhanden | 14 Setupbereiche, SoD-Proben, acht Vorlagen und drei Wellen | reale Projektwerte bleiben Kundenwahrheit |
-| UAT/Training/Defects | vorhanden | sieben Kernprozesse, vier Testpfade, Rollenbefähigung, Defect-/Exit-Gates | reale Abnahme bleibt Kundenwahrheit |
-| Cutover/Betriebsübergabe | vorhanden | Mock-Cutover, Go/No-Go, Hypercare, Restart, Support und Handover | reale Betriebsfreigabe bleibt Kundenwahrheit |
-| Projektinitialisierung | vorhanden | Guided Init, Projekt-/Ticketmapping, kuratierte Blueprints und final gebundene atomare Installation | unabhängige Releaseintegration der Folgeblöcke |
-| Projektarten/Lifecycle | vorhanden | Implementation, Support, Fit-Gap und Migration mit profilgerechten Empfehlungen und read-only Vorgängerreferenz | unabhängige Review und Releaseintegration |
-| Kundenworkspace/Knowledge Inbox | teilweise | Kunden-, Environment-, Company-, Projekt-/Support-, People-/Rollen-, Budget-/Verpflichtungs- und Proposal-only-Vertrag lokal implementiert | Gesamtgates, Fresh Clone und unabhängige Releaseintegration |
-| Validatorplattform | vorhanden | Schema, Referenzen, stabile Fehlercodes und isolierte Negativmatrizen | neue Vertragstypen je Release weiter regressionsprüfen |
-| Upgrade | vorhanden | Dry-run, Konflikte, Apply, Wiederholung und Kundeninhaltschutz | integrierter finaler 1.0-Fresh-Clone-Proof |
-| Backup/Restore | vorhanden | beide releasegebunden initialisierten Profile werden gesichert, wiederhergestellt und erneut validiert | unabhängige Kontrolle des integrierten Proofs |
-| CLI/Bedienung | vorhanden | Guided Init, Validate, Fachgeneratoren, Upgrade, Backup/Restore und deutscher Quickstart | unabhängige Bedienprüfung aus finalem Clone |
-| Supply Chain | vorhanden | Candidate-/Finalprovenienz, Tag, Payload und Digest | kontrollierte Integration und finaler 1.0.0-Releaseproof |
+| BC-Basic-Fachstrecke bis Handover | ja | unveraendert regressionsfaehig | finaler 1.0.0-Releaseproof |
+| Init, Projektarten und Ticketmapping | nein | P0-Linie | unabhaengiger Candidate-/Releaseprozess |
+| Customer Workspace und Basis-Inbox | nein | Foundation unter Proposal-Schicht | integrierter End-to-End-Consumerproof |
+| Information Inbox und Proposals | nein | fuehrender Intake-/Review-/Umsetzungsvertrag | reale Kundeninstanz bleibt ausserhalb Spectra |
+| Dokumentprojektion | nein | generated/authored und source-defined Hierarchie | Connector-Materialisierung separat |
+| Blueprint-Katalog | nein | V2 fuehrend, kuratierter V1-Pfad nur Legacy | unabhaengige Migrations-/Consumerreview |
+| BC Reference Library | nein | einmalig, gepinnt und blobgebunden | Runtime-Cache bleibt extern und kundenspezifische Symbole separat |
+| Consultant Knowledge/Playthrough | nein | fachliche Schicht ueber Reference Library | keine Live-BC-Ausfuehrung oder Kundenevidence |
+| P0-Skillkatalog | nein | 11 Skillfamilien lokal | Forward- und Consumerabnahme im finalen Integrationsrelease |
+| Variable Project-Story-Kardinalitaet | nein | instanzabgeleitete Mengen | weitere reale Strukturen nur anonymisiert als Tests |
 
-## Aktiver lokaler Block
+## Fuehrende Vertraege
 
-`spectra-v1-integrated-init-pilots` verbindet die vorhandenen Fähigkeiten in zwei isolierten, releasegebundenen Bedienpfaden. Implementation und Support-only werden über Guided Init erzeugt, read-only validiert, mit profilgerechten Blueprints ausgestattet, fachlich durchlaufen, gesichert, wiederhergestellt und erneut validiert. Die maschinenlesbare Evidence meldet null offene P1/P2 und `GO_FOR_V1_FINAL_REVIEW`; sie ist noch keine externe Freigabe und keine Releasebehauptung.
+1. Workspace-Foundation fuehrt Customer-, Environment-, Company-, Project- und Supportidentitaet.
+2. Information Inbox fuehrt Intake, Proposalstatus, Review, Annahme und getrennte Umsetzung.
+3. Blueprint-Katalog V2 fuehrt neue Vorschauen; der kuratierte Katalog bleibt Legacy-Herkunft.
+4. BC Reference Library fuehrt Source-Lock, Objektkatalog und Query; Consultant Knowledge liegt darueber.
+5. Project-Story-Kardinalitaet wird aus der Instanz abgeleitet, nie aus einer festen Ticketzahl.
 
 ## Verbleibender Pfad zu 1.0.0
 
-1. Die lokalen Folgeblöcke in ihrer Abhängigkeitsreihenfolge unabhängig prüfen und kontrolliert integrieren.
-2. Einen finalen Fresh-Clone-Pilot beider Profile aus dem integrierten Release ohne offene P1/P2 durchführen.
-3. `1.0.0` erst nach unabhängigem Release-GO, finalem Manifest, annotiertem Tag, veröffentlichter Release-Evidence und Postcheck ausgeben.
+1. Lokalen Integrationsstand commitgebunden vollstaendig pruefen und unabhaengig reviewen.
+2. In einem separaten Releasezyklus Candidate, Manifest, Digest und beide Profile aus frischem Clone pruefen.
+3. `1.0.0` erst nach normaler Integration, unabhaengigem Release-GO, finalem Manifest, annotiertem Tag, Veroeffentlichung und Postcheck ausgeben.
 
 ## Wahrheitsgrenzen
 
-- Keine Kunden-Source-of-Truth oder Kunden-Evidence wird in Spectra übernommen.
-- Synthetische Profile und technische Automation sind keine Produktions-, Berechtigungs- oder fachliche Freigabeevidence.
-- Reale Freigaben, Steuer-/Rechtsentscheidungen, Zugangsdaten und Projektwerte entstehen ausschließlich im Kundenworkspace.
-- Releaseversionen entstehen nur aus belegtem Delta und getrenntem Release-Gate.
+- Keine Kunden-Source-of-Truth, Kunden-Evidence, Tenantwerte oder Secrets werden in Spectra uebernommen.
+- Synthetische Fixtures, Skill-Forward-Tests und technische Automation sind keine Kundenfreigabe.
+- Reale fachliche, steuerliche, rechtliche und betriebliche Entscheidungen entstehen ausschließlich im isolierten Kundenworkspace.
+- Historische RC2/RC3-Candidate-Evidence bleibt historische Evidence und bindet diesen Integrationsbranch nicht.

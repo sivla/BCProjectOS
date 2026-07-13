@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "foundation_id": "bc-reference-library",
+  "source_commit": "dff88684d062e23794cbfb5423aecd331ac49790",
+  "source_merge_base": "0c4542f8e69c3a7d52807b96b9bdd50a54309371",
+  "integration_state": "foundation-import-not-ancestry",
+  "files": [
+    {"path":"automation/BusinessCentral.Knowledge.ps1","blob":"e3b172acf75bad4bf621c59ef52f78bbb3c83f24"},
+    {"path":"automation/Invoke-BusinessCentralKnowledge.ps1","blob":"5df2b46a0eba98a120afcfd1ca408718119053a5"},
+    {"path":"automation/Invoke-PortableSchemaValidation.ps1","blob":"4ae2c9850e80298bbc2040894aa1261c89b10ae9"},
+    {"path":"automation/New-SyntheticBusinessCentralKnowledgeFixture.ps1","blob":"0e123aa55ae2b481781d0b4b1b06a587c65464bd"},
+    {"path":"automation/Run-BusinessCentralKnowledgeExact.ps1","blob":"ac7c0a28a463ac3036350f157f26e88544280d93"},
+    {"path":"automation/Test-BusinessCentralKnowledgeCli.ps1","blob":"7e397077ea922cb2e319e04a536af93cf570cf79"},
+    {"path":"automation/Test-BusinessCentralKnowledgeContract.ps1","blob":"d498e0831f43889aacce8b5a91eaad2cd385dcdc"},
+    {"path":"automation/Test-BusinessCentralKnowledgeNegative.ps1","blob":"d6f51155428c97e22617ccfcbbed52e1b1730968"},
+    {"path":"catalogs/business-central-sources.json","blob":"4b00c2430d823058966883d0d4e2d218b055354c"},
+    {"path":"contract/business-central-reference-library.md","blob":"27ee36fed4151b5f8921e8089910e13820d5e1a1"},
+    {"path":"notes/spectra-business-central-reference-library.md","blob":"a4ebd955e07c333b25fcd6a86e6fddeda7876362"},
+    {"path":"schemas/business-central-object-catalog.schema.json","blob":"737ec05ac036799a49087a6a60b0d34bbf2e71d8"},
+    {"path":"schemas/business-central-search-index.schema.json","blob":"de1232ba89e94168905b72dc2636e35a98ee67e4"},
+    {"path":"schemas/business-central-source-lock.schema.json","blob":"c13637c932f6e2644a86716fb6221ac506bdc45c"}
+  ]
+}

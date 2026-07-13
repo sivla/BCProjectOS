@@ -6,6 +6,11 @@ function Get-SpectraBlueprintCatalog([string]$Root){
   if(-not(Test-Path -LiteralPath $catalogPath -PathType Leaf)){throw 'BLUEPRINT_CATALOG_MISSING'}
   return Get-Content -LiteralPath $catalogPath -Raw|ConvertFrom-Json
 }
+function Get-SpectraBlueprintCatalogV2([string]$Root){
+  $catalogPath=Join-Path $Root 'catalogs\blueprint-catalog-v2.json'
+  if(-not(Test-Path -LiteralPath $catalogPath -PathType Leaf)){throw 'BLUEPRINT_V2_CATALOG_MISSING'}
+  return Get-Content -LiteralPath $catalogPath -Raw|ConvertFrom-Json
+}
 function Test-SpectraBlueprintCatalog([string]$Root){
   $catalog=Get-SpectraBlueprintCatalog $Root
   . (Join-Path $Root 'automation\Spectra.JsonSchema.ps1')
@@ -29,4 +34,25 @@ function Test-SpectraBlueprintCatalog([string]$Root){
     }
   }
   return $catalog
+}
+function Resolve-SpectraBlueprintCompatibility {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)][string]$Root,
+    [Parameter(Mandatory)][string]$ProjectType,
+    [Parameter(Mandatory)][string]$Profile,
+    [Parameter(Mandatory)][string]$BcPackage,
+    [Parameter(Mandatory)][object[]]$LegacyPackageIds
+  )
+  $legacy=Test-SpectraBlueprintCatalog $Root
+  $v2=Get-SpectraBlueprintCatalogV2 $Root
+  & (Join-Path $Root 'automation\Test-BlueprintCatalogV2.ps1') -CatalogPath (Join-Path $Root 'catalogs\blueprint-catalog-v2.json')|Out-Null
+  $knownLegacy=@($legacy.blueprints|ForEach-Object{[string]$_.id})
+  foreach($id in @($LegacyPackageIds)){if($knownLegacy -notcontains [string]$id){throw 'BLUEPRINT_LEGACY_REF_UNKNOWN'}}
+  $kind=if($ProjectType -eq 'support' -or $Profile -eq 'support-only'){'support-only'}elseif($BcPackage -eq 'bc-basic-standard'){'bc-basic'}else{'implementation'}
+  $matches=@($v2.blueprints|Where-Object{[string]$_.kind -ceq $kind})
+  if($matches.Count -ne 1){throw 'BLUEPRINT_LEGACY_MAPPING_AMBIGUOUS'}
+  $canonical=$matches[0]
+  foreach($id in @($LegacyPackageIds)){if(@($canonical.legacy_package_refs) -notcontains [string]$id){throw 'BLUEPRINT_LEGACY_COMPATIBILITY_MISMATCH'}}
+  [pscustomobject]@{contract='blueprint-catalog-v2';canonical_blueprint_id=[string]$canonical.blueprint_id;legacy_package_ids=@($LegacyPackageIds);page_tree_refs=@($canonical.page_tree_refs)}
 }

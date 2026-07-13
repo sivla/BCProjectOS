@@ -10,6 +10,7 @@
     "product_id": {"type": "string", "enum": ["spectra"]},
     "record_type": {"type": "string", "enum": ["knowledge-inbox"]},
     "classification": {"type": "string", "enum": ["synthetic-fixture", "customer-workspace"]},
+    "lifecycle_authority": {"type": "string", "enum": ["foundation-read-only"]},
     "customer_id": {"type": "string", "pattern": "^CUS-[A-Z0-9-]{3,48}$"},
     "foundation_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "intake_items": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/intake"}},

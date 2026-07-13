@@ -90,11 +90,15 @@ try {
   Write-Text $sourcePath "spectra_synthetic: true`ncontent_status: synthetic-fixture`nBeobachtung: Der synthetische Projektstatus soll überprüft werden.`n"
   $sourceDigest = (Get-FileHash -LiteralPath $sourcePath -Algorithm SHA256).Hash.ToLowerInvariant()
   $sourceSize = (Get-Item -LiteralPath $sourcePath).Length
+  $targetRelative = 'targets/status.md'
+  $targetPath = Join-Path $staging ($targetRelative -replace '/', '\')
+  Write-Text $targetPath "Synthetischer Zielstand bleibt unveraendert.`n"
+  $targetDigest = (Get-FileHash -LiteralPath $targetPath -Algorithm SHA256).Hash.ToLowerInvariant()
   $proposalId = "PRO-SYN-$suffix"
   $observationId = "OBS-SYN-$suffix"
   $comparisonId = "CMP-RUN-SYN-$suffix"
   $inbox = [ordered]@{
-    schema_version=1;product_id='spectra';record_type='knowledge-inbox';classification='synthetic-fixture';customer_id=$customerId;foundation_digest=$foundationDigest
+    schema_version=1;product_id='spectra';record_type='knowledge-inbox';classification='synthetic-fixture';lifecycle_authority='foundation-read-only';customer_id=$customerId;foundation_digest=$foundationDigest
     intake_items=@([ordered]@{id="INT-SYN-$suffix";customer_id=$customerId;source_system='meeting-export';source_object_id="MEETING-SYN-$suffix";source_revision='1';source_path=$sourceRelative;sha256=$sourceDigest;source_hash_after=$sourceDigest;size_bytes=$sourceSize;media_type='text/plain';classification='synthetic';imported_at='2030-05-02T09:00:00Z';status='processed'})
     observations=@([ordered]@{id=$observationId;intake_id="INT-SYN-$suffix";occurred_at='2030-05-02T08:30:00Z';summary='Synthetisch beobachteter Aktualisierungsbedarf.';certainty='observed';scope_type=$scopeType;scope_id=$scopeId;source_revision='1'})
     meeting_packages=@([ordered]@{id="MTG-SYN-$suffix";intake_ids=@("INT-SYN-$suffix");observation_ids=@($observationId);status='reviewed'})
@@ -104,6 +108,36 @@ try {
     conflicts=@();writes_performed=$false;target_mutation=$false
   }
   Write-Json (Join-Path $staging 'knowledge-inbox.json') $inbox
+  $canonicalProjectId = if ($Profile -eq 'implementation') { $projectId } else { $null }
+  $canonicalTargetDomain = if ($Profile -eq 'implementation') { 'project_status' } else { 'support_case' }
+  $canonicalTargetId = if ($Profile -eq 'implementation') { $projectId } else { $supportId }
+  $canonicalProposalId = "PROP-CANONICAL-SYN-$suffix"
+  $canonicalIntakeId = "INTAKE-CANONICAL-SYN-$suffix"
+  $canonicalObservationId = "OBS-CANONICAL-SYN-$suffix"
+  $canonicalAuditId = "AUD-CANONICAL-SYN-$suffix"
+  $canonicalInbox = [ordered]@{
+    schema_version = 1
+    product_id = 'spectra'
+    workspace_id = "WS-SYN-$suffix"
+    customer_id = $customerId
+    project_id = $canonicalProjectId
+    support_case_id = $supportId
+    intake_items = @([ordered]@{
+      id = $canonicalIntakeId;workspace_id = "WS-SYN-$suffix";customer_id = $customerId;project_id = $canonicalProjectId;support_case_id = $supportId
+      source = [ordered]@{source_system='meeting';source_object_id="MEETING-SYN-$suffix";revision='1';sha256=$sourceDigest;relative_path=$sourceRelative;observed_at='2030-05-02T08:30:00Z';imported_at='2030-05-02T09:00:00Z';actor_role='consultant';classification='meeting_information';sensitivity='internal'}
+      status = 'processed'
+    })
+    observations = @([ordered]@{id=$canonicalObservationId;intake_id=$canonicalIntakeId;statement='Synthetisch beobachteter Aktualisierungsbedarf.';confidence='high';observed_at='2030-05-02T08:30:00Z'})
+    proposals = @([ordered]@{
+      id=$canonicalProposalId;intake_id=$canonicalIntakeId;observation_id=$canonicalObservationId;proposer_role='consultant';target_domain=$canonicalTargetDomain;target_id=$canonicalTargetId;change_type='update'
+      rationale='Nur als neuer kanonischer Vorschlag pruefen.';conflicts=@();open_questions=@('Welche Kundenrolle bestaetigt die fachliche Entscheidung?');risk='low';reviewer_role='customer_reviewer'
+      status_history=@([ordered]@{status='neu';at='2030-05-02T09:11:00Z';actor_role='consultant';event_id=$canonicalAuditId});status='neu';acceptance_event_id=$null;implementation_event_id=$null;implementation_evidence=$null
+    })
+    audit_events = @([ordered]@{id=$canonicalAuditId;event_type='observation';actor_role='consultant';occurred_at='2030-05-02T09:11:00Z';source_revision='1';before=$null;after=[ordered]@{proposal_id=$canonicalProposalId};decision='proposed';references=@($canonicalProposalId,$canonicalIntakeId)})
+    snapshots = @([ordered]@{id="SNAP-CANONICAL-SYN-$suffix";source_revision='1';created_at='2030-05-02T09:12:00Z';digest=$foundationDigest;read_only=$true})
+    target_artifacts = @([ordered]@{relative_path=$targetRelative;sha256_before=$targetDigest;sha256_after=$targetDigest;write_status='unchanged'})
+  }
+  Write-Json (Join-Path $staging 'information-inbox.json') $canonicalInbox
   Move-Item -LiteralPath $staging -Destination $destinationPath
   Write-Host "PASS: Synthetisches Kundenworkspace-/Knowledge-Inbox-Profil $Profile wurde deterministisch erzeugt."
 } finally {

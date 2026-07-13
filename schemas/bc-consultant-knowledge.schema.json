@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "product_id", "knowledge_pack_id", "bc_version", "locale", "reference_snapshot", "knowledge_items", "playthroughs"],
+  "properties": {
+    "schema_version": {"type": "integer"},
+    "product_id": {"type": "string"},
+    "knowledge_pack_id": {"type": "string"},
+    "bc_version": {"type": "string"},
+    "locale": {"type": "string"},
+    "reference_snapshot": {"$ref": "#/$defs/reference_snapshot"},
+    "knowledge_items": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/item"}},
+    "playthroughs": {"type": "array", "minItems": 4, "items": {"$ref": "#/$defs/playthrough"}}
+  },
+  "$defs": {
+    "reference_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["snapshot_id", "knowledge_pack_id", "source_lock_digest", "index_digest", "bc_version", "countries", "source_ids", "validation_status"],
+      "properties": {
+        "snapshot_id": {"type": "string", "minLength": 3},
+        "knowledge_pack_id": {"type": "string", "minLength": 3},
+        "source_lock_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "index_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "bc_version": {"type": "string", "minLength": 1},
+        "countries": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "validation_status": {"type": "string", "const": "validated"}
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["knowledge_id", "title", "knowledge_kind", "source_id", "version", "locale", "process", "role", "object_refs", "project_phase", "task_type", "prerequisites", "expected_effect", "controls", "error_patterns", "use_case_refs"],
+      "properties": {
+        "knowledge_id": {"type": "string"},
+        "title": {"type": "string"},
+        "knowledge_kind": {"type": "string", "enum": ["official_documented", "derived_standard_metadata", "tested_generic_procedure", "open_assumption"]},
+        "source_id": {"type": "string"},
+        "version": {"type": "string"},
+        "locale": {"type": "string"},
+        "process": {"type": "string"},
+        "role": {"type": "string"},
+        "object_refs": {"type": "array", "items": {"type": "string"}},
+        "project_phase": {"type": "string"},
+        "task_type": {"type": "string"},
+        "prerequisites": {"type": "array", "items": {"type": "string"}},
+        "expected_effect": {"type": "string"},
+        "controls": {"type": "array", "items": {"type": "string"}},
+        "error_patterns": {"type": "array", "items": {"type": "string"}},
+        "use_case_refs": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "playthrough": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["playthrough_id", "title", "mode", "baseline", "customer_target", "preconditions", "steps", "readback", "error_handling", "stop_codes", "direct_mutation"],
+      "properties": {
+        "playthrough_id": {"type": "string"},
+        "title": {"type": "string"},
+        "mode": {"type": "string", "const": "plan-only"},
+        "baseline": {"type": "string", "enum": ["empty_company", "microsoft_demo_baseline", "existing_validated_company"]},
+        "customer_target": {"type": "string", "const": "unbound"},
+        "preconditions": {"type": "array", "items": {"type": "string"}},
+        "steps": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "readback": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "error_handling": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "stop_codes": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "direct_mutation": {"type": "boolean"}
+      }
+    }
+  }
+}

@@ -14,8 +14,12 @@ Unbesetzte Rollen bleiben `pending` oder `unknown` und enthalten keine erfundene
 
 ## Knowledge Inbox
 
+Wenn beide Inbox-Vertraege vorhanden sind, kennzeichnet `lifecycle_authority: foundation-read-only` die bisherige Knowledge Inbox explizit als nicht fuehrende Kompatibilitaetsprojektion. Nur die Information Inbox fuehrt den aktiven Proposal-Lebenszyklus.
+
 Intake-Dateien bleiben unveränderlich und werden über sicheren relativen Pfad, Quellsystem, Objekt-ID, Revision, Größe und SHA-256 gebunden. Gleiche Quellrevisionen dürfen kein zweites IntakeItem erzeugen.
 
 Observations beschreiben nur belegte oder ausdrücklich unbekannte Sachverhalte. ComparisonRuns binden den aktuellen Workspace-Digest. Proposals enthalten einen erwarteten Digest und bleiben vom kanonischen Workspace getrennt. ReviewDecisions sind menschliche Entscheidungen; auch eine Annahme erzeugt in diesem Block keinen Apply-Plan und keine Zielmutation.
+
+Der Status in `knowledge-inbox.json` ist nur eine read-only Foundation-/Kompatibilitaetsprojektion. Fuer neue Verarbeitung, erneute Pruefung, Annahme und getrennte Umsetzung ist ausschließlich der `information-inbox`-Vertrag fuehrend. Legacy-Status wird nicht automatisch in kanonische Audit-Evidence umgedeutet.
 
 Stale-Vergleiche, offene Konflikte, unbekannte Referenzen, automatische Writes und sensible Marker werden fail-closed abgelehnt.

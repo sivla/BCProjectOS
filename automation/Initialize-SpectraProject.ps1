@@ -34,6 +34,7 @@ foreach($blueprintId in $selectedBlueprints){if(@($catalog.blueprints|Where-Obje
 . (Join-Path $PSScriptRoot 'Project.Scenarios.ps1')
 $projectTypeProperty=$config.PSObject.Properties['project_type']
 $projectType=if($null-ne$projectTypeProperty-and-not[string]::IsNullOrWhiteSpace([string]$projectTypeProperty.Value)){[string]$projectTypeProperty.Value}elseif([string]$config.profile-eq'support-only'){'support'}else{'implementation'}
+$blueprintCompatibility=Resolve-SpectraBlueprintCompatibility -Root $productRoot -ProjectType $projectType -Profile ([string]$config.profile) -BcPackage ([string]$config.bc_package) -LegacyPackageIds $selectedBlueprints
 $predecessorProperty=$config.PSObject.Properties['predecessor'];$predecessor=if($null-ne$predecessorProperty){$predecessorProperty.Value}else{$null}
 $scenario=Test-SpectraProjectScenarioSelection -Root $productRoot -ProjectType $projectType -Profile ([string]$config.profile) -Predecessor $predecessor -ProjectId ([string]$config.project_id)
 $recommendedBlueprints=@($scenario.recommended_blueprints)
@@ -89,6 +90,7 @@ $plan=[ordered]@{
   destination=$destinationFull;project_space=$config.project_space.id;referenced_space_count=@($config.referenced_spaces).Count
   processes=@($config.processes);ticket_strategy=$config.ticket_structure.strategy;mapping_version=$config.ticket_structure.mapping_version
   selected_blueprints=$selectedBlueprints;recommended_blueprints=$recommendedBlueprints;predecessor=$predecessor
+  blueprint_contract=$blueprintCompatibility.contract;canonical_blueprint_id=$blueprintCompatibility.canonical_blueprint_id;canonical_page_trees=@($blueprintCompatibility.page_tree_refs)
   writes_performed=$false;status='PLANNED';source_inventory=$inventory
 }
 if(-not$Apply){$plan|ConvertTo-Json -Depth 8 -Compress;return}
@@ -102,9 +104,11 @@ try{
     profile=$config.profile;project_type=$projectType;language=$config.language;bc_package=$config.bc_package;processes=@($config.processes);collaboration=$config.collaboration
     project_space=$config.project_space;referenced_spaces=@($config.referenced_spaces);ticket_structure=$config.ticket_structure;source_inventory=$inventory
     blueprints=@($selectedBlueprints);recommended_blueprints=@($recommendedBlueprints);predecessor=$predecessor
+    blueprint_contract=$blueprintCompatibility.contract;canonical_blueprint_id=$blueprintCompatibility.canonical_blueprint_id;canonical_page_trees=@($blueprintCompatibility.page_tree_refs)
     customer_truth_boundary='workspace-owned';live_write_enabled=$false
   }
   Write-Utf8 (Join-Path $staging 'governance\project-init.json') (($contract|ConvertTo-Json -Depth 12)+"`n")
+  & (Join-Path $PSScriptRoot 'New-BlueprintPreview.ps1') -BlueprintId ([string]$blueprintCompatibility.canonical_blueprint_id) -OutputPath (Join-Path $staging 'governance\blueprint-proposal') | Out-Null
   $space=[ordered]@{schema_version=1;project_space=$config.project_space;referenced_spaces=@($config.referenced_spaces);page_roots=@('Projektstart','Scope und Entscheidungen','Prozesse','Tests und Freigaben','Betrieb und Handover')}
   Write-Utf8 (Join-Path $staging 'collaboration\project-space.json') (($space|ConvertTo-Json -Depth 8)+"`n")
   $jira=[ordered]@{

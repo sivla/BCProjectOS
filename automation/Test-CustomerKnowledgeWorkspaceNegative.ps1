@@ -47,7 +47,10 @@ $cases = @(
   @{name='role-permission';code='INBOX_ROLE_PERMISSION_MISSING';sync=$true;m={param($f,$i)$f.role_assignments[0].permissions=@('execution')}},
   @{name='automatic-write';code='INBOX_SCHEMA_INVALID';m={param($f,$i)$i.target_mutation=$true}},
   @{name='open-conflict';code='INBOX_CONFLICT_UNRESOLVED';m={param($f,$i)$i.conflicts=@([ordered]@{id='CNF-SYN-001';proposal_ids=@($i.proposals[0].id);reason='Synthetischer Konflikt';status='open'})}},
-  @{name='forbidden-marker';code='FOUNDATION_CUSTOMER_OR_SECRET_MARKER';m={param($f,$i)$i.observations[0].summary='credential_marker'}}
+  @{name='forbidden-marker';code='FOUNDATION_CUSTOMER_OR_SECRET_MARKER';m={param($f,$i)$i.observations[0].summary='credential_marker'}},
+  @{name='legacy-lifecycle-authority';code='INBOX_LEGACY_AUTHORITY_FORBIDDEN';m={param($f,$i,$a)$i.PSObject.Properties.Remove('lifecycle_authority')}},
+  @{name='canonical-customer-divergence';code='INBOX_LEADING_TRUTH_CONFLICT';m={param($f,$i,$a)$a.customer_id='CUS-OTHER-CANONICAL';$a.intake_items[0].customer_id='CUS-OTHER-CANONICAL'}},
+  @{name='canonical-source-divergence';code='INBOX_LEADING_TRUTH_CONFLICT';m={param($f,$i,$a)$a.intake_items[0].source.source_object_id='MEETING-OTHER-CANONICAL'}}
 )
 
 try {
@@ -59,12 +62,15 @@ try {
     & (Join-Path $PSScriptRoot 'New-SyntheticCustomerKnowledgeWorkspace.ps1') -Destination $workspace -Profile implementation | Out-Null
     $foundationPath = Join-Path $workspace 'customer-workspace-foundation.json'
     $inboxPath = Join-Path $workspace 'knowledge-inbox.json'
+    $informationInboxPath = Join-Path $workspace 'information-inbox.json'
     $foundation = Get-Content -LiteralPath $foundationPath -Raw | ConvertFrom-Json
     $inbox = Get-Content -LiteralPath $inboxPath -Raw | ConvertFrom-Json
-    & $case.m $foundation $inbox
+    $informationInbox = Get-Content -LiteralPath $informationInboxPath -Raw | ConvertFrom-Json
+    & $case.m $foundation $inbox $informationInbox
     Write-Json $foundationPath $foundation
     if ($case.ContainsKey('sync') -and $case.sync) { $inbox.foundation_digest = (Get-FileHash -LiteralPath $foundationPath -Algorithm SHA256).Hash.ToLowerInvariant();$inbox.comparison_runs[0].foundation_digest=$inbox.foundation_digest;$inbox.proposals[0].expected_foundation_digest=$inbox.foundation_digest }
     Write-Json $inboxPath $inbox
+    Write-Json $informationInboxPath $informationInbox
     $result = Invoke-Exact $workspace
     if ($result.Exit -ne 1 -or $result.Err -ne '' -or $result.Raw -cne $case.code) { throw "FOUNDATION_NEGATIVE_FAILED:${index}:$($case.name):$($case.code):$($result.Exit):$($result.Raw):$($result.Err)" }
   }
