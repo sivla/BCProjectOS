@@ -94,7 +94,7 @@ Eine lokal erzeugte macOS-Fresh-Clone-Prüfkopie MUST vor der Releaseprüfung ex
 
 Doctor und installierte Vertragstests MUST eine vollständig validierte `.spectra-install.json` samt aktuellem Release-Manifest als Alternative zu einem Produkt-Git-Checkout akzeptieren. Untergates MUST die tatsächlich geprüfte Releaseversion weiterreichen und dürfen in der installierten Kopie keine alte Manifestversion voraussetzen.
 
-Die macOS-Evidence MUST in ihren synthetischen Temp-Basispfad wechseln, ihn mit dem POSIX-verfügbaren `/bin/pwd -P` physisch auflösen, dessen Exitcode prüfen und den aufgelösten Pfad als `TMPDIR` an Kindprozesse weiterreichen. Sie darf weder den PowerShell-Alias `realpath` noch ein auf macOS nicht vorhandenes GNU-Werkzeug voraussetzen. Die Produkt-Symlinkprüfung MUST unverändert bleiben und darf nicht pauschal für systemische Alias-Vorfahren geöffnet werden.
+Die macOS-Evidence MUST in ihren synthetischen Temp-Basispfad wechseln, ihn mit dem POSIX-verfügbaren `/bin/pwd -P` physisch auflösen, das Ergebnis fail-closed als nichtleeren vorhandenen Ordner prüfen und den aufgelösten Pfad als `TMPDIR` an Kindprozesse weiterreichen. Sie darf weder den PowerShell-Alias `realpath`, ein auf macOS nicht vorhandenes GNU-Werkzeug noch eine in nativen PowerShell-Pipelines unzuverlässige `$LASTEXITCODE`-Annahme voraussetzen. Die Produkt-Symlinkprüfung MUST unverändert bleiben und darf nicht pauschal für systemische Alias-Vorfahren geöffnet werden.
 
 #### Scenario: Echter macOS-Runner ohne TEMP
 
