@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/business-central-source-lock.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "product_id", "snapshot_id", "knowledge_pack_id", "knowledge_pack_version", "bc_version", "platform_version", "application_version", "al_runtime", "countries", "installed_apps", "retrieved_at", "sources", "lock_digest", "validation_status"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "product_id": {"type": "string", "const": "spectra"},
+    "snapshot_id": {"type": "string", "pattern": "^BCK-[A-Z0-9.-]+$"},
+    "knowledge_pack_id": {"type": "string", "pattern": "^BCKP-[A-Z0-9.-]+$"},
+    "knowledge_pack_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "bc_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+    "platform_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "application_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "al_runtime": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+    "countries": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^(W1|[A-Z]{2})$"}},
+    "installed_apps": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/app"}},
+    "retrieved_at": {"type": "string", "format": "date-time"},
+    "sources": {"type": "array", "minItems": 3, "items": {"$ref": "#/$defs/source"}},
+    "lock_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "validation_status": {"type": "string", "const": "validated"}
+  },
+  "$defs": {
+    "app": {
+      "type": "object", "additionalProperties": false,
+      "required": ["app_id", "name", "publisher", "version", "country"],
+      "properties": {
+        "app_id": {"type": "string", "pattern": "^[a-f0-9-]{36}$"},
+        "name": {"type": "string", "minLength": 1},
+        "publisher": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "country": {"type": "string", "pattern": "^(W1|[A-Z]{2})$"}
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "canonical_url", "role", "ref_kind", "commit", "tree", "mirror_name", "bare", "allowed_paths", "license_id", "license_path", "license_blob_digest", "content_digest", "update_status"],
+      "properties": {
+        "source_id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "canonical_url": {"type": "string", "pattern": "^https://github\\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\\.git$"},
+        "role": {"type": "string", "minLength": 1},
+        "ref_kind": {"type": "string", "enum": ["commit", "release"]},
+        "commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "tree": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "mirror_name": {"type": "string", "pattern": "^[a-z0-9-]+\\.git$"},
+        "bare": {"type": "boolean", "const": true},
+        "allowed_paths": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "license_id": {"type": "string", "minLength": 1},
+        "license_path": {"type": "string", "pattern": "^LICENSE[A-Za-z0-9._/-]*$"},
+        "license_blob_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "content_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "update_status": {"type": "string", "enum": ["pinned", "unchanged"]}
+      }
+    }
+  }
+}

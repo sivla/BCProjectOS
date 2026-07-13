@@ -6,7 +6,7 @@
 
 ## 2. Implementierung
 
-- [ ] 2.1 Source-Registry, Lock-, Cache- und Objektkatalogvertrag integrieren
-- [ ] 2.2 Leanen Wissens- und Playthrough-Katalog implementieren
-- [ ] 2.3 Query, Validator, positive Fixture und Negativmatrix implementieren
-- [ ] 2.4 Product Contract, OpenSpec, Upgrade, Backup/Restore und Fresh Clone pruefen
+- [x] 2.1 Source-Registry, Lock-, Cache- und Objektkatalogvertrag als bytegebundenen Foundation-Import aus dff88684 integrieren (14 Dateien, 3 Quellen, 21 Negativfaelle)
+- [x] 2.2 Leanen Wissens- und Playthrough-Katalog implementieren (19 Bereiche, 5 plan-only Playthroughs)
+- [x] 2.3 Query, Validator, positive Fixture und Negativmatrix implementieren (12 fachliche Negativfaelle)
+- [x] 2.4 Product Contract, OpenSpec, Upgrade, Backup/Restore und Fresh Clone pruefen
