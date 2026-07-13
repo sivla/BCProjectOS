@@ -73,5 +73,11 @@ try{
 }finally{if(Test-Path $xdgRoot){Remove-Item -LiteralPath $xdgRoot -Recurse -Force}}
 $passed++
 
-if($passed -ne 8){throw "PORTABILITY_REGRESSION_COUNT_INVALID:$passed"}
-Write-Host "PASS: $passed Portabilitaetsregressionen einschliesslich macOS-Clonebindung und XDG-First-Run."
+$bootstrapTest=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'Test-SpectraPortableBootstrap.ps1') -Raw
+$adoptionTest=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'Test-ExistingProjectAdoption.ps1') -Raw
+if($bootstrapTest -notmatch "param\(\[string\]\`$Version="-or$adoptionTest -notmatch "param\(\[string\]\`$ReleaseVersion="){throw 'PORTABILITY_INSTALLED_TEST_VERSION_PARAMETER_MISSING'}
+if($macAcceptance -notmatch 'Test-SpectraPortableBootstrap\.ps1.*-Version \$Version'-or$macAcceptance -notmatch 'Test-ExistingProjectAdoption\.ps1.*-ReleaseVersion \$Version'){throw 'PORTABILITY_MACOS_INSTALLED_VERSION_FORWARDING_MISSING'}
+$passed++
+
+if($passed -ne 9){throw "PORTABILITY_REGRESSION_COUNT_INVALID:$passed"}
+Write-Host "PASS: $passed Portabilitaetsregressionen einschliesslich installiertem Doctor und versionierten Untergates."

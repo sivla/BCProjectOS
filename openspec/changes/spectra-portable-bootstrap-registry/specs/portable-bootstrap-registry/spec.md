@@ -92,6 +92,8 @@ Eine lokal erzeugte macOS-Fresh-Clone-Prüfkopie MUST vor der Releaseprüfung ex
 
 `bootstrap -Apply` MUST bei einem sauberen macOS-XDG-First-Run sowohl den Config- als auch den Registry-Parent sicher erzeugen. Der nachfolgende Doctor MUST deshalb ohne manuelle Voranlage der XDG-Unterverzeichnisse starten können.
 
+Doctor und installierte Vertragstests MUST eine vollständig validierte `.spectra-install.json` samt aktuellem Release-Manifest als Alternative zu einem Produkt-Git-Checkout akzeptieren. Untergates MUST die tatsächlich geprüfte Releaseversion weiterreichen und dürfen in der installierten Kopie keine alte Manifestversion voraussetzen.
+
 #### Scenario: Echter macOS-Runner ohne TEMP
 
 - **WHEN** der Portabilitätsvertrag unter PowerShell 7 auf macOS ohne gesetztes `TEMP` ausgeführt wird

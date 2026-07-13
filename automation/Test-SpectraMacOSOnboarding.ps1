@@ -56,9 +56,9 @@ try {
   & pwsh -NoProfile -File (Join-Path $installed 'automation/Invoke-SpectraBootstrap.ps1') -Command doctor -ProductRoot $installed -RegistryRoot $roots.registry_root -ConfigRoot $roots.config_root -Version $Version | Out-Null
   if ($LASTEXITCODE -ne 0) { throw 'MACOS_DOCTOR_FAILED' }; $gates.doctor = 'PASS'
 
-  & pwsh -NoProfile -File (Join-Path $installed 'automation/Test-SpectraPortableBootstrap.ps1') | Out-Null
+  & pwsh -NoProfile -File (Join-Path $installed 'automation/Test-SpectraPortableBootstrap.ps1') -Version $Version | Out-Null
   if ($LASTEXITCODE -ne 0) { throw 'MACOS_INIT_FAILED' }; $gates.init = 'PASS'; $gates.pathSemantics = 'PASS'
-  & pwsh -NoProfile -File (Join-Path $installed 'automation/Test-ExistingProjectAdoption.ps1') | Out-Null
+  & pwsh -NoProfile -File (Join-Path $installed 'automation/Test-ExistingProjectAdoption.ps1') -ReleaseVersion $Version | Out-Null
   if ($LASTEXITCODE -ne 0) { throw 'MACOS_ADOPT_FAILED' }; $gates.adopt = 'PASS'
   & pwsh -NoProfile -File (Join-Path $installed 'automation/Test-ProductContract.ps1') | Out-Null
   if ($LASTEXITCODE -ne 0) { throw 'MACOS_VALIDATE_FAILED' }; $gates.validate = 'PASS'
