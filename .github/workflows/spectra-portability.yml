@@ -1,0 +1,69 @@
+name: Spectra portability acceptance
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing annotated spectra-v<SemVer> release tag to test
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  portability:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-14]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.release_tag }}
+      - name: Bind exact annotated release
+        shell: pwsh
+        run: |
+          if ('${{ inputs.release_tag }}' -notmatch '^spectra-v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$') { throw 'PORTABILITY_RELEASE_TAG_INVALID' }
+          $type = git cat-file -t '${{ inputs.release_tag }}'
+          if ($type -cne 'tag') { throw 'PORTABILITY_RELEASE_TAG_NOT_ANNOTATED' }
+          if ((git describe --tags --exact-match HEAD) -cne '${{ inputs.release_tag }}') { throw 'PORTABILITY_CHECKOUT_NOT_EXACT_TAG' }
+      - name: Focused bootstrap, adoption and snapshot contracts
+        shell: pwsh
+        run: |
+          pwsh -NoProfile -File automation/Test-SpectraPortableBootstrap.ps1
+          pwsh -NoProfile -File automation/Test-SpectraPortableBootstrapNegative.ps1
+          pwsh -NoProfile -File automation/Test-SpectraInstallerContract.ps1
+          pwsh -NoProfile -File automation/Test-ExistingProjectAdoption.ps1
+          pwsh -NoProfile -File automation/Test-PortableSnapshotCatalog.ps1
+          pwsh -NoProfile -File automation/Test-PortableSnapshotCatalogNegative.ps1
+      - name: Install, reinstall and uninstall without project loss
+        shell: pwsh
+        run: |
+          $version = '${{ inputs.release_tag }}'.Substring('spectra-v'.Length)
+          $sandbox = Join-Path $env:RUNNER_TEMP 'Spectra Portability Unicode ä'
+          $install = Join-Path $sandbox 'Product'
+          $project = Join-Path $sandbox 'Customer Project'
+          New-Item -ItemType Directory -Path $sandbox,$project -Force | Out-Null
+          Set-Content -LiteralPath (Join-Path $project 'customer-data.txt') -Value 'synthetic-preserve-check'
+          pwsh -NoProfile -File ./install.ps1 -Command install -SourceRoot $PWD -InstallRoot $install -Version $version -Apply -Approve
+          $second = pwsh -NoProfile -File ./install.ps1 -Command install -SourceRoot $PWD -InstallRoot $install -Version $version -Apply -Approve | ConvertFrom-Json
+          if ($second.status -cne 'ALREADY_INSTALLED' -or $second.writes_performed) { throw 'PORTABILITY_REINSTALL_NOT_IDEMPOTENT' }
+          pwsh -NoProfile -File ./install.ps1 -Command uninstall -SourceRoot $PWD -InstallRoot $install -Version $version -Apply -Approve
+          if (-not (Test-Path (Join-Path $project 'customer-data.txt'))) { throw 'PORTABILITY_UNINSTALL_REMOVED_PROJECT_DATA' }
+      - name: macOS acceptance or honest Windows pending evidence
+        shell: pwsh
+        run: |
+          $version = '${{ inputs.release_tag }}'.Substring('spectra-v'.Length)
+          pwsh -NoProfile -File automation/Test-SpectraMacOSOnboarding.ps1 -ProductRoot $PWD -Version $version -OutputPath portability-evidence.json
+          $e = Get-Content portability-evidence.json -Raw | ConvertFrom-Json
+          if ($IsMacOS -and $e.status -cne 'PASS') { throw 'PORTABILITY_MACOS_NOT_PASS' }
+          if (-not $IsMacOS -and $e.status -cne 'PENDING') { throw 'PORTABILITY_NON_MAC_FALSE_PASS' }
+      - name: Upload sanitized evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: spectra-portability-${{ matrix.os }}
+          path: portability-evidence.json
+          if-no-files-found: error

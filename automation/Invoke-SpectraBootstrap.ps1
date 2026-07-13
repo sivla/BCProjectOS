@@ -1,0 +1,24 @@
+[CmdletBinding()]
+param(
+  [Parameter(Mandatory=$true)][ValidateSet('bootstrap','doctor','register','init','adopt','handoff','validate')][string]$Command,
+  [string]$RegistryRoot,[string]$ConfigRoot,
+  [string]$ProductRoot,[string]$Version='1.1.0-alpha.1',[string]$Workspace,[string]$WorkspaceId,
+  [string]$ProjectId,
+  [ValidateSet('implementation','support-only')][string]$Profile='implementation',[ValidateSet('new','adopted')][string]$Mode='new',
+  [string]$CustomerAlias,[string]$ConfigPath,[string]$DiscoveryPath,[string]$PlanPath,[string]$ExpectedPlanDigest,[string]$SnapshotPath,
+  [string]$ObservedAt='2031-01-01T00:00:00Z',[switch]$Apply,[switch]$Approve,[switch]$Remote
+)
+$ErrorActionPreference='Stop';Set-StrictMode -Version 2.0
+. (Join-Path $PSScriptRoot 'Spectra.Bootstrap.ps1')
+if(-not$ProductRoot){$ProductRoot=Get-SpectraBootstrapProductRoot};$product=[IO.Path]::GetFullPath($ProductRoot);$defaults=Get-SpectraDefaultRoots;if(-not$RegistryRoot){$RegistryRoot=$defaults.registry_root};if(-not$ConfigRoot){$ConfigRoot=$defaults.config_root}
+if($Remote){throw 'BOOTSTRAP_REMOTE_WRITE_FORBIDDEN'}
+if($Command-eq'bootstrap'){Initialize-SpectraBootstrapRoots -ConfigRoot $ConfigRoot -RegistryRoot $RegistryRoot -ObservedAt $ObservedAt -Apply:$Apply|ConvertTo-Json -Compress;exit 0}
+$binding=Get-SpectraReleaseBinding $product $Version
+switch($Command){
+  'doctor'{Invoke-SpectraDoctor -ProductRoot $product -RegistryRoot $RegistryRoot -ConfigRoot $ConfigRoot -Version $Version|ConvertTo-Json -Depth 20;break}
+  'register'{if(-not$Workspace-or-not$WorkspaceId){throw 'BOOTSTRAP_REGISTER_ARGUMENTS_REQUIRED'};if(-not$Apply){[ordered]@{status='PLANNED';writes_performed=$false}|ConvertTo-Json -Compress;break};if(-not$Approve){throw 'BOOTSTRAP_REGISTER_APPROVAL_REQUIRED'};Register-SpectraProject -RegistryRoot $RegistryRoot -Workspace $Workspace -WorkspaceId $WorkspaceId -ProjectId $ProjectId -Profile $Profile -Mode $Mode -Binding $binding -ObservedAt $ObservedAt -ProductRoot $product|ConvertTo-Json -Compress;break}
+  'init'{if(-not$Apply){[ordered]@{status='PLANNED';writes_performed=$false;delegate='New-ReleaseBoundProjectWorkspace.ps1'}|ConvertTo-Json -Compress;break};if(-not$Approve-or-not$Workspace-or-not$WorkspaceId-or-not$ConfigPath-or-not$CustomerAlias){throw 'BOOTSTRAP_INIT_ARGUMENTS_REQUIRED'};Assert-SpectraPortableConfigFile $ConfigPath|Out-Null;$created=$false;try{& (Join-Path $PSScriptRoot 'New-ReleaseBoundProjectWorkspace.ps1') -Destination $Workspace -Profile $Profile -CustomerAlias $CustomerAlias -Version $Version -ProductRoot $product -ConfigPath $ConfigPath|Out-Null;$created=$true;Register-SpectraProject -RegistryRoot $RegistryRoot -Workspace $Workspace -WorkspaceId $WorkspaceId -ProjectId $ProjectId -Profile $Profile -Mode new -Binding $binding -ObservedAt $ObservedAt -ProductRoot $product|ConvertTo-Json -Compress}catch{if($created-and(Test-Path $Workspace)){Remove-Item -LiteralPath $Workspace -Recurse -Force};throw};break}
+  'adopt'{if(-not$Apply){[ordered]@{status='PLANNED';writes_performed=$false;delegate='Invoke-ExistingProjectAdoption.ps1'}|ConvertTo-Json -Compress;break};if(-not$Approve-or-not$Workspace-or-not$WorkspaceId-or-not$ConfigPath-or-not$DiscoveryPath-or-not$PlanPath-or-not$ExpectedPlanDigest){throw 'BOOTSTRAP_ADOPT_ARGUMENTS_REQUIRED'};Assert-SpectraPortableConfigFile $ConfigPath|Out-Null;$created=$false;try{& (Join-Path $PSScriptRoot 'Invoke-ExistingProjectAdoption.ps1') -Command adopt -ConfigPath $ConfigPath -DiscoveryPath $DiscoveryPath -PlanPath $PlanPath -Destination $Workspace -ExpectedPlanDigest $ExpectedPlanDigest -Approve|Out-Null;$created=$true;Register-SpectraProject -RegistryRoot $RegistryRoot -Workspace $Workspace -WorkspaceId $WorkspaceId -ProjectId $ProjectId -Profile $Profile -Mode adopted -Binding $binding -ObservedAt $ObservedAt -ProductRoot $product|ConvertTo-Json -Compress}catch{if($created-and(Test-Path $Workspace)){Remove-Item -LiteralPath $Workspace -Recurse -Force};throw};break}
+  'handoff'{if(-not$Apply){[ordered]@{status='PLANNED';writes_performed=$false}|ConvertTo-Json -Compress;break};if(-not$Approve-or-not$Workspace-or-not$WorkspaceId-or-not$ProjectId-or-not$SnapshotPath){throw 'BOOTSTRAP_HANDOFF_ARGUMENTS_REQUIRED'};New-SpectraTwinHandoff -Workspace $Workspace -WorkspaceId $WorkspaceId -ProjectId $ProjectId -SnapshotPath $SnapshotPath -Binding $binding -ObservedAt $ObservedAt|ConvertTo-Json -Compress;break}
+  'validate'{$registryRootFull=[IO.Path]::GetFullPath($RegistryRoot);$registry=Read-SpectraBootstrapJson (Join-Path $registryRootFull 'spectra-projects.json');Test-SpectraProjectRegistry $registry $registryRootFull $product|Out-Null;if($Workspace-and(Test-Path (Join-Path $Workspace 'twin-handoff.json'))){Test-SpectraTwinHandoff $Workspace|Out-Null};[ordered]@{status='VALIDATED';writes_performed=$false;entry_count=@($registry.entries).Count}|ConvertTo-Json -Compress;break}
+}
