@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.spectra.local/spectra-macos-onboarding-evidence.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "product_id", "platform", "status", "reason", "release_version", "gates"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "product_id": { "const": "spectra" },
+    "platform": { "enum": ["macos", "windows", "other"] },
+    "status": { "enum": ["PASS", "PENDING"] },
+    "reason": { "type": ["string", "null"] },
+    "release_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$" },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["freshClone", "install", "doctor", "init", "adopt", "validate", "snapshot", "noRemoteWrites", "pathSemantics"],
+      "properties": {
+        "freshClone": { "enum": ["PASS", "PENDING"] },
+        "install": { "enum": ["PASS", "PENDING"] },
+        "doctor": { "enum": ["PASS", "PENDING"] },
+        "init": { "enum": ["PASS", "PENDING"] },
+        "adopt": { "enum": ["PASS", "PENDING"] },
+        "validate": { "enum": ["PASS", "PENDING"] },
+        "snapshot": { "enum": ["PASS", "PENDING"] },
+        "noRemoteWrites": { "enum": ["PASS", "PENDING"] },
+        "pathSemantics": { "enum": ["PASS", "PENDING"] }
+      }
+    }
+  }
+}

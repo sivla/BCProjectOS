@@ -1,5 +1,22 @@
 # Spectra (technisches Projekt: BCProjectOS)
 
+## Portabler Spectra-Einstieg (Candidate-WIP)
+
+Spectra wird aus einem echten annotierten `spectra-v<SemVer>`-Release außerhalb von Kundenrepositories installiert. Auf macOS ist PowerShell 7 (`pwsh`) die einzige Laufzeit; `install.sh` ist nur ein dünner Starter für `install.ps1`.
+
+```powershell
+pwsh -NoProfile -File ./install.ps1 -Command install -SourceRoot <release-checkout> -Version <semver> -Apply -Approve
+pwsh -NoProfile -File ./install.ps1 -Command doctor -Version <semver>
+pwsh -NoProfile -File ./install.ps1 -Command init -Version <semver> -Workspace <workspace> -WorkspaceId <id> -ProjectId <project-id> -CustomerAlias <alias> -ConfigPath <config.json> -Apply -Approve
+pwsh -NoProfile -File ./install.ps1 -Command adopt -Version <semver> -Workspace <workspace> -WorkspaceId <id> -ProjectId <project-id> -ConfigPath <config.json> -DiscoveryPath <discovery.json> -PlanPath <plan.json> -ExpectedPlanDigest <digest> -Apply -Approve
+pwsh -NoProfile -File ./install.ps1 -Command register -Version <semver> -Workspace <workspace> -WorkspaceId <id> -ProjectId <project-id> -Apply -Approve
+pwsh -NoProfile -File ./install.ps1 -Command validate -Version <semver> -Workspace <workspace>
+pwsh -NoProfile -File ./install.ps1 -Command snapshot -Version <semver> -Workspace <workspace> -WorkspaceId <id> -ProjectId <project-id> -SnapshotPath <snapshot.json> -Apply -Approve
+pwsh -NoProfile -File ./install.ps1 -Command uninstall -Version <semver> -Apply -Approve
+```
+
+Die vollständige Erklärung zu XDG-Pfaden, Registry, Projekttrennung, Secrets und Twin-Handoff steht in `contract/portable-bootstrap-project-registry.md`. Live-Atlassian-Apply bleibt gesperrt.
+
 Spectra ist der wiederverwendbare, kundenunabhaengige Produktvertrag fuer Business-Central-Projekte und Supportarbeit. Dieses Repository enthaelt den normativen Vertrag, einen synthetischen Proof of Value, einen technischen Referenz-Spike und die OpenSpec-Vorhaben fuer die weitere Produktentwicklung. Das technische Repository und Projekt heissen weiterhin BCProjectOS.
 
 Es ist keine Kundeninstanz, kein Kontrollzentrum und kein Project Twin. Reale Kundenwahrheit, Kundendaten und Kunden-Evidence gehoeren ausschliesslich in die jeweilige Kundeninstanz.
