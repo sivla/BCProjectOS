@@ -41,3 +41,10 @@ Ohne explizite Benutzerentscheidung MUST Distribution höchstens `internal-only`
 #### Scenario: Public ohne Lizenzentscheidung
 - **WHEN** `licenseDecision=pending` mit `status=public` kombiniert wird
 - **THEN** lehnt die Validierung mit `READINESS_DISTRIBUTION_LICENSE_REQUIRED` ab
+### Requirement: Stable-Release-Evidence bleibt unveränderlich gebunden
+
+Für `spectra-v1.0.0` MUST ein finales Manifest den vollständigen Source-Commit und dessen Tree, den reproduzierten Payload-Digest und die vollständige Payload-Liste enthalten. Ein annotierter Tag `spectra-v1.0.0` MUST auf einen Commit zeigen, der Manifest und Checksums enthält. Kandidatenstatus, fehlender Tag, fehlender Commit, abweichender Tree oder abweichender Digest MUST fail-closed abgelehnt werden.
+
+#### Scenario: Stable-Release-Nachweis unvollständig
+- **WHEN** Tag, Commit, Tree, Manifest oder Digest fehlt oder nicht übereinstimmt
+- **THEN** wird der Release nicht als veröffentlicht oder installierbar akzeptiert

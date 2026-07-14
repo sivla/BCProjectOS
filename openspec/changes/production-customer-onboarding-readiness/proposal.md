@@ -22,3 +22,6 @@ Der veröffentlichte Release `spectra-v1.2.0-alpha.12` ist plattformseitig insta
 ## Releasepfad
 
 Nach `spectra-v1.2.0-alpha.12` wird kein Rücksprung auf eine niedrigere Version behauptet. Ein nächster RC-/Stable-Schritt wird erst in einem getrennten Releaseprozess nach SemVer- und Releaseplan festgelegt.
+## Stable-Release-1.0-Erweiterung
+
+Der vorhandene Produktvertrag wird für `spectra-v1.0.0` reproduzierbar gebunden. Installation, Upgrade-/Recovery-Pfade und Release-Evidence werden gegen den tatsächlich gebundenen Payload geprüft. Kundendaten, Live-Systemmutation und erfundene Veröffentlichungsevidence bleiben ausgeschlossen.
