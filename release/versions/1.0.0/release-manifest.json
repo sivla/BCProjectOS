@@ -3,15 +3,13 @@
     "product_id":  "spectra",
     "release_version":  "1.0.0",
     "release_kind":  "installable_blueprint",
-    "manifest_state":  "candidate",
+    "manifest_state":  "final",
     "release_date":  "2026-07-14",
     "expected_tag":  "spectra-v1.0.0",
-    "source_commit":  null,
-    "source_tree":  null,
-    "candidate_source_commit":  "6cafcad48099e15e99b8c34f1e2a6942bbb76837",
-    "candidate_source_tree":  "3cfeaf024257101febfcdd1adf9c93175345a331",
-    "consumer_mode":  "CONTRACT_REFERENCE_ONLY",
-    "installable_blueprint":  false,
+    "source_commit":  "1aaf874f5197afb34ea9caa2271e33f929d448b5",
+    "source_tree":  "17cd0b2a5fbe6c94b8a4fa7aa4ab07cab9312161",
+    "consumer_mode":  "INSTALLABLE_BLUEPRINT",
+    "installable_blueprint":  true,
     "blueprint_version":  "1.0.0",
     "payload":  {
                     "digest_algorithm":  "SHA-256",
@@ -2012,9 +2010,9 @@
                                   "release/versions"
                               ],
     "known_limits":  [
-                         "Candidate provenance is bound but final source fields remain unset until promotion; candidate is not installable or published",
                          "All profiles, pilots and forward tests are synthetic and provide no customer evidence",
-                         "The candidate is contract-reference-only until separate promotion, annotated tag and publication verification",
-                         "Live Business Central, Atlassian and customer-system mutations remain outside this candidate evidence"
+                         "Live Business Central, Atlassian and customer-system mutations remain outside this product release",
+                         "Customer-specific data, tenant values, credentials, approvals and go-live evidence remain outside BCProjectOS",
+                         "Publication remains bound to the annotated tag, resolved commit, matching tree, final manifest and payload digest"
                      ]
 }
