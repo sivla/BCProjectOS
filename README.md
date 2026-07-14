@@ -1,8 +1,10 @@
 # Spectra (technisches Projekt: BCProjectOS)
 
-## Portabler Spectra-Einstieg (Candidate-WIP)
+## Portabler Spectra-Einstieg
 
 Spectra wird aus einem echten annotierten `spectra-v<SemVer>`-Release außerhalb von Kundenrepositories installiert. Auf macOS ist PowerShell 7 (`pwsh`) die einzige Laufzeit; `install.sh` ist nur ein dünner Starter für `install.ps1`.
+
+Der aktuelle veröffentlichte Vorabstand ist `spectra-v1.2.0-alpha.12`. Er ist plattformseitig für Windows und macOS gebunden; als Alpha bleibt er eine Vorabversion und ist keine automatische Kunden-Go-live-Freigabe.
 
 ```powershell
 pwsh -NoProfile -File ./install.ps1 -Command install -SourceRoot <release-checkout> -Version <semver> -Apply -Approve
@@ -34,9 +36,7 @@ Es ist keine Kundeninstanz, kein Kontrollzentrum und kein Project Twin. Reale Ku
 
 ## Aktueller Status
 
-Die veröffentlichte Basis ist `spectra-v1.0.0-rc.1`. Nachgelagerte lokale Init- und Blueprintblöcke sind noch kein Bestandteil dieses Releases und bleiben bis zu ihrer getrennten Integration unveröffentlicht. Ein Arbeitsbaum, SemVer-Text, Kandidatenmanifest oder erwarteter Tag ist kein unveränderlicher Release-Nachweis.
-
-Das Ziel bleibt der unabhängig geprüfte Hauptrelease `1.0.0`. Der aktuelle lokale Nachweis verbindet releasegebundenen Guided Init, profilgerechte Blueprints, Workspacevalidierung und Backup/Restore für Implementation und Support-only.
+Die veröffentlichte Basis ist `spectra-v1.2.0-alpha.12`. Ein Arbeitsbaum, SemVer-Text, Kandidatenmanifest oder erwarteter Tag ist kein unveränderlicher Release-Nachweis. Der Readinessvertrag trennt Plattformbereitschaft, Onboardingbereitschaft und die ausschließlich im konkreten Kundenprojekt belegbare Go-live-Reife. Die deutsche Operatorführung steht in `notes/spectra-production-customer-onboarding.md`.
 
 ## Lokale Verifikation
 

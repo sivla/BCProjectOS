@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.invalid/schemas/component-production-readiness.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion","kind","projectId","deploymentBoundary","assessments","distribution"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "kind": {"const": "universaarl-component-production-readiness"},
+    "projectId": {"const": "spectra"},
+    "deploymentBoundary": {"const": "release-bound-product-tooling"},
+    "assessments": {"type":"object","additionalProperties":false,"required":["platformReady","onboardingReady","customerGoLiveReady"],"properties":{
+      "platformReady":{"$ref":"#/$defs/assessment"},
+      "onboardingReady":{"$ref":"#/$defs/assessment"},
+      "customerGoLiveReady":{"type":"object","additionalProperties":false,"required":["status","evidenceMode","evidence","blockers"],"properties":{"status":{"const":"not-applicable"},"evidenceMode":{"const":"none"},"evidence":{"type":"array","maxItems":0},"blockers":{"type":"array","maxItems":0}}}
+    }},
+    "distribution":{"type":"object","additionalProperties":false,"required":["status","licenseDecision","evidence"],"properties":{"status":{"enum":["internal-only","pending","public"]},"licenseDecision":{"enum":["pending","approved","rejected"]},"evidence":{"type":"array","items":{"$ref":"#/$defs/evidence"}}}}
+  },
+  "$defs": {
+    "evidence":{"type":"object","additionalProperties":false,"required":["kind","path"],"properties":{"kind":{"enum":["test-report","operator-guide","release-evidence","security-boundary","platform-matrix","onboarding-runbook","input-contract","profile-proof","recovery-proof","source-register","readiness-validation"]},"path":{"type":"string","pattern":"^(?!/|[A-Za-z]:|.*\\.\\.).+"}}},
+    "assessment":{"type":"object","additionalProperties":false,"required":["status","evidenceMode","evidence","blockers"],"properties":{"status":{"enum":["passed","pending","failed"]},"evidenceMode":{"enum":["commit-bound","none"]},"evidence":{"type":"array","items":{"$ref":"#/$defs/evidence"}},"blockers":{"type":"array","items":{"type":"string","minLength":3}}}}
+  }
+}

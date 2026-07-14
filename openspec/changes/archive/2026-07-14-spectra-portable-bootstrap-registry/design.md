@@ -15,7 +15,7 @@ Der Spectra-Produktclone bleibt unverändert und kann read-only an beliebiger St
 
 ## Plattformmodell
 
-Pfadnormalisierung verwendet `System.IO.Path`, speichert aber ausschließlich `/` als Separator. Traversal, Rootpfade, Laufwerkspräfixe, UNC, Symlinks/Reparsepunkte und Pfade außerhalb des Registry-Roots werden abgelehnt. Windows wird in diesem Block real geprüft. macOS bleibt `MACOS_RUNNER_EVIDENCE_MISSING`, bis derselbe Test auf einem echten macOS-Runner bestanden ist.
+Pfadnormalisierung verwendet `System.IO.Path`, speichert aber ausschließlich `/` als Separator. Traversal, Rootpfade, Laufwerkspräfixe, UNC, Symlinks/Reparsepunkte und Pfade außerhalb des Registry-Roots werden abgelehnt. Windows und macOS wurden für den unveränderlichen Release `spectra-v1.2.0-alpha.12` in GitHub Actions Run `29293515568` erfolgreich geprüft.
 
 ## Wahrheits- und Sicherheitsgrenze
 

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "kind": "universaarl-component-production-readiness",
+  "projectId": "spectra",
+  "deploymentBoundary": "release-bound-product-tooling",
+  "assessments": {
+    "platformReady": {
+      "status": "passed",
+      "evidenceMode": "commit-bound",
+      "evidence": [
+        {"kind":"release-evidence","path":"release/versions/1.2.0-alpha.12/release-manifest.json"},
+        {"kind":"platform-matrix","path":".github/workflows/spectra-portability.yml"},
+        {"kind":"security-boundary","path":"contract/portable-bootstrap-project-registry.md"}
+      ],
+      "blockers": []
+    },
+    "onboardingReady": {
+      "status": "passed",
+      "evidenceMode": "commit-bound",
+      "evidence": [
+        {"kind":"onboarding-runbook","path":"notes/spectra-production-customer-onboarding.md"},
+        {"kind":"input-contract","path":"contract/production-customer-onboarding-readiness.md"},
+        {"kind":"profile-proof","path":"examples/production-onboarding/implementation.json"},
+        {"kind":"profile-proof","path":"examples/production-onboarding/support-only.json"},
+        {"kind":"recovery-proof","path":"notes/spectra-backup-restore-operator.md"},
+        {"kind":"readiness-validation","path":"automation/Test-ProductionCustomerOnboardingReadiness.ps1"}
+      ],
+      "blockers": []
+    },
+    "customerGoLiveReady": {
+      "status": "not-applicable",
+      "evidenceMode": "none",
+      "evidence": [],
+      "blockers": []
+    }
+  },
+  "distribution": {
+    "status": "internal-only",
+    "licenseDecision": "pending",
+    "evidence": []
+  }
+}
